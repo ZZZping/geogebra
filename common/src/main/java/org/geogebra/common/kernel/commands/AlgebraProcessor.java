@@ -653,6 +653,8 @@ public class AlgebraProcessor {
 				if (((GeoFunctionNVar) geo).isForceInequality()) {
 					n.setForceInequality();
 				}
+			} else if (geo.isGeoAngle() && preventTypeChange) {
+				n.setForceAngle();
 			}
 		}
 		if (newValue.unwrap() instanceof Equation) {
@@ -3243,7 +3245,7 @@ public class AlgebraProcessor {
 		GeoElement ret;
 		boolean isIndependent = !n.inspect(Inspecting.dynamicGeosFinder);
 		MyDouble val = ((NumberValue) evaluate).getNumber();
-		boolean isAngle = val.isAngle();
+		boolean isAngle = val.isAngle() || n.isForceAngle();
 		double value = val.getDouble();
 
 		if (isIndependent) {
