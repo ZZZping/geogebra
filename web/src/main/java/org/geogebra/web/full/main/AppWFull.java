@@ -1521,8 +1521,6 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 
 			if (isUnbundled()) {
 				setPerspectiveForUnbundled(p);
-			} else {
-				setPerspectives(p);
 			}
 
 			getGuiManager().updateFrameSize();
@@ -1534,6 +1532,10 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 					setInputPosition(InputPosition.bottom, false);
 					p2.setInputPosition(InputPosition.bottom);
 				}
+			}
+
+			if (!isUnbundled()) {
+				setPerspectives(p);
 			}
 		}
 
