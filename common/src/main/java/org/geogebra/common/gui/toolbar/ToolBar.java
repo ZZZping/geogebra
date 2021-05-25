@@ -332,6 +332,8 @@ public class ToolBar {
 		return sb.toString();
 	}
 
+
+
 	/**
 	 * @param includeGraspableMath whether to include GraspableMath
 	 * @param includeH5P whether to include H5P
@@ -370,6 +372,25 @@ public class ToolBar {
 		sb.append(" ");
 		sb.append(EuclidianConstants.MODE_PDF);
 		sb.append(" | ");
+		return sb.toString();
+	}
+
+	/**
+	 * @return definition for MOW pen toolbar
+	 */
+	public static String getMOWPenDefString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(EuclidianConstants.MODE_SELECT_MOW);
+		sb.append(" ");
+		sb.append(EuclidianConstants.MODE_PEN);
+		sb.append(" ");
+		sb.append(EuclidianConstants.MODE_RULER);
+		sb.append(" ");
+		sb.append(EuclidianConstants.MODE_ERASER);
+		sb.append(" ");
+		sb.append(EuclidianConstants.MODE_HIGHLIGHTER);
+		sb.append(" ");
+		sb.append(EuclidianConstants.MODE_PROTRACTOR);
 		return sb.toString();
 	}
 

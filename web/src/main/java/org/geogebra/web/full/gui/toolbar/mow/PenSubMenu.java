@@ -8,6 +8,7 @@ import org.geogebra.common.euclidian.EuclidianConstants;
 import org.geogebra.common.euclidian.event.PointerEventType;
 import org.geogebra.common.gui.AccessibilityGroup;
 import org.geogebra.common.gui.dialog.handler.ColorChangeHandler;
+import org.geogebra.common.gui.toolbar.ToolBar;
 import org.geogebra.common.kernel.geos.GeoElement;
 import org.geogebra.common.main.settings.EuclidianSettings;
 import org.geogebra.web.full.css.MaterialDesignResources;
@@ -15,40 +16,26 @@ import org.geogebra.web.full.gui.dialog.DialogManagerW;
 import org.geogebra.web.full.gui.toolbar.ToolButton;
 import org.geogebra.web.full.gui.util.GeoGebraIconW;
 import org.geogebra.web.full.gui.util.PenPreview;
-import org.geogebra.web.html5.gui.FastClickHandler;
 import org.geogebra.web.html5.gui.util.AriaHelper;
 import org.geogebra.web.html5.gui.util.ClickStartHandler;
 import org.geogebra.web.html5.gui.util.ImageOrText;
-import org.geogebra.web.html5.gui.util.LayoutUtilW;
 import org.geogebra.web.html5.gui.view.button.StandardButton;
 import org.geogebra.web.html5.gui.zoompanel.FocusableWidget;
 import org.geogebra.web.html5.main.AppW;
 import org.geogebra.web.html5.util.Dom;
 import org.geogebra.web.html5.util.sliderPanel.SliderPanelW;
 
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Pen/Eraser/Color submenu for MOWToolbar.
- * 
- * @author Laszlo Gal
- *
  */
 public class PenSubMenu extends SubMenuPanel {
 	private static final int MAX_ERASER_SIZE = 200;
 	private static final int MIN_ERASER_SIZE = 10;
 	private static final int ERASER_STEP = 10;
-	private ToolButton pen;
-	private ToolButton eraser;
-	private ToolButton highlighter;
-	private ToolButton select;
-	private FlowPanel penPanel;
-	private FlowPanel colorPanel;
-	private FlowPanel sizePanel;
 	private SliderPanelW slider;
 	private StandardButton btnCustomColor;
 	private PenPreview preview;
@@ -68,32 +55,14 @@ public class PenSubMenu extends SubMenuPanel {
 	}
 
 	/**
-	 * 
 	 * @param app
 	 *            ggb app.
 	 */
 	public PenSubMenu(AppW app) {
-		super(app/* , false */);
+		super(app);
 		addStyleName("penSubMenu");
 		// needed for slider mouse events
 		ClickStartHandler.initDefaults(this, false, true);
-	}
-
-	private void createPenPanel() {
-		penPanel = new FlowPanel();
-		penPanel.addStyleName("penPanel");
-		pen = new ToolButton(EuclidianConstants.MODE_PEN, app, this);
-		eraser = new ToolButton(EuclidianConstants.MODE_ERASER, app, this);
-		highlighter = new ToolButton(EuclidianConstants.MODE_HIGHLIGHTER,
-				app, this);
-		select = new ToolButton(EuclidianConstants.MODE_SELECT_MOW, app,
-				this);
-		penPanel.add(LayoutUtilW.panelRow(select, pen, eraser, highlighter));
-		toolButtons.add(select);
-		toolButtons.add(pen);
-		toolButtons.add(eraser);
-		toolButtons.add(highlighter);
-		makeButtonsAccessible(AccessibilityGroup.NOTES_TOOL_SELECT);
 	}
 
 	/**
@@ -155,18 +124,13 @@ public class PenSubMenu extends SubMenuPanel {
 				+ ".MoreColors"));
 		btnCustomColor.addStyleName("mowColorButton");
 		btnCustomColor.addStyleName("mowColorPlusButton");
-		btnCustomColor.addFastClickHandler(new FastClickHandler() {
-			@Override
-			public void onClick(Widget source) {
-				openColorDialog();
-			}
-		});
+		btnCustomColor.addFastClickHandler(source -> openColorDialog());
 		new FocusableWidget(
 				AccessibilityGroup.NOTES_COLOR_CUSTOM, null, btnCustomColor).attachTo(app);
 	}
 
 	private void createColorPanel() {
-		colorPanel = new FlowPanel();
+		FlowPanel colorPanel = new FlowPanel();
 		colorPanel.addStyleName("colorPanel");
 
 		fillColorButtonMap();
@@ -179,28 +143,25 @@ public class PenSubMenu extends SubMenuPanel {
 		}
 		panelRow.add(btnCustomColor);
 		colorPanel.add(panelRow);
+		addToContentPanel(colorPanel);
 	}
 
 	/**
 	 * Create panel with slider for pen and eraser size
 	 */
 	private void createSizePanel() {
-		sizePanel = new FlowPanel();
+		FlowPanel sizePanel = new FlowPanel();
 		sizePanel.addStyleName("sizePanel");
 		slider = new SliderPanelW(0, 20, app.getKernel(), false);
 		slider.addStyleName("mowOptionsSlider");
 		setSliderRange(true);
-		slider.setWidth(300);
+		slider.setWidth(150);
 		preview = new PenPreview(app, 50, 30);
 		preview.addStyleName("preview");
 		slider.add(preview);
 		sizePanel.add(slider);
-		slider.addValueChangeHandler(new ValueChangeHandler<Double>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<Double> event) {
-				sliderValueChanged(event.getValue());
-			}
-		});
+		addToContentPanel(sizePanel);
+		slider.addValueChangeHandler(event -> sliderValueChanged(event.getValue()));
 		new FocusableWidget(AccessibilityGroup.NOTES_PEN_THICKNESS_SLIDER,
 				null, slider.getSlider()).attachTo(app);
 	}
@@ -241,16 +202,12 @@ public class PenSubMenu extends SubMenuPanel {
 	@Override
 	protected void createContentPanel() {
 		super.createContentPanel();
-		createPenPanel();
+		super.createPanelRow(ToolBar.getMOWPenDefString());
 		createColorPanel();
 		createSizePanel();
-		contentPanel.add(
-				LayoutUtilW.panelRow(penPanel, colorPanel, sizePanel));
 	}
 
 	private void doSelectPen() {
-		pen.getElement().setAttribute("selected", "true");
-		pen.setSelected(true);
 		setColorsEnabled(true);
 		selectColor(getSettings().getLastSelectedPenColor());
 		setSliderRange(true);
@@ -263,8 +220,6 @@ public class PenSubMenu extends SubMenuPanel {
 	}
 
 	private void doSelectHighlighter() {
-		highlighter.getElement().setAttribute("selected", "true");
-		highlighter.setSelected(true);
 		setColorsEnabled(true);
 		selectColor(getSettings().getLastSelectedHighlighterColor());
 		setSliderRange(true);
@@ -278,9 +233,6 @@ public class PenSubMenu extends SubMenuPanel {
 	}
 
 	private void doSelectEraser() {
-		reset();
-		eraser.getElement().setAttribute("selected", "true");
-		eraser.setSelected(true);
 		setColorsEnabled(false);
 		setSliderRange(false);
 		int delSize = app.getActiveEuclidianView().getSettings()
@@ -288,13 +240,6 @@ public class PenSubMenu extends SubMenuPanel {
 		slider.setValue((double) delSize);
 		disableSlider(false);
 		preview.setVisible(false);
-	}
-
-	private void doSelectSelect() {
-		reset();
-		select.getElement().setAttribute("selected", "true");
-		select.setSelected(true);
-		disableSlider(true);
 	}
 
 	private void disableSlider(boolean disable) {
@@ -390,9 +335,10 @@ public class PenSubMenu extends SubMenuPanel {
 	@Override
 	public void setMode(int mode) {
 		reset();
+		super.setMode(mode);
 		if (mode == EuclidianConstants.MODE_SELECT
 				|| mode == EuclidianConstants.MODE_SELECT_MOW) {
-			doSelectSelect();
+			disableSlider(true);
 		} else if (mode == EuclidianConstants.MODE_ERASER) {
 			doSelectEraser();
 		} else if (mode == EuclidianConstants.MODE_PEN) {
@@ -435,7 +381,6 @@ public class PenSubMenu extends SubMenuPanel {
 				@Override
 				public void onColorChange(GColor color) {
 					penGeo.setObjColor(color);
-					// setPenIconColor(color.toString());
 					getSettings().setLastSelectedHighlighterColor(color);
 					penGeo.setLineOpacity(
 							app.getMode() == EuclidianConstants.MODE_HIGHLIGHTER
@@ -484,15 +429,14 @@ public class PenSubMenu extends SubMenuPanel {
 		return mode == EuclidianConstants.MODE_SELECT_MOW
 				|| mode == EuclidianConstants.MODE_PEN
 				|| mode == EuclidianConstants.MODE_ERASER
-				|| mode == EuclidianConstants.MODE_HIGHLIGHTER;
+				|| mode == EuclidianConstants.MODE_HIGHLIGHTER
+				|| mode == EuclidianConstants.MODE_RULER
+				|| mode == EuclidianConstants.MODE_PROTRACTOR;
 	}
 
 	@Override
 	public void setLabels() {
-		pen.setLabel();
-		select.setLabel();
-		eraser.setLabel();
-		highlighter.setLabel();
+		super.setLabels();
 		for (Map.Entry<MOWToolbarColor, Label> colorBtnPair : colorMap.entrySet()) {
 			AriaHelper.setLabel(colorBtnPair.getValue(),
 					app.getLocalization().getColor(colorBtnPair.getKey().getGgbTransKey()));

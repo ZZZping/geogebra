@@ -7,9 +7,6 @@ import org.geogebra.web.html5.main.AppW;
 
 /**
  * Tools submenu for MOWToolbar.
- * 
- * @author Laszlo Gal
- * 
  */
 public class ToolsSubMenu extends SubMenuPanel {
 	/**

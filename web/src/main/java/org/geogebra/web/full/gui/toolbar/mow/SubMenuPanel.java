@@ -104,6 +104,10 @@ public abstract class SubMenuPanel extends FlowPanel
 		contentPanel.add(panelRow);
 	}
 
+	public void addToContentPanel(Widget widget) {
+		contentPanel.add(widget);
+	}
+
 	/**
 	 * 
 	 * @param toolbarString

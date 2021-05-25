@@ -145,26 +145,28 @@
 						.toolButton {
 							display: inline-block;
 							vertical-align: bottom;
-							margin: 0px 10px !important;
+							margin: 0px 10px;
 						}
 					}
 				}
 
 				.penSubMenu {
-					.penPanel {
-						width: 160px;
-					}
-
 					.mowSubMenuContent {
-						margin: 8px 10px 3px 8px;
+						display: inline-flex;
+						margin: 6px 10px 3px 42px;
+						min-width: 548px;
+
+						.toolButton {
+							margin: 0 6px;
+						}
 					}
 
 					.colorPanel {
 						position: absolute;
-						left: 152px;
+						left: 334px;
 						margin: 0;
-						top: 20px;
-						width: 440px;
+						top: 12px;
+						width: 220px;
 
 						.mowColorButton {
 							 width: 32px;
@@ -211,15 +213,16 @@
 
 					.sizePanel {
 						position: absolute;
-						left: 172px;
-						top: 84px;
+						left: 330px;
+						top: 106px;
 
 						.mowOptionsSlider {
+							display: inline-block;
 							.preview {
 								position: absolute;
-								display: inline-block;
-								padding-left: 30px;
 								top: -2px;
+								left: 172px;
+								margin-right: 0px;
 							}
 
 							.gwt-Label {
@@ -250,7 +253,7 @@
 
 	.toolButton {
 		display: inline-block;
-		margin: 0px !important;
+		margin: 0px;
 		border-radius: 4px;
 		height: 72px;
 		cursor: pointer;
