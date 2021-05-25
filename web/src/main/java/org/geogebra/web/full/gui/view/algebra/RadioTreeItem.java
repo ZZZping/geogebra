@@ -711,7 +711,7 @@ public class RadioTreeItem extends AVTreeItem implements MathKeyboardListener,
 				Element inputParent = getWidget().getElement()
 						.getParentElement();
 				Resizer.setPixelWidth(inputParent, width);
-			} else if (width >= 0) {
+			} else {
 				setWidth(width + "px");
 			}
 		}
