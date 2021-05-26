@@ -156,17 +156,26 @@
 						margin: 6px 10px 3px 42px;
 						min-width: 548px;
 
+						.panelRow {
+							padding: 0;
+						}
+
+						.groupPanel {
+							margin: 0;
+							width: 276px !important;
+						}
+
 						.toolButton {
 							margin: 0 6px;
 						}
 					}
 
 					.colorPanel {
-						position: absolute;
-						left: 334px;
-						margin: 0;
-						top: 12px;
+						position: relative;
+						left: 0px;
+						height: 90px;
 						width: 220px;
+						padding: 6px 0px 0px 20px;
 
 						.mowColorButton {
 							 width: 32px;
@@ -174,6 +183,7 @@
 							 border-radius: 2px;
 							 margin: 6px;
 							 cursor: pointer;
+							 display: inline-block;
 
 							&:hover:not(.disabled) {
 								opacity: 0.65;
@@ -195,9 +205,11 @@
 						}
 
 						.mowColorPlusButton {
+							@extend .mowColorButton;
 							 width: 30px;
 							 height: 30px;
 							 border: 1px solid $tool-border !important;
+							 position: absolute;
 							 img {
 								opacity: 0.54;
 							 }
@@ -212,12 +224,11 @@
 					}
 
 					.sizePanel {
-						position: absolute;
-						left: 330px;
-						top: 106px;
+						position: relative;
+						left: initial;
+						top: 5px;
 
 						.mowOptionsSlider {
-							display: inline-block;
 							.preview {
 								position: absolute;
 								top: -2px;

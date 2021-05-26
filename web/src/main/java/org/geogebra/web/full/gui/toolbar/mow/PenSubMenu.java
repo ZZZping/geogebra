@@ -13,7 +13,6 @@ import org.geogebra.common.kernel.geos.GeoElement;
 import org.geogebra.common.main.settings.EuclidianSettings;
 import org.geogebra.web.full.css.MaterialDesignResources;
 import org.geogebra.web.full.gui.dialog.DialogManagerW;
-import org.geogebra.web.full.gui.toolbar.ToolButton;
 import org.geogebra.web.full.gui.util.GeoGebraIconW;
 import org.geogebra.web.full.gui.util.PenPreview;
 import org.geogebra.web.html5.gui.util.AriaHelper;
@@ -122,7 +121,6 @@ public class PenSubMenu extends SubMenuPanel {
 				MaterialDesignResources.INSTANCE.add_black(), null, 24);
 		AriaHelper.setLabel(btnCustomColor, app.getLocalization().getMenu("ToolbarColor"
 				+ ".MoreColors"));
-		btnCustomColor.addStyleName("mowColorButton");
 		btnCustomColor.addStyleName("mowColorPlusButton");
 		btnCustomColor.addFastClickHandler(source -> openColorDialog());
 		new FocusableWidget(
@@ -136,20 +134,18 @@ public class PenSubMenu extends SubMenuPanel {
 		fillColorButtonMap();
 		createMoreColorButton();
 
-		panelRow = new FlowPanel();
-		panelRow.setStyleName("panelRow");
 		for (Label btn : colorMap.values()) {
-			panelRow.add(btn);
+			colorPanel.add(btn);
 		}
-		panelRow.add(btnCustomColor);
-		colorPanel.add(panelRow);
+		colorPanel.add(btnCustomColor);
+		createSizePanel(colorPanel);
 		addToContentPanel(colorPanel);
 	}
 
 	/**
 	 * Create panel with slider for pen and eraser size
 	 */
-	private void createSizePanel() {
+	private void createSizePanel(FlowPanel colorPanel) {
 		FlowPanel sizePanel = new FlowPanel();
 		sizePanel.addStyleName("sizePanel");
 		slider = new SliderPanelW(0, 20, app.getKernel(), false);
@@ -160,7 +156,7 @@ public class PenSubMenu extends SubMenuPanel {
 		preview.addStyleName("preview");
 		slider.add(preview);
 		sizePanel.add(slider);
-		addToContentPanel(sizePanel);
+		colorPanel.add(sizePanel);
 		slider.addValueChangeHandler(event -> sliderValueChanged(event.getValue()));
 		new FocusableWidget(AccessibilityGroup.NOTES_PEN_THICKNESS_SLIDER,
 				null, slider.getSlider()).attachTo(app);
@@ -204,31 +200,18 @@ public class PenSubMenu extends SubMenuPanel {
 		super.createContentPanel();
 		super.createPanelRow(ToolBar.getMOWPenDefString());
 		createColorPanel();
-		createSizePanel();
 	}
 
-	private void doSelectPen() {
+	private void updatePenStyleAndUI(GColor lastColor, int lastThickness,
+			int opacity) {
 		setColorsEnabled(true);
-		selectColor(getSettings().getLastSelectedPenColor());
+		selectColor(lastColor);
 		setSliderRange(true);
-		slider.setValue((double) getSettings().getLastPenThickness());
-		getPenGeo().setLineThickness(getSettings().getLastPenThickness());
-		getPenGeo().setLineOpacity(255);
+		slider.setValue((double) lastThickness);
+		getPenGeo().setLineThickness(lastThickness);
+		getPenGeo().setLineOpacity(opacity);
 		disableSlider(false);
 		preview.setVisible(true);
-		updatePreview();
-	}
-
-	private void doSelectHighlighter() {
-		setColorsEnabled(true);
-		selectColor(getSettings().getLastSelectedHighlighterColor());
-		setSliderRange(true);
-		slider.setValue((double) getSettings().getLastHighlighterThinckness());
-		getPenGeo().setLineThickness(getSettings().getLastHighlighterThinckness());
-		getPenGeo()
-				.setLineOpacity(EuclidianConstants.DEFAULT_HIGHLIGHTER_OPACITY);
-		disableSlider(false);
- 		preview.setVisible(true);
 		updatePreview();
 	}
 
@@ -246,17 +229,6 @@ public class PenSubMenu extends SubMenuPanel {
 		slider.getElement().setAttribute("disabled", String.valueOf(disable));
 		AriaHelper.setHidden(slider.getSlider(), disable);
 		slider.disableSlider(disable);
-	}
-
-	/**
-	 * Unselect all buttons and disable colors
-	 */
-	public void reset() {
-		for (ToolButton btn : toolButtons) {
-			btn.getElement().setAttribute("selected", "false");
-			btn.setSelected(false);
-		}
-		setColorsEnabled(false);
 	}
 
 	/**
@@ -334,17 +306,22 @@ public class PenSubMenu extends SubMenuPanel {
 
 	@Override
 	public void setMode(int mode) {
-		reset();
+		setColorsEnabled(false);
 		super.setMode(mode);
 		if (mode == EuclidianConstants.MODE_SELECT
 				|| mode == EuclidianConstants.MODE_SELECT_MOW) {
 			disableSlider(true);
 		} else if (mode == EuclidianConstants.MODE_ERASER) {
 			doSelectEraser();
-		} else if (mode == EuclidianConstants.MODE_PEN) {
-			doSelectPen();
-		} else if (mode == EuclidianConstants.MODE_HIGHLIGHTER) {
-			doSelectHighlighter();
+		} else if (mode == EuclidianConstants.MODE_PEN
+			|| mode == EuclidianConstants.MODE_HIGHLIGHTER) {
+			boolean isPen = mode == EuclidianConstants.MODE_PEN;
+			GColor lastColor = isPen ? getSettings().getLastSelectedPenColor()
+					: getSettings().getLastSelectedHighlighterColor();
+			int lastThickness = isPen ? getSettings().getLastPenThickness()
+					: getSettings().getLastHighlighterThinckness();
+			int opacity = isPen ? 255 : EuclidianConstants.DEFAULT_HIGHLIGHTER_OPACITY;
+			updatePenStyleAndUI(lastColor, lastThickness, opacity);
 		}
 	}
 
