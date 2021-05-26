@@ -332,8 +332,6 @@ public class ToolBar {
 		return sb.toString();
 	}
 
-
-
 	/**
 	 * @param includeGraspableMath whether to include GraspableMath
 	 * @param includeH5P whether to include H5P
