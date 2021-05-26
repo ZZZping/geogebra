@@ -202,16 +202,18 @@ public abstract class SubMenuPanel extends FlowPanel
 	 */
 	public void setMode(int mode) {
 		for (ToolButton btn : toolButtons) {
-			int modeID = Integer.parseInt(
-					btn.getElement().getAttribute("mode"));
-			if (modeID != mode) {
-				btn.getElement().setAttribute("selected",
-						"false");
-				btn.setSelected(false);
-			} else {
-				btn.getElement().setAttribute("selected",
-						"true");
-				btn.setSelected(true);
+			if (!btn.getElement().getAttribute("mode").isEmpty()) {
+				int modeID = Integer.parseInt(
+						btn.getElement().getAttribute("mode"));
+				if (modeID != mode) {
+					btn.getElement().setAttribute("selected",
+							"false");
+					btn.setSelected(false);
+				} else {
+					btn.getElement().setAttribute("selected",
+							"true");
+					btn.setSelected(true);
+				}
 			}
 		}
 	}
