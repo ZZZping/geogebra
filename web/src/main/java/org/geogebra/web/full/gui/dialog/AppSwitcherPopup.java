@@ -57,6 +57,7 @@ public class AppSwitcherPopup extends GPopupPanel {
 		addElement(GeoGebraConstants.G3D_APPCODE, contentPanel);
 		addElement(GeoGebraConstants.GEOMETRY_APPCODE, contentPanel);
 		addElement(GeoGebraConstants.CAS_APPCODE, contentPanel);
+		addElement(GeoGebraConstants.PROBABILITY_APPCODE, contentPanel);
 		add(contentPanel);
 	}
 
