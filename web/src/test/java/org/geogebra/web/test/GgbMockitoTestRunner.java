@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.google.gwtmockito.impl.StubGenerator;
+import com.himamis.retex.editor.web.ClickAdapterW;
 import com.himamis.retex.renderer.web.graphics.GraphicsFactoryGWT;
 import com.himamis.retex.renderer.web.graphics.ImageW;
 import com.himamis.retex.renderer.web.graphics.JLMContext2d;
@@ -73,6 +74,8 @@ public class GgbMockitoTestRunner extends GwtMockitoTestRunner {
                 String.class);
         StubGenerator.replaceMethodWithMock(XMLHttpRequest.class, "send",
                 XMLHttpRequest.class);
+        StubGenerator.replaceMethodWithMock(ClickAdapterW.class, "listenTo",
+                Void.class);
     }
 
     @Override
