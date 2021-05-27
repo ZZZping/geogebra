@@ -999,6 +999,12 @@ public class GGWToolBar extends Composite
 		case EuclidianConstants.MODE_EQUATION:
 			return resourceBundle.mode_equation();
 
+		case EuclidianConstants.MODE_RULER:
+			return ToolbarSvgResourcesSync.INSTANCE.mode_ruler();
+
+		case EuclidianConstants.MODE_PROTRACTOR:
+			return ToolbarSvgResourcesSync.INSTANCE.mode_protractor();
+
 		default:
 			return AppResources.INSTANCE.empty();
 		}
