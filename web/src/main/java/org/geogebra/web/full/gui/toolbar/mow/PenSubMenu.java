@@ -198,7 +198,7 @@ public class PenSubMenu extends SubMenuPanel {
 	@Override
 	protected void createContentPanel() {
 		super.createContentPanel();
-		super.createPanelRow(ToolBar.getMOWPenDefString());
+		super.createPanelRow(ToolBar.getNotesPenToolBar());
 		createColorPanel();
 	}
 
@@ -399,16 +399,6 @@ public class PenSubMenu extends SubMenuPanel {
 		if (app.getMode() == EuclidianConstants.MODE_PEN) {
 			slider.setValue((double) getSettings().getLastPenThickness());
 		}
-	}
-
-	@Override
-	public boolean isValidMode(int mode) {
-		return mode == EuclidianConstants.MODE_SELECT_MOW
-				|| mode == EuclidianConstants.MODE_PEN
-				|| mode == EuclidianConstants.MODE_ERASER
-				|| mode == EuclidianConstants.MODE_HIGHLIGHTER
-				|| mode == EuclidianConstants.MODE_RULER
-				|| mode == EuclidianConstants.MODE_PROTRACTOR;
 	}
 
 	@Override

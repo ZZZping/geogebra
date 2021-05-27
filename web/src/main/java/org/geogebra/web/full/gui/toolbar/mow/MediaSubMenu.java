@@ -24,7 +24,7 @@ public class MediaSubMenu extends SubMenuPanel {
 		boolean graspableMath = Browser.isGraspableMathEnabled();
 		boolean h5p = app.getVendorSettings().isH5PEnabled()
 				&& app.getLoginOperation().isLoggedIn();
-		super.createPanelRow(ToolBar.getMOWMediaToolBarDefString(graspableMath, h5p));
+		super.createPanelRow(ToolBar.getNotesMediaToolBar(graspableMath, h5p));
 		makeButtonsAccessible(AccessibilityGroup.NOTES_TOOL_MEDIA);
 	}
 
@@ -33,21 +33,4 @@ public class MediaSubMenu extends SubMenuPanel {
 		return EuclidianConstants.MODE_MEDIA_TEXT;
 	}
 
-	@Override
-	public boolean isValidMode(int mode) {
-		return mode == EuclidianConstants.MODE_MEDIA_TEXT
-				|| mode == EuclidianConstants.MODE_IMAGE
-				|| mode == EuclidianConstants.MODE_CAMERA
-				|| mode == EuclidianConstants.MODE_VIDEO
-				|| mode == EuclidianConstants.MODE_AUDIO
-				|| mode == EuclidianConstants.MODE_GRAPHING
-				|| mode == EuclidianConstants.MODE_PDF
-				|| mode == EuclidianConstants.MODE_EXTENSION
-				|| mode == EuclidianConstants.MODE_H5P
-				|| mode == EuclidianConstants.MODE_TABLE
-				|| mode == EuclidianConstants.MODE_EQUATION
-				|| mode == EuclidianConstants.MODE_GRASPABLE_MATH
-				|| mode == EuclidianConstants.MODE_CAS
-				|| (app.isMebis() && mode == EuclidianConstants.MODE_H5P);
-	}
 }
