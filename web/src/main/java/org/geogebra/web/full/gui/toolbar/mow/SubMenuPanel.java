@@ -2,13 +2,10 @@ package org.geogebra.web.full.gui.toolbar.mow;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.geogebra.common.euclidian.EuclidianConstants;
 import org.geogebra.common.gui.AccessibilityGroup;
 import org.geogebra.common.gui.SetLabels;
-import org.geogebra.common.gui.toolbar.ToolBar;
-import org.geogebra.common.gui.toolbar.ToolbarItem;
 import org.geogebra.web.full.gui.toolbar.ToolButton;
 import org.geogebra.web.full.main.AppWFull;
 import org.geogebra.web.html5.gui.FastClickHandler;
@@ -28,17 +25,14 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public abstract class SubMenuPanel extends FlowPanel
 		implements FastClickHandler, SetLabels {
-	/**
-	 * panel row
-	 */
-	protected FlowPanel panelRow;
+
 	/** app **/
-	AppW app;
+	protected AppW app;
 	/**
 	 * Here goes the toolbar contents ie the buttons
 	 */
-	FlowPanel contentPanel;
-	protected ArrayList<ToolButton> toolButtons = new ArrayList<>();
+	private FlowPanel contentPanel;
+	private final ArrayList<ToolButton> toolButtons = new ArrayList<>();
 
 	/**
 	 * group panel
@@ -99,7 +93,7 @@ public abstract class SubMenuPanel extends FlowPanel
 	 *            mow toolbar definition
 	 */
 	public void createPanelRow(List<Integer> mowTools) {
-		panelRow = new FlowPanel();
+		FlowPanel panelRow = new FlowPanel();
 		panelRow.addStyleName("panelRow");
 		addModeMenu(panelRow, mowTools);
 		contentPanel.add(panelRow);
@@ -107,22 +101,6 @@ public abstract class SubMenuPanel extends FlowPanel
 
 	public void addToContentPanel(Widget widget) {
 		contentPanel.add(widget);
-	}
-
-	/**
-	 * 
-	 * @param toolbarString
-	 *            GGB toolbar definition string.
-	 * @return The vector of modes.
-	 */
-	protected Vector<ToolbarItem> getToolbarVec(String toolbarString) {
-		Vector<ToolbarItem> toolbarVec;
-		try {
-			toolbarVec = ToolBar.parseToolbarString(toolbarString);
-		} catch (Exception e) {
-			toolbarVec = ToolBar.parseToolbarString(ToolBar.getAllTools(app));
-		}
-		return toolbarVec;
 	}
 
 	/**
@@ -158,13 +136,15 @@ public abstract class SubMenuPanel extends FlowPanel
 
 	@Override
 	public void onClick(Widget source) {
-		int mode = ((ToolButton) source).getMode();
-		if (mode == EuclidianConstants.MODE_IMAGE) {
-			// set css before file picker
-			setMode(mode);
+		if (source instanceof ToolButton) {
+			int mode = ((ToolButton) source).getMode();
+			if (mode == EuclidianConstants.MODE_IMAGE) {
+				// set css before file picker
+				setMode(mode);
+			}
+			app.setMode(mode);
+			closeFloatingMenus();
 		}
-		app.setMode(mode);
-		closeFloatingMenus();
 	}
 
 	/**
@@ -211,13 +191,4 @@ public abstract class SubMenuPanel extends FlowPanel
 	 * @return first mode; to be selected once this submenu is opened
 	 */
 	public abstract int getFirstMode();
-
-	/**
-	 * @param mode
-	 *            id of tool
-	 * @return true if mode is valid for the panel
-	 */
-	public final boolean isValidMode(int mode) {
-		return toolButtons.stream().anyMatch(btn -> btn.getMode() == mode);
-	}
 }
