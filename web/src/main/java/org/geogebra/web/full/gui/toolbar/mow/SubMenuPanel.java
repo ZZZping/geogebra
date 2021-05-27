@@ -94,7 +94,6 @@ public abstract class SubMenuPanel extends FlowPanel
 	 */
 	public void createPanelRow(List<Integer> mowTools) {
 		FlowPanel panelRow = new FlowPanel();
-		panelRow.addStyleName("panelRow");
 		addModeMenu(panelRow, mowTools);
 		contentPanel.add(panelRow);
 	}

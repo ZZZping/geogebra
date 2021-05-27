@@ -125,11 +125,6 @@
 					background-color: $white;
 				}
 
-				.panelRow {
-					padding: 0;
-					position: relative;
-				}
-
 				.mowSubMenu {
 					width: calc(100% / 3);
 					overflow-x: auto;
@@ -153,12 +148,8 @@
 				.penSubMenu {
 					.mowSubMenuContent {
 						display: inline-flex;
-						margin: 6px 10px 3px 42px;
-						min-width: 548px;
-
-						.panelRow {
-							padding: 0;
-						}
+						margin: 6px 10px 3px 43px;
+						min-width: 547px;
 
 						.groupPanel {
 							margin: 0;
@@ -166,13 +157,11 @@
 						}
 
 						.toolButton {
-							margin: 0 6px;
+							margin: 0 5px;
 						}
 					}
 
 					.colorPanel {
-						position: relative;
-						left: 0px;
 						height: 90px;
 						width: 220px;
 						padding: 6px 0px 0px 20px;
@@ -209,7 +198,9 @@
 							 width: 30px;
 							 height: 30px;
 							 border: 1px solid $tool-border !important;
-							 position: absolute;
+							 position: relative;
+							 top: -7px;
+
 							 img {
 								opacity: 0.54;
 							 }
@@ -231,7 +222,7 @@
 						.mowOptionsSlider {
 							.preview {
 								position: absolute;
-								top: -2px;
+								top: 0;
 								left: 172px;
 								margin-right: 0px;
 							}
