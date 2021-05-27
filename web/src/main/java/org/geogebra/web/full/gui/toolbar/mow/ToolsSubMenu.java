@@ -21,7 +21,7 @@ public class ToolsSubMenu extends SubMenuPanel {
 	@Override
 	protected void createContentPanel() {
 		super.createContentPanel();
-		super.createPanelRow(ToolBar.getMOWToolsDefString());
+		super.createPanelRow(ToolBar.getNotesShapesToolBar());
 		makeButtonsAccessible(AccessibilityGroup.NOTES_TOOL_TOOLS);
 	}
 
@@ -30,8 +30,4 @@ public class ToolsSubMenu extends SubMenuPanel {
 		return EuclidianConstants.MODE_SHAPE_RECTANGLE;
 	}
 
-	@Override
-	public boolean isValidMode(int mode) {
-		return EuclidianConstants.isShapeMode(mode);
-	}
 }

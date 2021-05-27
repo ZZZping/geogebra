@@ -4,7 +4,6 @@ import org.geogebra.common.euclidian.EuclidianConstants;
 import org.geogebra.web.full.css.ToolbarSvgResources;
 import org.geogebra.web.full.gui.app.GGWToolBar;
 import org.geogebra.web.full.gui.images.AppResources;
-import org.geogebra.web.full.gui.toolbar.mow.SubMenuPanel;
 import org.geogebra.web.html5.gui.view.button.StandardButton;
 import org.geogebra.web.html5.main.AppW;
 
@@ -21,19 +20,6 @@ public class ToolButton extends StandardButton {
 	private AppW appW;
 	private String selectedColor;
 
-	/**
-	 * @param mode
-	 *            tool mode
-	 * @param app
-	 *            see {@link AppW}
-	 * @param panel
-	 *            which contains the button
-	 */
-	public ToolButton(int mode, AppW app, SubMenuPanel panel) {
-		this(mode, app);
-		this.addFastClickHandler(panel);
-	}
-	
 	/**
 	 * @param mode
 	 *            tool mode
@@ -95,5 +81,12 @@ public class ToolButton extends StandardButton {
 		setAltText(appW.getLocalization().getMenu(
 				EuclidianConstants.getModeText(mode))
 				+ ". " + appW.getToolHelp(mode));
+	}
+
+	/**
+	 * @return associated mode
+	 */
+	public int getMode() {
+		return mode;
 	}
 }
