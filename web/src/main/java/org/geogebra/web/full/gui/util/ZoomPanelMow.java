@@ -18,7 +18,6 @@ import org.geogebra.web.html5.main.AppW;
 import org.geogebra.web.html5.util.TestHarness;
 
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * @author csilla
@@ -27,6 +26,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class ZoomPanelMow extends FlowPanel
 		implements SetLabels, CoordSystemListener {
 	private AppW appW;
+	private StandardButton spotlightBtn;
 	private StandardButton dragPadBtn;
 	private StandardButton zoomInBtn;
 	private StandardButton zoomOutBtn;
@@ -50,6 +50,7 @@ public class ZoomPanelMow extends FlowPanel
 	private void buildGui() {
 		addStyleName("mowZoomPanel");
 		addDragPadButton();
+		addSpotlightButton();
 		addZoomButtons();
 	}
 
@@ -89,18 +90,36 @@ public class ZoomPanelMow extends FlowPanel
 		registerFocusable(dragPadBtn, AccessibilityGroup.ViewControlId.ZOOM_NOTES_DRAG_VIEW);
 		TestHarness.setAttr(dragPadBtn, "panViewTool");
 
-		FastClickHandler handlerDragPad = new FastClickHandler() {
-
-			@Override
-			public void onClick(Widget source) {
-				getAppW().setMode(EuclidianConstants.MODE_TRANSLATEVIEW);
-				getDragPadBtn().addStyleName("selected");
-				getAppW().hideMenu();
-			}
+		FastClickHandler handlerDragPad = source -> {
+			getAppW().setMode(EuclidianConstants.MODE_TRANSLATEVIEW);
+			getDragPadBtn().addStyleName("selected");
+			getAppW().hideMenu();
 		};
 		dragPadBtn.addFastClickHandler(handlerDragPad);
 		add(dragPadBtn);
-		// click handler
+		ClickStartHandler.init(this, new ClickStartHandler(true, true) {
+
+			@Override
+			public void onClickStart(int x, int y, PointerEventType type) {
+				// to stopPropagation and preventDefault.
+			}
+		});
+	}
+
+	private void addSpotlightButton() {
+		spotlightBtn = new StandardButton(
+				ZoomPanelResources.INSTANCE.target(), null, 24);
+		spotlightBtn.setStyleName("zoomPanelBtn");
+		registerFocusable(spotlightBtn, AccessibilityGroup.ViewControlId.ZOOM_NOTES_SPOTLIGHT);
+		TestHarness.setAttr(spotlightBtn, "spotlightTool");
+
+		FastClickHandler handlerSpotlight = source -> {
+			// TODO set mode here for spotlight tool and do the styling
+			//getAppW().setMode(EuclidianConstants.MODE_TRANSLATEVIEW);
+			getAppW().hideMenu();
+		};
+		spotlightBtn.addFastClickHandler(handlerSpotlight);
+		add(spotlightBtn);
 		ClickStartHandler.init(this, new ClickStartHandler(true, true) {
 
 			@Override
@@ -182,6 +201,7 @@ public class ZoomPanelMow extends FlowPanel
 		setButtonTitleAndAltText(homeBtn, "StandardView");
 		setButtonTitleAndAltText(zoomOutBtn, "ZoomOut.Tool");
 		setButtonTitleAndAltText(zoomInBtn, "ZoomIn.Tool");
+		setButtonTitleAndAltText(spotlightBtn, "Spotlight.Tool");
 	}
 
 	private void setButtonTitleAndAltText(StandardButton btn, String string) {
