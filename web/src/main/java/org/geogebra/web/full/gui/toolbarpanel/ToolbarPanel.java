@@ -169,21 +169,11 @@ public class ToolbarPanel extends FlowPanel
 	}
 
 	/**
-	 * Show the undo/redo panel.
+	 * show or hide the undo/redo panel
+	 * @param show true if show, false otherwise
 	 */
-	public void showUndoRedoPanel() {
-		if (undoRedoPanel != null) {
-			undoRedoPanel.removeStyleName("hidden");
-		}
-	}
-
-	/**
-	 * Hide the entire undo/redo panel (eg. during animation).
-	 */
-	public void hideUndoRedoPanel() {
-		if (undoRedoPanel != null) {
-			undoRedoPanel.addStyleName("hidden");
-		}
+	public void showHideUndoRedoPanel(boolean show) {
+		Dom.toggleClass(undoRedoPanel, "hidden", !show);
 	}
 
 	private boolean maybeAddUndoRedoPanel() {
