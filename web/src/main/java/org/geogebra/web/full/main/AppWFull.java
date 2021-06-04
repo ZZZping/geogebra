@@ -1590,6 +1590,7 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 		Perspective forcedPerspective = PerspectiveDecoder
 				.decode(getConfig().getForcedPerspective(), getKernel().getParser(),
 						ToolBar.getAllToolsNoMacros(true, false, this));
+		forcedPerspective.setId("tmp");
 
 		LayoutW layout = getGuiManager().getLayout();
 
