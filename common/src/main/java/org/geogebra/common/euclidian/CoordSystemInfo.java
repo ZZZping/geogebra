@@ -40,7 +40,7 @@ public class CoordSystemInfo {
 	}
 
 	public boolean isInteractive() {
-		return interactive;
+		return interactive || view.isPlotPanel();
 	}
 
 	public void setCenterView(boolean value) {
