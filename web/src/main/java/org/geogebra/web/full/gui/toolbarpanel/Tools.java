@@ -223,7 +223,9 @@ public class Tools extends FlowPanel implements SetLabels {
 		@Override
 		public void setLabels() {
 			// update label of category header
-			categoryLabel.setText(category.getLocalizedHeader(app.getLocalization()));
+			if (categoryLabel != null) {
+				categoryLabel.setText(category.getLocalizedHeader(app.getLocalization()));
+			}
 			// update tooltips of tools
 			for (ToolButton toolButton : toolButtonList) {
 				toolButton.setLabel();
