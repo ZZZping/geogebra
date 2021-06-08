@@ -2227,7 +2227,7 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 	/**
 	 * Switch suite to the given subapp, clearing all construction, and resetting almost
 	 * all the settings
-	 * @param subAppCode "graphing", "3d", "cas" or "geometry"
+	 * @param subAppCode "graphing", "3d", "cas", "geometry" or "probability"
 	 */
 	public void switchToSubapp(String subAppCode) {
 		storeCurrentUndoHistory();
@@ -2246,6 +2246,7 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 		clearConstruction();
 		restoreMaterial(subAppCode);
 		resetFullScreenBtn();
+		updateToolbarClosedState(subAppCode);
 	}
 
 	private void storeCurrentMaterial() {
@@ -2336,6 +2337,18 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 				.getPanel(VIEW_ALGEBRA);
 		if (avPanel instanceof ToolbarDockPanelW) {
 			((ToolbarDockPanelW) avPanel).tryBuildZoomPanel();
+		}
+	}
+
+	private void updateToolbarClosedState(String subAppCode) {
+		if (subAppCode.equals("probability")) {
+			((ProbabilityCalculatorView) getGuiManager()
+					.getProbabilityCalculator()).updateAll();
+			DockPanel avPanel = getGuiManager().getLayout().getDockManager()
+					.getPanel(VIEW_ALGEBRA);
+			if (avPanel instanceof ToolbarDockPanelW) {
+				((ToolbarDockPanelW) avPanel).getToolbar().close(true, 0);
+			}
 		}
 	}
 }
