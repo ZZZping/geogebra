@@ -5275,4 +5275,8 @@ public abstract class App implements UpdateSelection, AppInterface, EuclidianHos
 	public void setNotesToolbarOpen(boolean open) {
 		// nothing to do here
 	}
+
+	public boolean isSuite() {
+		return false;
+	}
 }

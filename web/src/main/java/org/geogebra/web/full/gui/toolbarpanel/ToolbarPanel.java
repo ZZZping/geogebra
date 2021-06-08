@@ -486,15 +486,19 @@ public class ToolbarPanel extends FlowPanel
 	private void doOpen() {
 		isOpen = true;
 		updateDraggerStyle();
-		updateSizes(null);
+		updateSizes(null, OPEN_ANIM_TIME);
 		updateKeyboardVisibility();
 		updatePanelVisibility(isOpen);
+	}
+
+	public void close(boolean snap) {
+		close(snap, OPEN_ANIM_TIME);
 	}
 
 	/**
 	 * Closes the toolbar.
 	 */
-	public void close(boolean snap) {
+	public void close(boolean snap, int time) {
 		if (!isOpen) {
 			return;
 		}
@@ -507,7 +511,7 @@ public class ToolbarPanel extends FlowPanel
 		}
 		updateDraggerStyle();
 		app.invokeLater(() -> {
-			updateSizes(() -> setLastOpenWidth(finalWidth));
+			updateSizes(() -> setLastOpenWidth(finalWidth), time);
 			updateKeyboardVisibility();
 			dispatchEvent(EventType.SIDE_PANEL_CLOSED);
 			updatePanelVisibility(isOpen);
@@ -543,11 +547,11 @@ public class ToolbarPanel extends FlowPanel
 		return dockPanel != null ? dockPanel.getParentSplitPane() : null;
 	}
 
-	private void updateSizes(Runnable callback) {
+	private void updateSizes(Runnable callback, int time) {
 		if (app.isPortrait()) {
 			updateHeight();
 		} else {
-			updateWidth(callback);
+			updateWidth(callback, time);
 		}
 	}
 
@@ -567,7 +571,7 @@ public class ToolbarPanel extends FlowPanel
 	/**
 	 * updates panel width according to its state in landscape mode.
 	 */
-	public void updateWidth(Runnable callback) {
+	public void updateWidth(Runnable callback, int time) {
 		if (app.isPortrait()) {
 			return;
 		}
@@ -603,7 +607,7 @@ public class ToolbarPanel extends FlowPanel
 					}
 				};
 			}
-			dockParent.animate(OPEN_ANIM_TIME, animCallback);
+			dockParent.animate(time, animCallback);
 		}
 	}
 
