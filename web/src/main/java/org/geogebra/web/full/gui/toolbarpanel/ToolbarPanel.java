@@ -373,6 +373,9 @@ public class ToolbarPanel extends FlowPanel
 		if ((Perspective.GRAPHER_3D + "").equals(
 				app.getConfig().getForcedPerspective())) {
 			viewId = App.VIEW_EUCLIDIAN3D;
+		} else if ((Perspective.PROBABILITY + "").equals(
+				app.getConfig().getForcedPerspective())) {
+			viewId = App.VIEW_PROBABILITY_CALCULATOR;
 		}
 		DockPanelW opposite =
 				(DockPanelW) app.getGuiManager().getLayout().getDockManager().getPanel(viewId);
@@ -1380,5 +1383,9 @@ public class ToolbarPanel extends FlowPanel
 		 * Called when tab is activated.
 		 */
 		protected abstract void onActive();
+	}
+
+	public void setAVIconNonSelect(boolean exam) {
+		navRail.setAVIconNonSelect(exam);
 	}
 }
