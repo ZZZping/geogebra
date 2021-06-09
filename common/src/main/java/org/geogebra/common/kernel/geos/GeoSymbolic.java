@@ -69,6 +69,15 @@ public class GeoSymbolic extends GeoElement
 	private int numericPrintDecimals;
 
 	/**
+	 * @param c construction
+	 */
+	public GeoSymbolic(Construction c) {
+		super(c);
+		symbolicMode = true;
+		fixed = true;
+	}
+
+	/**
 	 * @return output expression
 	 */
 	@Override
@@ -81,14 +90,6 @@ public class GeoSymbolic extends GeoElement
 	 */
 	private void setValue(ExpressionValue value) {
 		this.value = value;
-	}
-
-	/**
-	 * @param c construction
-	 */
-	public GeoSymbolic(Construction c) {
-		super(c);
-		symbolicMode = true;
 	}
 
 	@Override
@@ -534,6 +535,7 @@ public class GeoSymbolic extends GeoElement
 		} else {
 			cons.unregisterEuclidianViewCE(this);
 		}
+		result.setFixed(true);
 		return result;
 	}
 
