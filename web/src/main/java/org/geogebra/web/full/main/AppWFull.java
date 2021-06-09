@@ -2246,17 +2246,7 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 		clearConstruction();
 		restoreMaterial(subAppCode);
 		resetFullScreenBtn();
-		showHideUndoRedo(!"probability".equals(subAppCode));
 		updateToolbarClosedState(subAppCode);
-	}
-
-	private void showHideUndoRedo(boolean show) {
-		GuiManagerW gm = getGuiManager();
-		DockPanel avPanel = gm.getLayout().getDockManager()
-				.getPanel(VIEW_ALGEBRA);
-		if (avPanel instanceof ToolbarDockPanelW) {
-			((ToolbarDockPanelW) avPanel).getToolbar().showHideUndoRedoPanel(show);
-		}
 	}
 
 	private void storeCurrentMaterial() {

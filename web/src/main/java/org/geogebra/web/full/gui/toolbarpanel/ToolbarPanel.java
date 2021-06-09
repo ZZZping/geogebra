@@ -163,9 +163,11 @@ public class ToolbarPanel extends FlowPanel
 	}
 
 	private void setUndoPosition(double top, double left) {
-		undoRedoPanel.setVisible(true);
-		undoRedoPanel.getElement().getStyle().setTop(top, Style.Unit.PX);
-		undoRedoPanel.getElement().getStyle().setLeft(left, Style.Unit.PX);
+		if (!app.isProbCalc()) {
+			undoRedoPanel.setVisible(true);
+			undoRedoPanel.getElement().getStyle().setTop(top, Style.Unit.PX);
+			undoRedoPanel.getElement().getStyle().setLeft(left, Style.Unit.PX);
+		}
 	}
 
 	/**

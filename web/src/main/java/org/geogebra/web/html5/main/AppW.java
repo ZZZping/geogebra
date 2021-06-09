@@ -3270,6 +3270,13 @@ public abstract class AppW extends App implements SetLabels, HasLanguage {
 	}
 
 	/**
+	 * @return whether we are running prob calc
+	 */
+	public boolean isProbCalc() {
+		return "probability".equals(getSubAppCode());
+	}
+
+	/**
 	 * @return whether we are running cas
 	 */
 	public boolean isUnbundledCas() {
