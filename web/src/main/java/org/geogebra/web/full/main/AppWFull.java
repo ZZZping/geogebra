@@ -276,7 +276,6 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 	private void setupHeader() {
 		GlobalHeader header = GlobalHeader.INSTANCE;
 		header.setApp(this);
-		header.setFrame(frame);
 		if (showMenuBar()) {
 			setupSignInButton(header);
 		}
