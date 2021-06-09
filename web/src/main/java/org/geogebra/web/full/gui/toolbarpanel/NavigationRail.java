@@ -511,4 +511,8 @@ class NavigationRail extends FlowPanel implements KeyDownHandler {
 		setSelected(btnTools, tabId == TabIds.TOOLS, exam);
 		setSelected(btnTableView, tabId == TabIds.TABLE, exam);
 	}
+
+	public void setAVIconNonSelect(boolean exam) {
+		setSelected(btnAlgebra, false, exam);
+	}
 }
