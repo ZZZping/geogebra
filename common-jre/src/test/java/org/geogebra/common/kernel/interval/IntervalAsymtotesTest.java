@@ -60,7 +60,7 @@ public class IntervalAsymtotesTest extends BaseUnitTest {
 	@Test
 	public void squareRootOfTanInverse() {
 		GeoFunction function = add("1/sqrt(tan(x))");
-		IntervalTuple range = PlotterUtils.newRange(0, 5, -8, 8);
+		IntervalTuple range = PlotterUtils.newRange(-3.2, 0.1, 0, 8);
 		IntervalFunctionSampler sampler =
 				new IntervalFunctionSampler(function, range, 100);
 		IntervalTupleList result = sampler.result();

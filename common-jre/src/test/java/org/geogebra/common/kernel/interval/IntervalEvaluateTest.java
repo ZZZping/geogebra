@@ -84,4 +84,10 @@ public class IntervalEvaluateTest extends BaseUnitTest {
 					.evaluate(Operation.PLUS, interval(2, 3)));
 
 	}
+
+	@Test
+	public void testSqrtTanInverse() {
+		Interval result = interval(-1.58, -1.55).tan().sqrt().multiplicativeInverse();
+		assertEquals(interval(0, 0), result);
+	}
 }
