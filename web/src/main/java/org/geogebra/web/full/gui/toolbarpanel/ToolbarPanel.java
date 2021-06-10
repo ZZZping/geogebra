@@ -163,11 +163,9 @@ public class ToolbarPanel extends FlowPanel
 	}
 
 	private void setUndoPosition(double top, double left) {
-		if (!app.isProbCalc()) {
-			undoRedoPanel.setVisible(true);
-			undoRedoPanel.getElement().getStyle().setTop(top, Style.Unit.PX);
-			undoRedoPanel.getElement().getStyle().setLeft(left, Style.Unit.PX);
-		}
+		undoRedoPanel.setVisible(true);
+		undoRedoPanel.getElement().getStyle().setTop(top, Style.Unit.PX);
+		undoRedoPanel.getElement().getStyle().setLeft(left, Style.Unit.PX);
 	}
 
 	/**
@@ -175,13 +173,18 @@ public class ToolbarPanel extends FlowPanel
 	 * @param show true if show, false otherwise
 	 */
 	public void showHideUndoRedoPanel(boolean show) {
-		Dom.toggleClass(undoRedoPanel, "hidden", !show);
+		if (undoRedoPanel != null) {
+			Dom.toggleClass(undoRedoPanel, "hidden", !show);
+		}
 	}
 
 	private boolean maybeAddUndoRedoPanel() {
 		boolean isAllowed = app.isUndoRedoEnabled() && app.isUndoRedoPanelAllowed();
 		if (isAllowed) {
 			addUndoRedoButtons();
+		} else if (undoRedoPanel != null) {
+			undoRedoPanel.removeFromParent();
+			undoRedoPanel = null;
 		}
 		return isAllowed;
 	}

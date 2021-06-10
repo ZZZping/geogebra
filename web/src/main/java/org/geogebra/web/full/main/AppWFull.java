@@ -1989,7 +1989,7 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 			String appCode = getConfig().getSubAppCode();
 			if (appCode != null && !appCode.equals(subApp)) {
 				this.activity = new SuiteActivity(subApp);
-				updateSymbolicFlag(subApp, p);
+				updateSidebarAndMenu(subApp, p);
 				setSuiteHeaderButton(subApp);
 			}
 		}
@@ -2238,7 +2238,7 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 		resetToolbarPanel();
 		Perspective perspective = PerspectiveDecoder.decode(getConfig().getForcedPerspective(),
 				kernel.getParser(), ToolBar.getAllToolsNoMacros(isHTML5Applet(), isExam(), this));
-		updateSymbolicFlag(subAppCode, perspective);
+		updateSidebarAndMenu(subAppCode, perspective);
 		reinitSettings();
 		clearConstruction();
 		getTmpPerspectives().clear();
@@ -2288,12 +2288,13 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 		undoManager.undoHistoryFrom(undoHistory);
 	}
 
-	private void updateSymbolicFlag(String subAppCode, Perspective perspective) {
+	private void updateSidebarAndMenu(String subAppCode, Perspective perspective) {
 		getKernel().setSymbolicMode(
 				GeoGebraConstants.CAS_APPCODE.equals(subAppCode)
 						? SymbolicMode.SYMBOLIC_AV
 						: SymbolicMode.NONE);
 		setPerspective(perspective);
+		setUndoRedoPanelAllowed(!"probability".equals(subAppCode));
 		reinitAlgebraView();
 		if (menuViewController != null) {
 			menuViewController.resetMenuOnAppSwitch(this);
