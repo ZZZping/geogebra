@@ -296,7 +296,7 @@ class NavigationRail extends FlowPanel implements KeyDownHandler {
 	 * Hide the entire undo/redo panel (eg. during animation).
 	 */
 	public void hideUndoRedoPanel() {
-		toolbarPanel.hideUndoRedoPanel();
+		toolbarPanel.showHideUndoRedoPanel(false);
 	}
 
 	/**
@@ -480,7 +480,7 @@ class NavigationRail extends FlowPanel implements KeyDownHandler {
 		toolbarPanel.onResize();
 
 		Scheduler.get().scheduleDeferred(() -> {
-			toolbarPanel.showUndoRedoPanel();
+			toolbarPanel.showHideUndoRedoPanel(true);
 			toolbarPanel.updateUndoRedoPosition();
 			resize();
 		});
