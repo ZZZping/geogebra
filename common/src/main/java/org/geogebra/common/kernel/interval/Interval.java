@@ -783,4 +783,16 @@ public class Interval implements IntervalArithmetic, IntervalMiscOperands {
 	public boolean isSingletonInteger() {
 		return isSingleton() && DoubleUtil.isEqual(low, Math.round(low));
 	}
+
+	/**
+	 * if a is finite and the interval is [a, ∞] or [-∞, a],
+	 * sets the interval to [a, a]
+	 */
+	public void balance() {
+		if (MyDouble.isFinite(low)) {
+			set(low, low);
+		} else if (MyDouble.isFinite(high)) {
+			set(high, high);
+		}
+	}
 }
