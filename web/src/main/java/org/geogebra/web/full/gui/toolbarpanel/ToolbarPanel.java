@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import org.geogebra.common.euclidian.EuclidianConstants;
 import org.geogebra.common.euclidian.MyModeChangedListener;
 import org.geogebra.common.euclidian.event.PointerEventType;
+import org.geogebra.common.gui.SetLabels;
 import org.geogebra.common.io.layout.DockPanelData.TabIds;
 import org.geogebra.common.io.layout.Perspective;
 import org.geogebra.common.io.layout.PerspectiveDecoder;
@@ -63,8 +64,6 @@ public class ToolbarPanel extends FlowPanel
 	/** Closed width of header in landscape mode */
 	public static final int CLOSED_WIDTH_LANDSCAPE = 72;
 	public static final int CLOSED_WIDTH_LANDSCAPE_COMPACT = 56;
-	/** Min width of open header in landscape mode */
-	public static final int OPEN_MIN_WIDTH_LANDSCAPE = 160;
 	/** Loading width of open header in landscape mode */
 	public static final int OPEN_START_WIDTH_LANDSCAPE = 380;
 	/** Closed height of header in portrait mode */
@@ -1062,8 +1061,11 @@ public class ToolbarPanel extends FlowPanel
 	public void setHeaderStyle(String style) {
 		resetHeaderClasses();
 		navRail.addStyleName(style);
-		navRail.updateIcons(true);
-		ExamUtil.makeRed(navRail.getElement(), "examCheat".equals(style));
+		boolean cheat = "examCheat".equals(style);
+		if (!cheat) {
+			navRail.updateIcons(true);
+		}
+		ExamUtil.makeRed(navRail.getElement(), cheat);
 	}
 
 	/**
@@ -1106,12 +1108,8 @@ public class ToolbarPanel extends FlowPanel
 		if (undoRedoPanel != null) {
 			undoRedoPanel.setLabels();
 		}
-		if (tabTools != null && !tabTools.isCustomToolbar) {
-			tabTools.toolsPanel.setLabels();
-			tabTools.moreBtn
-					.setText(app.getLocalization().getMenu("Tools.More"));
-			tabTools.lessBtn
-					.setText(app.getLocalization().getMenu("Tools.Less"));
+		if (tabTools != null) {
+			tabTools.setLabels();
 		}
 		if (moveBtn != null) {
 			String altText = app.getLocalization()
@@ -1123,6 +1121,9 @@ public class ToolbarPanel extends FlowPanel
 		}
 		if (tabTable != null) {
 			tabTable.setLabels();
+		}
+		if (tabAlgebra != null) {
+			tabAlgebra.setLabels();
 		}
 	}
 
@@ -1338,7 +1339,7 @@ public class ToolbarPanel extends FlowPanel
 	 * Base class for Toolbar Tabs-
 	 * @author Laszlo
 	 */
-	public abstract static class ToolbarTab extends ScrollPanel implements ShowableTab {
+	public abstract static class ToolbarTab extends ScrollPanel implements ShowableTab, SetLabels {
 		/** Constructor */
 		public ToolbarTab(ToolbarPanel parent) {
 			setSize("100%", "100%");

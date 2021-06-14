@@ -69,6 +69,15 @@ public class GeoSymbolic extends GeoElement
 	private int numericPrintDecimals;
 
 	/**
+	 * @param c construction
+	 */
+	public GeoSymbolic(Construction c) {
+		super(c);
+		symbolicMode = true;
+		fixed = true;
+	}
+
+	/**
 	 * @return output expression
 	 */
 	@Override
@@ -81,14 +90,6 @@ public class GeoSymbolic extends GeoElement
 	 */
 	private void setValue(ExpressionValue value) {
 		this.value = value;
-	}
-
-	/**
-	 * @param c construction
-	 */
-	public GeoSymbolic(Construction c) {
-		super(c);
-		symbolicMode = true;
 	}
 
 	@Override
@@ -169,7 +170,8 @@ public class GeoSymbolic extends GeoElement
 	@Override
 	protected boolean showInEuclidianView() {
 		GeoElementND twin = getTwinGeo();
-		return isEuclidianShowable && twin != null && twin.isEuclidianShowable();
+		return isEuclidianShowable && twin != null && twin.isEuclidianShowable()
+				&& !twin.isLabelSet();
 	}
 
 	@Override
@@ -284,7 +286,8 @@ public class GeoSymbolic extends GeoElement
 	private boolean shouldComputeNumericValue(ExpressionValue casOutput) {
 		if (casOutput != null && casOutput.isNumberValue()) {
 			ExpressionValue unwrapped = casOutput.unwrap();
-			return !(unwrapped instanceof NumberValue && !((NumberValue) unwrapped).isDefined());
+			return !(unwrapped instanceof NumberValue && !((NumberValue) unwrapped).isDefined())
+					&& !(unwrapped instanceof GeoDummyVariable);
 		}
 		return false;
 	}
@@ -532,6 +535,7 @@ public class GeoSymbolic extends GeoElement
 		} else {
 			cons.unregisterEuclidianViewCE(this);
 		}
+		result.setFixed(true);
 		return result;
 	}
 

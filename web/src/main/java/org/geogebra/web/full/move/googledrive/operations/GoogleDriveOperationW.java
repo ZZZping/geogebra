@@ -215,8 +215,7 @@ public class GoogleDriveOperationW implements GoogleDriveOperation {
 
 	private void processGoogleDriveFileContentAsBase64(String base64,
 			final String title, String id) {
-		// true = reload the whole doc
-		app.loadGgbFileAsBase64Again(base64, true);
+		app.loadGgbFileAsBase64(base64);
 		postprocessFileLoading(title, id);
 	}
 
@@ -228,7 +227,7 @@ public class GoogleDriveOperationW implements GoogleDriveOperation {
 
 	private void processGoogleDriveFileContentAsBinary(ArrayBuffer binary,
 	        String title, String id) {
-		app.loadGgbFileAsBinaryAgain(binary);
+		app.loadGgbFileAsBinary(binary);
 		postprocessFileLoading(title, id);
 	}
 

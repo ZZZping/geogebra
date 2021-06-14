@@ -1084,9 +1084,6 @@ public class AlgebraProcessor {
 			extracted = symbolicProcessor.extractAssignment(equation, info);
 			ve.setLabel(extracted.getLabel());
 		}
-		if (ve.isRootNode()) {
-			extracted.setAsRootNode();
-		}
 		GeoElement sym = symbolicProcessor.evalSymbolicNoLabel(extracted, info);
 		String label = extracted.getLabel();
 		if (label != null && kernel.lookupLabel(label) != null
@@ -1305,7 +1302,6 @@ public class AlgebraProcessor {
 			ErrorHandler handler, ValidExpression ve, EvalInfo info) {
 		GeoElement[] geoElements = null;
 		try {
-			ve.setAsRootNode();
 			geoElements = processValidExpression(ve, info);
 			if (storeUndo && geoElements != null) {
 				app.storeUndoInfo();
