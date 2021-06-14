@@ -91,6 +91,7 @@ import org.geogebra.web.full.gui.layout.DockGlassPaneW;
 import org.geogebra.web.full.gui.layout.DockPanelW;
 import org.geogebra.web.full.gui.layout.DockSplitPaneW;
 import org.geogebra.web.full.gui.layout.LayoutW;
+import org.geogebra.web.full.gui.layout.panels.AlgebraDockPanelW;
 import org.geogebra.web.full.gui.layout.panels.AlgebraStyleBarW;
 import org.geogebra.web.full.gui.layout.panels.EuclidianDockPanelW;
 import org.geogebra.web.full.gui.layout.panels.ToolbarDockPanelW;
@@ -103,7 +104,6 @@ import org.geogebra.web.full.gui.properties.PropertiesViewW;
 import org.geogebra.web.full.gui.toolbar.mow.NotesLayout;
 import org.geogebra.web.full.gui.toolbarpanel.ToolbarPanel;
 import org.geogebra.web.full.gui.util.FontSettingsUpdaterW;
-import org.geogebra.web.full.gui.util.PopupBlockAvoider;
 import org.geogebra.web.full.gui.util.ZoomPanelMow;
 import org.geogebra.web.full.gui.view.algebra.AlgebraViewW;
 import org.geogebra.web.full.gui.view.algebra.ConstructionItemProvider;
@@ -142,7 +142,6 @@ import org.geogebra.web.html5.util.AppletParameters;
 import org.geogebra.web.html5.util.Dom;
 import org.geogebra.web.html5.util.GeoGebraElement;
 import org.geogebra.web.html5.util.Persistable;
-import org.geogebra.web.html5.util.StringConsumer;
 import org.geogebra.web.shared.DialogBoxW;
 import org.geogebra.web.shared.GlobalHeader;
 import org.geogebra.web.shared.SuiteHeaderAppPicker;
@@ -273,7 +272,6 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 	private void setupHeader() {
 		GlobalHeader header = GlobalHeader.INSTANCE;
 		header.setApp(this);
-		header.setFrame(frame);
 		if (showMenuBar()) {
 			setupSignInButton(header);
 		}
@@ -531,15 +529,6 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 		cpc.pasteExternal(data, 0, 0, data.length > 0 ? data[0].length - 1 : 0,
 				data.length);
 		onOpenFile();
-	}
-
-	@Override
-	public final void uploadToGeoGebraTube() {
-
-		final PopupBlockAvoider popupBlockAvoider = new PopupBlockAvoider();
-		final GeoGebraTubeExportW ggbtube = new GeoGebraTubeExportW(this);
-		getGgbApi().getBase64(true,
-				(StringConsumer) s -> ggbtube.uploadWorksheetSimple(s, popupBlockAvoider));
 	}
 
 	@Override
@@ -1927,6 +1916,10 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 		centerAndResizePopups();
 		resizePropertiesView();
 		updateFloatingButtonsPosition();
+		DockPanelW dp = getGuiManager().getLayout().getDockManager().getPanel(App.VIEW_ALGEBRA);
+		if (dp instanceof AlgebraDockPanelW) {
+			dp.onResize(); // to force branding visibility update
+		}
 	}
 
 	private void centerAndResizePopups() {

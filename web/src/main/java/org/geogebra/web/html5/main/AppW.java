@@ -128,6 +128,8 @@ import org.geogebra.web.html5.safeimage.ImageLoader;
 import org.geogebra.web.html5.sound.GTimerW;
 import org.geogebra.web.html5.sound.SoundManagerW;
 import org.geogebra.web.html5.util.AppletParameters;
+import org.geogebra.web.html5.util.ArchiveEntry;
+import org.geogebra.web.html5.util.Base64;
 import org.geogebra.web.html5.util.CopyPasteW;
 import org.geogebra.web.html5.util.Dom;
 import org.geogebra.web.html5.util.GeoGebraElement;
@@ -148,6 +150,7 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.dom.client.TextAreaElement;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
@@ -159,6 +162,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import elemental2.core.ArrayBuffer;
+import elemental2.core.Uint8Array;
 import elemental2.dom.DomGlobal;
 import elemental2.dom.File;
 import elemental2.dom.FileReader;
@@ -359,8 +363,11 @@ public abstract class AppW extends App implements SetLabels, HasLanguage {
 		if (getScalerParent() != null) {
 			Style style = getScalerParent().getStyle();
 			double scale = geoGebraElement.getScaleX();
-			style.setWidth(getWidth() * scale, Unit.PX);
-			style.setHeight(getHeight() * scale, Unit.PX);
+			// check for zero size needed if applet is not visible in DOM
+			if (getWidth() > 0 && getHeight() > 0) {
+				style.setWidth(getWidth() * scale, Unit.PX);
+				style.setHeight(getHeight() * scale, Unit.PX);
+			}
 		}
 	}
 
@@ -726,29 +733,38 @@ public abstract class AppW extends App implements SetLabels, HasLanguage {
 	/**
 	 * @param dataUrl
 	 *            the data url to load the ggb file
-	 * @param isggs
-	 *            whether the extension is GGS
 	 */
-	public void loadGgbFileAsBase64Again(String dataUrl, boolean isggs) {
+	public void loadGgbFileAsBase64(String dataUrl) {
 		prepareReloadGgbFile();
 		ViewW view = getViewW();
+		view.processBase64String(dataUrl);
+	}
+
+	/**
+	 * Loads a binary file (ggb, ggs). In Notes the .ggb files are embedded to current slide.
+	 *
+	 * @param binary
+	 *            binary file
+	 * @param fileName
+	 *            file name, to decide whether to embed
+	 */
+	public void loadOrEmbedGgbFile(ArrayBuffer binary, String fileName) {
 		EmbedManager embedManager = getEmbedManager();
-		if (!isggs && embedManager != null) {
+		if (!fileName.endsWith("ggs") && embedManager != null) {
 			Material mat = new Material(-1, Material.MaterialType.ggb);
-			mat.setBase64(dataUrl);
+			mat.setBase64(Base64.bytesToBase64(new Uint8Array(binary)));
 			embedManager.embed(mat);
 		} else {
-			view.processBase64String(dataUrl);
+			loadGgbFileAsBinary(binary);
 		}
 	}
 
 	/**
-	 * Loads a binary file (ggb, ggs)
-	 *
+	 * Loads a binary file (ggb, ggs).
 	 * @param binary
 	 *            binary file
 	 */
-	public void loadGgbFileAsBinaryAgain(ArrayBuffer binary) {
+	public void loadGgbFileAsBinary(ArrayBuffer binary) {
 		prepareReloadGgbFile();
 		ViewW view = getViewW();
 		view.processBinaryData(binary);
@@ -775,7 +791,7 @@ public abstract class AppW extends App implements SetLabels, HasLanguage {
 		final GgbArchive def = new GgbArchive(archive, is3D());
 		// Handling of construction and macro file
 
-		String libraryJS = archive.remove(MyXMLio.JAVASCRIPT_FILE);
+		ArchiveEntry libraryJS = archive.remove(MyXMLio.JAVASCRIPT_FILE);
 
 		// Construction (required)
 		if (def.isInvalid()) {
@@ -792,7 +808,7 @@ public abstract class AppW extends App implements SetLabels, HasLanguage {
 		if (libraryJS == null) { // TODO: && !isGGTfile)
 			kernel.resetLibraryJavaScript();
 		} else {
-			kernel.setLibraryJavaScript(libraryJS);
+			kernel.setLibraryJavaScript(libraryJS.string);
 		}
 
 		// just to make SpotBugs happy
@@ -1227,21 +1243,25 @@ public abstract class AppW extends App implements SetLabels, HasLanguage {
 		}
 
 		FileReader reader = new FileReader();
-		reader.addEventListener("load", (event) -> {
-			if (reader.readyState == FileReader.DONE) {
-				String fileStr = reader.result.asString();
-				if (fileName.matches(".*\\.(ggb|ggt|ggs)$")) {
-					loadGgbFileAsBase64Again(fileStr, fileName.endsWith(".ggs"));
+		if (fileName.matches(".*\\.(ggb|ggt|ggs)$")) {
+			reader.addEventListener("load",
+					(event) -> loadOrEmbedGgbFile(reader.result.asArrayBuffer(), fileName));
+			reader.readAsArrayBuffer(fileToHandle);
+		} else {
+			reader.addEventListener("load", (event) -> {
+				if (reader.readyState == FileReader.DONE) {
+					String fileStr = reader.result.asString();
+					if (fileName.endsWith(".csv")) {
+						openCSV(DomGlobal.atob(fileStr.substring(fileStr.indexOf(",") + 1)));
+					}
+					if (fileName.endsWith(".off")) {
+						openOFF(DomGlobal.atob(fileStr.substring(fileStr.indexOf(",") + 1)));
+					}
 				}
-				if (fileName.endsWith(".csv")) {
-					openCSV(DomGlobal.atob(fileStr.substring(fileStr.indexOf(",") + 1)));
-				}
-				if (fileName.endsWith(".off")) {
-					openOFF(DomGlobal.atob(fileStr.substring(fileStr.indexOf(",") + 1)));
-				}
-			}
-		});
-		reader.readAsDataURL(fileToHandle);
+			});
+			reader.readAsDataURL(fileToHandle);
+		}
+
 		return true;
 	}
 
@@ -2376,11 +2396,6 @@ public abstract class AppW extends App implements SetLabels, HasLanguage {
 	}
 
 	@Override
-	public void uploadToGeoGebraTube() {
-		// no upload without UI
-	}
-
-	@Override
 	public void updateApplicationLayout() {
 		Log.debug("updateApplicationLayout: Implementation needed...");
 	}
@@ -3188,7 +3203,7 @@ public abstract class AppW extends App implements SetLabels, HasLanguage {
 		});
 	}
 
-	public static native Element getHiddenTextArea() /*-{
+	public static native TextAreaElement getHiddenTextArea() /*-{
 		var hiddenTextArea = $doc.getElementById('hiddenCopyPasteTextArea');
 		if (!hiddenTextArea) {
 			hiddenTextArea = $doc.createElement("textarea");
@@ -3372,12 +3387,12 @@ public abstract class AppW extends App implements SetLabels, HasLanguage {
 
 	@Override
 	public void copyImageToClipboard(String dataURI) {
-		if (!Clipboard.isCopyImageToClipboardAvailable()) {
+		if (!ClipboardUtil.isCopyImageToClipboardAvailable()) {
 			Log.debug("window.copyGraphicsToClipboard() not available");
 			return;
 		}
 		try {
-			Clipboard.copyGraphicsToClipboard(dataURI);
+			ClipboardUtil.copyGraphicsToClipboard(dataURI);
 		} catch (Exception e) {
 			Log.warn("Clipboard API is new and maybe half-implemented in your browser.");
 		}
