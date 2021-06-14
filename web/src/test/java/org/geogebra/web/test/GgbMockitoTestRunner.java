@@ -72,10 +72,10 @@ public class GgbMockitoTestRunner extends GwtMockitoTestRunner {
                 String.class);
         StubGenerator.replaceMethodWithMock(NativeRegExp.class, "exec",
                 String.class);
-        StubGenerator.replaceMethodWithMock(XMLHttpRequest.class, "send",
-                XMLHttpRequest.class);
         StubGenerator.replaceMethodWithMock(ClickAdapterW.class, "listenTo",
                 Void.class);
+        StubGenerator.replaceMethodWithMock(XMLHttpRequest.class, "send",
+                XMLHttpRequest.class);
     }
 
     @Override
