@@ -1,6 +1,9 @@
 package org.geogebra.common.kernel.geos;
 
+import org.geogebra.common.awt.GColor;
 import org.geogebra.common.awt.GPoint2D;
+import org.geogebra.common.euclidian.draw.DrawInline;
+import org.geogebra.common.euclidian.draw.HasTextFormat;
 import org.geogebra.common.kernel.Construction;
 import org.geogebra.common.kernel.arithmetic.NumberValue;
 import org.geogebra.common.kernel.arithmetic.ValueType;
@@ -21,6 +24,7 @@ public abstract class GeoInline extends GeoElement implements Translateable, Poi
 	/** cannot be moved by other users */
 	private boolean isLockedForMultiuser = false;
 
+	private GColor borderColor = GColor.BLACK;
 	private double contentWidth;
 	private double contentHeight;
 
@@ -37,11 +41,6 @@ public abstract class GeoInline extends GeoElement implements Translateable, Poi
 	@Override
 	public ValueType getValueType() {
 		return ValueType.TEXT;
-	}
-
-	@Override
-	public boolean showInAlgebraView() {
-		return false;
 	}
 
 	@Override
@@ -96,6 +95,8 @@ public abstract class GeoInline extends GeoElement implements Translateable, Poi
 		this.height = height;
 	}
 
+	public abstract void setMinHeight(double minHeight);
+
 	/**
 	 * @param angle rotation angle in radians
 	 */
@@ -122,6 +123,14 @@ public abstract class GeoInline extends GeoElement implements Translateable, Poi
 	 * @return editor content; encoding depends on editor type
 	 */
 	public abstract String getContent();
+
+	public void setBorderColor(GColor borderColor) {
+		this.borderColor = borderColor;
+	}
+
+	public GColor getBorderColor() {
+		return this.borderColor;
+	}
 
 	@Override
 	public void translate(Coords v) {
@@ -180,11 +189,19 @@ public abstract class GeoInline extends GeoElement implements Translateable, Poi
 	}
 
 	/**
+	 * @return text formatter
+	 */
+	public HasTextFormat getFormatter() {
+		DrawInline drawable = (DrawInline) kernel.getApplication()
+				.getActiveEuclidianView().getDrawableFor(this);
+		return drawable == null ? null : drawable.getController();
+	}
+
+	/**
 	 * Zooming in x direction
 	 *
 	 * @param factor
 	 *            zoom factor;
-	 *
 	 */
 	private void zoomX(double factor) {
 		width *= factor;
