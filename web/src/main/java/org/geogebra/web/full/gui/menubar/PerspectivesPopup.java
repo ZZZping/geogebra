@@ -169,10 +169,10 @@ public class PerspectivesPopup {
 				if (!(app.isExam() && app.getExam().getStart() >= 0)) {
 					app.showStartTooltip(perspective);
 				}
-			} else  {
+			} else {
+				app.getLAF().toggleFullscreen(true);
 				app.setNewExam();
 				app.examWelcome();
-
 			}
 			closePerspectivesPopup();
 		}, ClickEvent.getType());
