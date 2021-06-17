@@ -1339,11 +1339,7 @@ public abstract class AppW extends App implements SetLabels, HasLanguage {
 
 	@Override
 	public CommandDispatcherW newCommandDispatcher(Kernel cmdKernel) {
-		CommandDispatcherW cmd = new CommandDispatcherW(cmdKernel);
-		if (!enableGraphing()) {
-			cmd.setEnabled(false);
-		}
-		return cmd;
+		return new CommandDispatcherW(cmdKernel);
 	}
 
 	@Override
@@ -1664,15 +1660,6 @@ public abstract class AppW extends App implements SetLabels, HasLanguage {
 		if (getSettings().getEuclidian(-1) != null) {
 			getSettings().getEuclidian(-1)
 					.setEnabled(getAppletParameters().getDataParamEnable3D(true));
-		}
-
-		if (getAppletParameters().getDataParamEnableGraphing(false)
-				|| !getAppletParameters().getDataParamEnableGraphing(true)) {
-
-			boolean enableGraphing = getAppletParameters()
-					.getDataParamEnableGraphing(false);
-			getSettings().getEuclidian(1).setEnabled(enableGraphing);
-			getSettings().getEuclidian(2).setEnabled(enableGraphing);
 		}
 	}
 
@@ -2906,22 +2893,14 @@ public abstract class AppW extends App implements SetLabels, HasLanguage {
 	 * @return whether stylebar may be shown
 	 */
 	public boolean allowStylebar() {
-		return (!isApplet()
+		return !isApplet()
 				|| getAppletParameters().getDataParamShowMenuBar(false)
-				|| getAppletParameters().getDataParamAllowStyleBar(false))
-				&& enableGraphing();
+				|| getAppletParameters().getDataParamAllowStyleBar(false);
 	}
 
 	@Override
 	public boolean showResetIcon() {
 		return super.showResetIcon() && !allowStylebar();
-	}
-
-	/**
-	 * @return whether graphics view and commands are allowed
-	 */
-	public boolean enableGraphing() {
-		return getAppletParameters().getDataParamEnableGraphing(true);
 	}
 
 	/**

@@ -3695,16 +3695,6 @@ public class AlgebraProcessor {
 	}
 
 	/**
-	 * @param enable
-	 *            whether commands should be enabled
-	 */
-	public void setCommandsEnabled(boolean enable) {
-		this.structuresEnabled = enable;
-		cmdDispatcher.setEnabled(enable);
-
-	}
-
-	/**
 	 * @return whether structure parsing is enabled
 	 */
 	public boolean enableStructures() {
@@ -3717,13 +3707,6 @@ public class AlgebraProcessor {
 	 */
 	public void setEnableStructures(boolean enableStructures) {
 		this.structuresEnabled = enableStructures;
-	}
-
-	/**
-	 * @return whether commands dispatching is enabled
-	 */
-	public boolean isCommandsEnabled() {
-		return cmdDispatcher.isEnabled();
 	}
 
 	/**
