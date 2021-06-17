@@ -880,7 +880,6 @@ public class ProbabilityCalculatorViewW extends ProbabilityCalculatorView
 	}
 
 	private void addInsertHandler(final MathTextFieldW field) {
-		// TODO field.enableGGBKeyboard();
 		field.addInputHandler(() -> doTextFieldActionPerformed(field, false));
 		field.addChangeHandler(() -> doTextFieldActionPerformed(field, true));
 	}

@@ -554,7 +554,8 @@ public class ToolbarPanel extends FlowPanel
 	}
 
 	private void updateKeyboardVisibility() {
-		getFrame().showKeyboardButton(isOpen() && getSelectedTabId() != TabIds.TOOLS);
+		getFrame().showKeyboardButton((isOpen() && getSelectedTabId() != TabIds.TOOLS)
+			|| app.getGuiManager().showView(App.VIEW_PROBABILITY_CALCULATOR));
 	}
 
 	/**
