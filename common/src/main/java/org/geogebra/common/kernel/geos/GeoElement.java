@@ -125,7 +125,8 @@ import com.himamis.retex.editor.share.util.Unicode;
  * @version 2011-12-02
  */
 
-public abstract class GeoElement extends ConstructionElement implements GeoElementND {
+public abstract class GeoElement extends ConstructionElement
+		implements GeoElementND, HasDynamicCaption {
 
 	/**
 	 * Column headings for spreadsheet trace
@@ -320,20 +321,15 @@ public abstract class GeoElement extends ConstructionElement implements GeoEleme
 
 	private boolean descriptionNeedsUpdateInAV;
 
+	private GeoText dynamicCaption;
+
 	private AlgebraOutputFilter algebraOutputFilter;
 
 	private Group parentGroup;
 
 	private int ordering = -1;
 
-	private static Comparator<AlgoElement> algoComparator = new Comparator<AlgoElement>() {
-
-		@Override
-		public int compare(AlgoElement o1, AlgoElement o2) {
-			return o1.compareTo(o2);
-		}
-
-	};
+	private static Comparator<AlgoElement> algoComparator = (o1, o2) -> o1.compareTo(o2);
 
 	/**
 	 * Creates new GeoElement for given construction
@@ -3126,6 +3122,9 @@ public abstract class GeoElement extends ConstructionElement implements GeoEleme
 	 *            whether this was triggered by drag
 	 */
 	public void update(boolean dragging) {
+		if (hasDynamicCaption()) {
+			dynamicCaption.update(dragging);
+		}
 		updateGeo(!cons.isUpdateConstructionRunning(), dragging);
 		maybeUpdateSpecialPoints();
 
@@ -4745,6 +4744,20 @@ public abstract class GeoElement extends ConstructionElement implements GeoEleme
 	}
 
 	/**
+	 * Appends dynamic caption tag to given builder
+	 *
+	 * @param sb
+	 *            string builder
+	 */
+	protected void getXMLDynCaptionTag(final StringBuilder sb) {
+		if (dynamicCaption != null && dynamicCaption.getLabelSimple() != null) {
+			sb.append("\t<dynamicCaption val=\"");
+			sb.append(dynamicCaption.getLabelSimple());
+			sb.append("\"/>\n");
+		}
+	}
+
+	/**
 	 * Appends fixed tag to given builder
 	 * 
 	 * @param sb
@@ -4789,6 +4802,7 @@ public abstract class GeoElement extends ConstructionElement implements GeoEleme
 		getXMLvisualTags(sb);
 		getXMLanimationTags(sb);
 		getXMLfixedTag(sb);
+		getXMLDynCaptionTag(sb);
 		getXMLisShapeTag(sb);
 		getAuxiliaryXML(sb);
 		getBreakpointXML(sb);
@@ -7213,5 +7227,50 @@ public abstract class GeoElement extends ConstructionElement implements GeoEleme
 	@Override
 	public boolean isOperation(Operation operation) {
 		return false;
+	}
+
+	@Override
+	public boolean hasDynamicCaption() {
+		return dynamicCaption != null;
+	}
+
+	@Override
+	public GeoText getDynamicCaption() {
+		return dynamicCaption;
+	}
+
+	@Override
+	public void setDynamicCaption(GeoText caption) {
+		unregisterDynamicCaption();
+		dynamicCaption = caption;
+		registerDynamicCaption();
+	}
+
+	protected void unregisterDynamicCaption() {
+		if (dynamicCaption == null) {
+			return;
+		}
+
+		dynamicCaption.unregisterUpdateListener(this);
+	}
+
+	private void registerDynamicCaption() {
+		if (dynamicCaption == null) {
+			return;
+		}
+
+		dynamicCaption.registerUpdateListener(this);
+	}
+
+	@Override
+	public void clearDynamicCaption() {
+		unregisterDynamicCaption();
+		dynamicCaption = new GeoText(cons, "");
+	}
+
+	@Override
+	public void removeDynamicCaption() {
+		unregisterDynamicCaption();
+		dynamicCaption = null;
 	}
 }

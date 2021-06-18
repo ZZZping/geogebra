@@ -359,7 +359,7 @@ public class GeoText extends GeoElement
 		updateListeners.clear();
 
 		for (GeoElement geo : listenersCopy) {
-			HasDynamicCaption hasDynamicCaption = (HasDynamicCaption) geo;
+			HasDynamicCaption hasDynamicCaption = geo;
 			hasDynamicCaption.removeDynamicCaption();
 			kernel.notifyUpdate(geo);
 		}
