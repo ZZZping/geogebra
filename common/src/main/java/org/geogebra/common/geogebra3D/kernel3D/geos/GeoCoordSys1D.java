@@ -56,6 +56,7 @@ public abstract class GeoCoordSys1D extends GeoElement3D
 	private Coords tmpCoords1;
 	private Coords tmpCoords2;
 	private boolean trace;
+	private static int INVALID_RESULT = -1;
 
 	/**
 	 * @param c
@@ -326,6 +327,10 @@ public abstract class GeoCoordSys1D extends GeoElement3D
 	public void pointChanged(GeoPointND P) {
 		double t = getParamOnLine(P);
 
+		if (app.getEuclidianView1().isXREnabled() && t == INVALID_RESULT) {
+			return;
+		}
+
 		if (t < getMinParameter()) {
 			t = getMinParameter();
 		} else if (t > getMaxParameter()) {
@@ -411,7 +416,9 @@ public abstract class GeoCoordSys1D extends GeoElement3D
 			t = P.getInhomCoordsInD3().projectedParameterOnLineWithDirection(
 					coordsys.getOrigin(), coordsys.getVx(),
 					preDirection.crossProduct4(coordsys.getVx()), tmpCoords1);
-
+			if (app.getEuclidianView1().isXREnabled() && t == 1) {
+				return INVALID_RESULT;
+			}
 		}
 		return t;
 	}
