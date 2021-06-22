@@ -109,6 +109,7 @@ public class ProbabilityCalculatorViewW extends ProbabilityCalculatorView
 		statCalculator = new StatisticsCalculatorW(app);
 
 		tabbedPane = new MyTabLayoutPanel(30, Unit.PX);
+		tabbedPane.addStyleName("probCalcViewTab");
 		tabbedPane.add(probCalcPanel, loc.getMenu("Distribution"));
 		tabbedPane.add(statCalculator.getWrappedPanel(),
 				loc.getMenu("Statistics"));
@@ -263,8 +264,6 @@ public class ProbabilityCalculatorViewW extends ProbabilityCalculatorView
 		
 		//table panel
 		setTable(new ProbabilityTableW(app, this));
-		//tablePanel = new FlowPanel();
-		//tablePanel.add(((ProbabilityTableW)table).getWrappedPanel());	
 	}
 
 	private void createControlPanel() {
