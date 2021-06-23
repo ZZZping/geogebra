@@ -165,7 +165,6 @@ public class ProbabilityCalculatorViewW extends ProbabilityCalculatorView
 		btnIntervalLeft.setToolTipText(loc.getMenu("LeftProb"));
 		btnIntervalRight.setToolTipText(loc.getMenu("RightProb"));
 		btnIntervalBetween.setToolTipText(loc.getMenu("IntervalProb"));
-		// TODO btnExport.setTitle(loc.getMenu("Export"));
 		btnNormalOverlay.setTitle(loc.getMenu("OverlayNormalCurve"));
 		for (int i = 0; i < ProbabilityManager.getParmCount(selectedDist); i++) {
 			lblParameterArray[i]
@@ -251,7 +250,7 @@ public class ProbabilityCalculatorViewW extends ProbabilityCalculatorView
 		FlowPanel plotPanelOptions = new FlowPanel();
 		plotPanelOptions.setStyleName("plotPanelOptions");
 		plotPanelOptions.add(lblMeanSigma);
-		if (!getApp().isExam()) {
+		if (!getApp().isExam() && app.getConfig().getAppCode().equals("classic")) {
 			plotPanelOptions.add(btnExport.getPopupMenu());
 		}
 		plotPanelOptions.add(btnNormalOverlay);
@@ -933,7 +932,6 @@ public class ProbabilityCalculatorViewW extends ProbabilityCalculatorView
 	}
 
 	private void createExportMenu() {
-
 		btnExport = new GPopupMenuW((AppW) app, true) {
 			@Override
 			public int getPopupLeft() {
@@ -949,7 +947,7 @@ public class ProbabilityCalculatorViewW extends ProbabilityCalculatorView
 					loc.getMenu("CopyToGraphics"), false,
 					() -> exportToEVAction.execute());
 
-		menu.addItem(miToGraphich);
+			menu.addItem(miToGraphich);
 		}
 		if (((AppW) app).getLAF().copyToClipboardSupported()) {
 			AriaMenuItem miAsPicture = new AriaMenuItem(
