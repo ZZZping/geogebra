@@ -23,10 +23,6 @@ import org.geogebra.web.html5.gui.util.LayoutUtilW;
 
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.impl.ImageResourcePrototype;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -224,16 +220,12 @@ public class BasicTab extends OptionsEuclidianW.EuclidianTab {
 		addAxesRatioHandler(tfAxesRatioX);
 		addAxesRatioHandler(tfAxesRatioY);
 
-		tbLockRatio.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				if (tbLockRatio.getValue()) {
-					model.applyLockRatio(parseDouble(tfAxesRatioX.getText())
-							/ parseDouble(tfAxesRatioY.getText()));
-				} else {
-					model.applyLockRatio(-1);
-				}
+		tbLockRatio.addClickHandler(event -> {
+			if (tbLockRatio.getValue()) {
+				model.applyLockRatio(parseDouble(tfAxesRatioX.getText())
+						/ parseDouble(tfAxesRatioY.getText()));
+			} else {
+				model.applyLockRatio(-1);
 			}
 		});
 	}
@@ -279,52 +271,46 @@ public class BasicTab extends OptionsEuclidianW.EuclidianTab {
 
 		btAxesColor = new MyCJButton();
 
-		btAxesColor.addClickHandler(new ClickHandler() {
+		btAxesColor.addClickHandler(event -> BasicTab.this.optionsEuclidianW.getDialogManager()
+				.showColorChooserDialog(model.getAxesColor(),
+						new ColorChangeHandler() {
 
-			@Override
-			public void onClick(ClickEvent event) {
-				BasicTab.this.optionsEuclidianW.getDialogManager()
-						.showColorChooserDialog(model.getAxesColor(),
-								new ColorChangeHandler() {
+							@Override
+							public void onForegroundSelected() {
+								// TODO Auto-generated method stub
 
-									@Override
-									public void onForegroundSelected() {
-										// TODO Auto-generated method stub
+							}
 
-									}
+							@Override
+							public void onColorChange(GColor color) {
+								model.applyAxesColor(color);
+								updateAxesColorButton(color);
+							}
 
-									@Override
-									public void onColorChange(GColor color) {
-										model.applyAxesColor(color);
-										updateAxesColorButton(color);
-									}
+							@Override
+							public void onClearBackground() {
+								// TODO Auto-generated method stub
 
-									@Override
-									public void onClearBackground() {
-										// TODO Auto-generated method stub
+							}
 
-									}
+							@Override
+							public void onBackgroundSelected() {
+								// TODO Auto-generated method stub
 
-									@Override
-									public void onBackgroundSelected() {
-										// TODO Auto-generated method stub
+							}
 
-									}
+							@Override
+							public void onAlphaChange() {
+								// TODO Auto-generated method stub
 
-									@Override
-									public void onAlphaChange() {
-										// TODO Auto-generated method stub
+							}
 
-									}
+							@Override
+							public void onBarSelected() {
+								// TODO Auto-generated method stub
 
-									@Override
-									public void onBarSelected() {
-										// TODO Auto-generated method stub
-
-									}
-								});
-			}
-		});
+							}
+						}));
 
 		// axes style
 		lineStyle = new Label(
@@ -359,49 +345,25 @@ public class BasicTab extends OptionsEuclidianW.EuclidianTab {
 		axesOptionsPanel = new FlowPanel();
 		add(axesOptionsTitle);
 		fillAxesOptionsPanel();
-		cbShowAxes.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				setShowAxes(cbShowAxes.getValue());
-				BasicTab.this.optionsEuclidianW.updateView();
-				BasicTab.this.optionsEuclidianW.app.storeUndoInfo();
-			}
+		cbShowAxes.addClickHandler(event -> {
+			setShowAxes(cbShowAxes.getValue());
+			BasicTab.this.optionsEuclidianW.updateView();
+			BasicTab.this.optionsEuclidianW.app.storeUndoInfo();
 		});
 
-		cbBoldAxes.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				model.applyBoldAxes(cbBoldAxes.getValue(),
-						cbShowAxes.getValue());
-				BasicTab.this.optionsEuclidianW.updateView();
-			}
+		cbBoldAxes.addClickHandler(event -> {
+			model.applyBoldAxes(cbBoldAxes.getValue(),
+					cbShowAxes.getValue());
+			BasicTab.this.optionsEuclidianW.updateView();
 		});
 
-		cbAxisLabelSerif.addClickHandler(new ClickHandler() {
+		cbAxisLabelSerif.addClickHandler(
+				event -> model.setAxesLabelsSerif(cbAxisLabelSerif.getValue()));
 
-			@Override
-			public void onClick(ClickEvent event) {
-				model.setAxesLabelsSerif(cbAxisLabelSerif.getValue());
-			}
-		});
+		cbAxisLabelBold.addClickHandler(event -> model.setAxisFontBold(cbAxisLabelBold.getValue()));
 
-		cbAxisLabelBold.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				model.setAxisFontBold(cbAxisLabelBold.getValue());
-			}
-		});
-
-		cbAxisLabelItalic.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				model.setAxisFontItalic(cbAxisLabelItalic.getValue());
-			}
-		});
+		cbAxisLabelItalic.addClickHandler(
+				event -> model.setAxisFontItalic(cbAxisLabelItalic.getValue()));
 
 		indent(axesOptionsPanel);
 	}
@@ -467,34 +429,18 @@ public class BasicTab extends OptionsEuclidianW.EuclidianTab {
 		add(consProtocolTitle);
 		indent(consProtocolPanel);
 
-		cbShowNavbar.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				BasicTab.this.optionsEuclidianW.app
-						.toggleShowConstructionProtocolNavigation(
-								BasicTab.this.optionsEuclidianW.view
-										.getViewID());
-				cbNavPlay.setEnabled(cbShowNavbar.getValue());
-				cbOpenConsProtocol.setEnabled(cbShowNavbar.getValue());
-			}
+		cbShowNavbar.addClickHandler(event -> {
+			BasicTab.this.optionsEuclidianW.app
+					.toggleShowConstructionProtocolNavigation(
+							BasicTab.this.optionsEuclidianW.view
+									.getViewID());
+			cbNavPlay.setEnabled(cbShowNavbar.getValue());
+			cbOpenConsProtocol.setEnabled(cbShowNavbar.getValue());
 		});
 
-		cbNavPlay.addClickHandler(new ClickHandler() {
+		cbNavPlay.addClickHandler(event -> togglePlayButton());
 
-			@Override
-			public void onClick(ClickEvent event) {
-				togglePlayButton();
-			}
-		});
-
-		cbOpenConsProtocol.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				toggleConsProtButton();
-			}
-		});
+		cbOpenConsProtocol.addClickHandler(event -> toggleConsProtButton());
 	}
 
 	protected void applyBackgroundColor(GColor color) {
@@ -547,73 +493,53 @@ public class BasicTab extends OptionsEuclidianW.EuclidianTab {
 
 		indent(miscPanel);
 
-		btBackgroundColor.addClickHandler(new ClickHandler() {
+		btBackgroundColor.addClickHandler(event -> {
+			BasicTab.this.optionsEuclidianW.getDialogManager()
+					.showColorChooserDialog(model.getBackgroundColor(),
+							new ColorChangeHandler() {
 
-			@Override
-			public void onClick(ClickEvent event) {
-				BasicTab.this.optionsEuclidianW.getDialogManager()
-						.showColorChooserDialog(model.getBackgroundColor(),
-								new ColorChangeHandler() {
+								@Override
+								public void onForegroundSelected() {
+									// TODO Auto-generated method stub
+								}
 
-									@Override
-									public void onForegroundSelected() {
-										// TODO Auto-generated method stub
-									}
+								@Override
+								public void onColorChange(GColor color) {
+									applyBackgroundColor(color);
+									updateBackgroundColorButton(color);
+								}
 
-									@Override
-									public void onColorChange(GColor color) {
-										applyBackgroundColor(color);
-										updateBackgroundColorButton(color);
-									}
+								@Override
+								public void onClearBackground() {
+									// TODO Auto-generated method stub
+								}
 
-									@Override
-									public void onClearBackground() {
-										// TODO Auto-generated method stub
-									}
+								@Override
+								public void onBackgroundSelected() {
+									// TODO Auto-generated method stub
+								}
 
-									@Override
-									public void onBackgroundSelected() {
-										// TODO Auto-generated method stub
-									}
+								@Override
+								public void onAlphaChange() {
+									// TODO Auto-generated method stub
+								}
 
-									@Override
-									public void onAlphaChange() {
-										// TODO Auto-generated method stub
-									}
-
-									@Override
-									public void onBarSelected() {
-										// TODO Auto-generated method stub
-									}
-								});
-				// model.applyBackgroundColor();
-			}
+								@Override
+								public void onBarSelected() {
+									// TODO Auto-generated method stub
+								}
+							});
+			// model.applyBackgroundColor();
 		});
 
-		cbShowMouseCoords.addClickHandler(new ClickHandler() {
+		cbShowMouseCoords.addClickHandler(
+				event -> model.applyMouseCoords(cbShowMouseCoords.getValue()));
 
-			@Override
-			public void onClick(ClickEvent event) {
-				model.applyMouseCoords(cbShowMouseCoords.getValue());
-			}
-		});
+		this.lbTooltips.addChangeHandler(event -> model.applyTooltipMode(
+				BasicTab.this.lbTooltips.getSelectedIndex()));
 
-		this.lbTooltips.addChangeHandler(new ChangeHandler() {
-
-			@Override
-			public void onChange(ChangeEvent event) {
-				model.applyTooltipMode(
-						BasicTab.this.lbTooltips.getSelectedIndex());
-			}
-		});
-
-		this.rightAngleStyleListBox.addChangeHandler(new ChangeHandler() {
-			@Override
-			public void onChange(ChangeEvent event) {
-				model.applyRightAngleStyle(BasicTab.this.rightAngleStyleListBox
-						.getSelectedIndex());
-			}
-		});
+		this.rightAngleStyleListBox.addChangeHandler(event -> model.applyRightAngleStyle(
+				BasicTab.this.rightAngleStyleListBox.getSelectedIndex()));
 	}
 
 	private void updateRightAngleCombo() {
@@ -630,7 +556,6 @@ public class BasicTab extends OptionsEuclidianW.EuclidianTab {
 		miscPanel.add(LayoutUtilW.panelRow(cbShowMouseCoords));
 		miscPanel.add(LayoutUtilW.panelRow(rightAngleStyleLabel,
 				this.rightAngleStyleListBox));
-
 	}
 
 	@Override

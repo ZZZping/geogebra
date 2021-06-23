@@ -159,12 +159,7 @@ public class FillingPanel extends OptionPanel implements IFillingListener {
 			}
 		});
 
-		cbFillInverse.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				model.applyFillingInverse(cbFillInverse.getValue());
-			}
-		});
+		cbFillInverse.addClickHandler(event -> model.applyFillingInverse(cbFillInverse.getValue()));
 
 		FlowPanel panel = new FlowPanel();
 		panel.add(fillTypePanel);
@@ -392,23 +387,11 @@ public class FillingPanel extends OptionPanel implements IFillingListener {
 		btnImage.setKeepVisible(false);
 		btnClearImage = new GPushButton(
 				new NoDragImage(MaterialDesignResources.INSTANCE.delete_black(), 24));
-		btnClearImage.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				model.applyImage("");
-			}
-
-		});
+		btnClearImage.addClickHandler(event -> model.applyImage(""));
 		btnOpenFile = new Button();
 		btnOpenFile.addStyleName("openFileBtn");
 		btnClearImage.addStyleName("clearImgBtn");
-		btnOpenFile.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				new MyImageFileInputDialog(app).center();
-			}
-		});
+		btnOpenFile.addClickHandler(event -> new MyImageFileInputDialog(app).center());
 
 		btnPanel.add(btnImage);
 		btnPanel.add(btnClearImage);

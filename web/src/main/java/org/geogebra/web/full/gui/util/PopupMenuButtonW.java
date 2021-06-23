@@ -209,13 +209,7 @@ public class PopupMenuButtonW extends MyCJButton
 		}
 		setSelectedIndex(0);
 
-		myTable.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				handlePopupActionEvent();
-			}
-		});
+		myTable.addClickHandler(event -> handlePopupActionEvent());
 
 		myPopup.getPanel().add(myTable);
 	}

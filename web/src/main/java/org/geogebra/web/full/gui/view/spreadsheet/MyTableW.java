@@ -374,12 +374,7 @@ public class MyTableW implements /* FocusListener, */MyTable {
 		gridPanel.addBitlessDomHandler(ml, TouchEndEvent.getType());
 		gridPanel.addDomHandler(ml, MouseOutEvent.getType());
 
-		upperLeftCorner.addBitlessDomHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				selectAll();
-			}
-		}, ClickEvent.getType());
+		upperLeftCorner.addBitlessDomHandler(event -> selectAll(), ClickEvent.getType());
 
 		ClickStartHandler.init(gridPanel, new ClickStartHandler() {
 
