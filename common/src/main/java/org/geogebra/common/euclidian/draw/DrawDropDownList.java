@@ -1144,18 +1144,22 @@ public final class DrawDropDownList extends CanvasDrawable
 	}
 
 	private void drawLabel(GGraphics2D g2, GeoElement geo0, String text) {
-		boolean latex = isLatexString(text);
-		if (latex) {
-			drawLatex(g2, geo0, getLabelFont(), text, xLabel,
-					boxTop + (boxHeight - labelSize.y) / 2);
-
+		if (getDynamicCaption() != null && getDynamicCaption().isEnabled()) {
+			getDynamicCaption().draw(g2);
 		} else {
-			int textBottom = boxTop
-					+ (boxHeight + getLabelFontSize() - COMBO_TEXT_MARGIN) / 2;
-			g2.setPaint(geo.getObjectColor());
-			g2.setFont(getLabelFont());
-			EuclidianStatic.drawIndexedString(view.getApplication(), g2, text,
-					xLabel, textBottom, false);
+			boolean latex = isLatexString(text);
+			if (latex) {
+				drawLatex(g2, geo0, getLabelFont(), text, xLabel,
+						boxTop + (boxHeight - labelSize.y) / 2);
+
+			} else {
+				int textBottom = boxTop
+						+ (boxHeight + getLabelFontSize() - COMBO_TEXT_MARGIN) / 2;
+				g2.setPaint(geo.getObjectColor());
+				g2.setFont(getLabelFont());
+				EuclidianStatic.drawIndexedString(view.getApplication(), g2, text,
+						xLabel, textBottom, false);
+			}
 		}
 	}
 

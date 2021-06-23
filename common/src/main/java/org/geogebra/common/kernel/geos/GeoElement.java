@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
 import org.geogebra.common.awt.GColor;
 import org.geogebra.common.awt.GPoint;
 import org.geogebra.common.awt.MyImage;
+import org.geogebra.common.euclidian.Drawable;
 import org.geogebra.common.euclidian.EuclidianConstants;
 import org.geogebra.common.euclidian.EuclidianView;
 import org.geogebra.common.euclidian.EuclidianViewInterfaceSlim;
@@ -7243,6 +7244,10 @@ public abstract class GeoElement extends ConstructionElement
 	public void setDynamicCaption(GeoText caption) {
 		unregisterDynamicCaption();
 		dynamicCaption = caption;
+		Drawable d = (Drawable) app.getActiveEuclidianView().getDrawableFor(this);
+		if (d != null) {
+			d.initDynamicCaption();
+		}
 		registerDynamicCaption();
 	}
 

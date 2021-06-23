@@ -111,7 +111,6 @@ public final class DrawBoolean extends Drawable {
 		int prefSize = size + 12;
 		labelRectangle.setBounds(xLabel, yLabel,
 				prefSize + textSize.x, prefSize);
-
 	}
 
 	@Override
