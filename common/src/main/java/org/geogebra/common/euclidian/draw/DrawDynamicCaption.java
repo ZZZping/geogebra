@@ -33,6 +33,10 @@ public class DrawDynamicCaption {
 		return geo.hasDynamicCaption();
 	}
 
+	/**
+	 * draw dynamic caption
+	 * @param g2 canvas
+	 */
 	public void draw(GGraphics2D g2) {
 		if (noCaption()) {
 			return;
@@ -110,7 +114,8 @@ public class DrawDynamicCaption {
 	private void position() {
 		if (drawable instanceof CanvasDrawable) {
 			drawCaption.xLabel = drawable.xLabel - captionWidth;
-			int middle = ((CanvasDrawable) drawable).boxTop + ((CanvasDrawable) drawable).boxHeight / 2;
+			int middle = ((CanvasDrawable) drawable).boxTop
+					+ ((CanvasDrawable) drawable).boxHeight / 2;
 			drawCaption.yLabel = getDynamicCaption().isLaTeX()
 					? middle - captionHeight / 2
 					: drawable.yLabel + ((CanvasDrawable) drawable).getTextBottom();

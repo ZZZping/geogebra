@@ -56,8 +56,8 @@ public class SignInController implements EventRenderable, SignInControllerI {
 
 	@Override
 	public void renderEvent(BaseEvent event) {
-		if (event instanceof LoginEvent && this.loginChecker != null) {
-			this.loginChecker.cancel();
+		if (event instanceof LoginEvent && loginChecker != null) {
+			loginChecker.cancel();
 		}
 	}
 
@@ -68,7 +68,7 @@ public class SignInController implements EventRenderable, SignInControllerI {
 		Button button = new Button(app.getLocalization().getMenu("SignIn"));
 		button.addStyleName("signInButton");
 		button.addClickHandler(event -> {
-			SignInController.this.login();
+			login();
 			initLoginTimer();
 		});
 		return button;
@@ -88,7 +88,7 @@ public class SignInController implements EventRenderable, SignInControllerI {
 					if (cookie != null && !cookie.equals(oldCookie)) {
 						app.getLoginOperation().getGeoGebraTubeAPI()
 								.performCookieLogin(app.getLoginOperation());
-						this.oldCookie = cookie;
+						oldCookie = cookie;
 					}
 				}
 			};

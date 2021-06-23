@@ -225,8 +225,9 @@ public abstract class CanvasDrawable extends Drawable {
 	}
 
 	protected int getLabelTextHeight() {
-		return getDynamicCaption() != null && getDynamicCaption().isEnabled() ? getDynamicCaption().getHeight() :
-				(int) (getLabelFontSize() * LABEL_FONT_MULTIPLIER + HIGHLIGHT_MARGIN);
+		return getDynamicCaption() != null && getDynamicCaption().isEnabled()
+				? getDynamicCaption().getHeight() : (int) (getLabelFontSize()
+				* LABEL_FONT_MULTIPLIER + HIGHLIGHT_MARGIN);
 	}
 
 	/**

@@ -82,7 +82,7 @@ public class FunctionInspectorW extends FunctionInspector {
 	 */
 	public FunctionInspectorW(AppW app, GeoFunction selectedGeo) {
 		super(app, selectedGeo);
-		Window.addResizeHandler(event -> FunctionInspectorW.this.onResize());
+		Window.addResizeHandler(event -> onResize());
 		Scheduler.get().scheduleDeferred(() -> onResize());
 	}
 
@@ -99,7 +99,6 @@ public class FunctionInspectorW extends FunctionInspector {
 
 	@Override
 	public boolean hasFocus() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -125,13 +124,9 @@ public class FunctionInspectorW extends FunctionInspector {
 			tableXY.setCellEditable(row, 0);
 			tableXY.setSelectedRow(row);
 		} else {
-
 			modelXY.setRowCount(1);
 			tableXY.setSelectedRow(0);
 			tableXY.setCellEditable(0, 0);
-
-			// tableXY.changeSelection(0, 0, false, false);
-			// tableXY.setRowSelectionAllowed(false);
 		}
 
 		updateXYTable();
@@ -538,7 +533,6 @@ public class FunctionInspectorW extends FunctionInspector {
 	protected void doCopyToSpreadsheet() {
 		if (isIntervalTabSelected()) {
 			getModel().copyIntervalsToSpreadsheet(2, 9); // modelInterval.getColumnCount(),
-			// modelInterval.getRowCount());
 		} else {
 			getModel().copyPointsToSpreadsheet(modelXY.getColumnCount(),
 			        modelXY.getRowCount());
@@ -558,12 +552,9 @@ public class FunctionInspectorW extends FunctionInspector {
 	public void setLabels() {
 		debug("setLabels");
 		Localization loc = app.getLocalization();
-		// wrappedDialog.setTitle(loc.getMenu("FunctionInspector"));
 		lblStep.setText(loc.getMenu("Step") + ":");
 		lblInterval.setText(" \u2264 x \u2264 "); // <= x <=
-		//
-		// // header text
-		//
+
 		TabBar tabBar = tabPanel.getTabBar();
 		tabBar.setTabText(0, loc.getMenu("fncInspector.Interval"));
 		tabBar.setTabText(1, loc.getMenu("fncInspector.Points"));
@@ -583,9 +574,6 @@ public class FunctionInspectorW extends FunctionInspector {
 		        .getPlainTooltip("fncInspector.addColumn"));
 		btnRemoveColumn.setTitle(loc
 		        .getPlainTooltip("fncInspector.removeColumn"));
-		// fldStep.setToolTipText(loc.getPlainTooltip("fncInspector.step"));
-		// lblStep.setToolTipText(loc.getPlainTooltip("fncInspector.step"));
-		//
 		// // add/remove extra column buttons
 		btnRemoveColumn.setText("\u2718");
 		btnAddColumn.setText("\u271A");
@@ -598,18 +586,16 @@ public class FunctionInspectorW extends FunctionInspector {
 		        ImageOrText.convert(getModel().getColumnNames()));
 
 		modelInterval.setHeaders(getModel().getIntervalColumnNames());
-		debug("setLabels ended");
 	}
 
 	void onResize() {
-		if (this.mainPanel.getOffsetHeight() != 0) {
-			this.tabPanel.setHeight(this.mainPanel.getOffsetHeight()
+		if (mainPanel.getOffsetHeight() != 0) {
+			tabPanel.setHeight(mainPanel.getOffsetHeight()
 			        - HEADER_PADDING + "px");
-			this.intervalTab.setWidth(this.mainPanel.getOffsetWidth() - PADDING_RIGHT
+			intervalTab.setWidth(mainPanel.getOffsetWidth() - PADDING_RIGHT
 			        + "px");
-			this.pointsTab.setWidth(this.mainPanel.getOffsetWidth()
+			pointsTab.setWidth(mainPanel.getOffsetWidth()
 			        - PADDING_RIGHT + "px");
 		}
-
 	}
 }

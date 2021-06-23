@@ -57,8 +57,7 @@ public class DynamicCaptionModel extends CommonOptionsModel<String> {
 	@Override
 	protected boolean isValidAt(int index) {
 		GeoElement geo = getGeoAt(index);
-		return geo instanceof HasDynamicCaption
-				&& ((HasDynamicCaption) geo).hasDynamicCaption();
+		return ((HasDynamicCaption) geo).hasDynamicCaption();
 	}
 
 	@Override
