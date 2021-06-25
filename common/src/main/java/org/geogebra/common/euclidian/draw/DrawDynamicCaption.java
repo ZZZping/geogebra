@@ -158,4 +158,8 @@ public class DrawDynamicCaption {
 		}
 		return drawCaption.hit(x, y, hitThreshold);
 	}
+
+	public String getDynCaptionText() {
+		return getDynamicCaption().getTextString();
+	}
 }
