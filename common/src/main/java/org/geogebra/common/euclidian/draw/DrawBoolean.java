@@ -101,7 +101,9 @@ public final class DrawBoolean extends Drawable {
 		}
 
 		updateLabel();
-
+		if (getDynamicCaption() != null && getDynamicCaption().isEnabled()) {
+			getDynamicCaption().update();
+		}
 	}
 
 	private void updateLabel() {
@@ -123,7 +125,9 @@ public final class DrawBoolean extends Drawable {
 					isHighlighted(), g2, geoBool.labelOffsetX + LEGACY_OFFSET,
 					geoBool.labelOffsetY + LEGACY_OFFSET, view.getBooleanSize());
 
-			if (isLatexLabel()) {
+			if (getDynamicCaption() != null && getDynamicCaption().isEnabled()) {
+				getDynamicCaption().draw(g2);
+			} else if (isLatexLabel()) {
 				GDimension d = CanvasDrawable.measureLatex(
 						view.getApplication(), geoBool, g2.getFont(),
 						labelDesc);
@@ -172,6 +176,10 @@ public final class DrawBoolean extends Drawable {
 
 			updateLabel();
 		}
+	}
+
+	public CheckBoxIcon getCheckBoxIcon() {
+		return checkBoxIcon;
 	}
 
 	/**

@@ -1151,7 +1151,6 @@ public final class DrawDropDownList extends CanvasDrawable
 			if (latex) {
 				drawLatex(g2, geo0, getLabelFont(), text, xLabel,
 						boxTop + (boxHeight - labelSize.y) / 2);
-
 			} else {
 				int textBottom = boxTop
 						+ (boxHeight + getLabelFontSize() - COMBO_TEXT_MARGIN) / 2;
@@ -1168,7 +1167,6 @@ public final class DrawDropDownList extends CanvasDrawable
 		if (geo.isLabelVisible() && isHighlighted() && latex) {
 			g2.fillRect(xLabel, boxTop + (boxHeight - labelSize.y) / 2,
 					labelSize.x, labelSize.y);
-
 		} else {
 			super.highlightLabel(g2, latex);
 		}
