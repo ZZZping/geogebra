@@ -1433,7 +1433,7 @@ public class GeoSymbolicTest extends BaseSymbolicTest {
 		t("(1/2)!", "1 / 2 * sqrt(π)");
 		t("a=1/2", "1 / 2");
 		t("a!", "1 / 2 * sqrt(π)");
-	}	
+	}
 
 	@Test
 	public void testLabelWithEquation() {
@@ -1451,6 +1451,13 @@ public class GeoSymbolicTest extends BaseSymbolicTest {
 		app.storeUndoInfo();
 		undoRedo();
 		assertThat(getSymbolic("a").toString(StringTemplate.defaultTemplate), is("a: f(x) = 1"));
+	}
+
+	@Test
+	public void testExtremum() {
+		GeoSymbolic extremum = add("Extremum(x*ln(x^2))");
+		GeoList twin = (GeoList) extremum.getTwinGeo();
+		assertThat(twin.size(), equalTo(2));
 	}
 
 	@Test
