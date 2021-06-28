@@ -1318,13 +1318,6 @@ public class GeoSymbolicTest extends BaseSymbolicTest {
 	}
 
 	@Test
-	public void testExtremum() {
-		GeoSymbolic extremum = add("Extremum(x*ln(x^2))");
-		GeoList twin = (GeoList) extremum.getTwinGeo();
-		assertThat(twin.size(), equalTo(2));
-	}
-
-	@Test
 	public void testInnerNestedCommands() {
 		app.setUndoActive(true);
 		add("f(x)=x^2");
