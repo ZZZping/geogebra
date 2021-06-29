@@ -126,7 +126,8 @@ public class DrawDynamicCaption {
 					+ ((DrawDropDownList) drawable).getLabelFontSize()
 					- DrawDropDownList.COMBO_TEXT_MARGIN) / 2;
 		} else if (drawable instanceof DrawBoolean) {
-			drawCaption.xLabel = geo.labelOffsetX	+ ((DrawBoolean) drawable).getCheckBoxIcon().getIconWidth()
+			drawCaption.xLabel = geo.labelOffsetX
+					+ ((DrawBoolean) drawable).getCheckBoxIcon().getIconWidth()
 					+ DrawBoolean.LABEL_MARGIN_TEXT + DrawBoolean.LEGACY_OFFSET;
 			drawCaption.yLabel = geo.labelOffsetY
 					+ (((DrawBoolean) drawable).getCheckBoxIcon().getIconHeight()) / 2
