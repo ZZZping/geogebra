@@ -125,6 +125,12 @@ public class DrawDynamicCaption {
 					+ (((DrawDropDownList) drawable).boxHeight
 					+ ((DrawDropDownList) drawable).getLabelFontSize()
 					- DrawDropDownList.COMBO_TEXT_MARGIN) / 2;
+		} else if (drawable instanceof DrawBoolean) {
+			drawCaption.xLabel = geo.labelOffsetX	+ ((DrawBoolean) drawable).getCheckBoxIcon().getIconWidth()
+					+ DrawBoolean.LABEL_MARGIN_TEXT + DrawBoolean.LEGACY_OFFSET;
+			drawCaption.yLabel = geo.labelOffsetY
+					+ (((DrawBoolean) drawable).getCheckBoxIcon().getIconHeight()) / 2
+					+ DrawBoolean.LEGACY_OFFSET;
 		} else {
 			drawCaption.xLabel = drawable.xLabel;
 			drawCaption.yLabel = drawable.yLabel;

@@ -43,8 +43,8 @@ public final class DrawBoolean extends Drawable {
 	 */
 	public static final int LEGACY_OFFSET = 5;
 
-	private static final int LABEL_MARGIN_TEXT = 9;
-	private static final int LABEL_MARGIN_LATEX = 5;
+	public static final int LABEL_MARGIN_TEXT = 9;
+	public static final int LABEL_MARGIN_LATEX = 5;
 
 	private GeoBoolean geoBool;
 
