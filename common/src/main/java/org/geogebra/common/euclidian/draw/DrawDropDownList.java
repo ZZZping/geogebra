@@ -56,7 +56,7 @@ import com.himamis.retex.editor.share.util.Unicode;
 public final class DrawDropDownList extends CanvasDrawable
 		implements DropDownListener {
 	private static final int LABEL_COMBO_GAP = 10;
-	private static final int COMBO_TEXT_MARGIN = 5;
+	public static final int COMBO_TEXT_MARGIN = 5;
 
 	/** coresponding list as geo */
 	GeoList geoList;
@@ -1031,6 +1031,9 @@ public final class DrawDropDownList extends CanvasDrawable
 
 		xLabel = geo.labelOffsetX;
 		yLabel = geo.labelOffsetY;
+		if (getDynamicCaption() != null && getDynamicCaption().isEnabled()) {
+			getDynamicCaption().update();
+		}
 		labelRectangle.setBounds(xLabel, yLabel,
 				(int) (getHitRect().getWidth()),
 				(int) (getHitRect().getHeight()));

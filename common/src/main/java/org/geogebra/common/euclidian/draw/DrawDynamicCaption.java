@@ -103,7 +103,7 @@ public class DrawDynamicCaption {
 			return false;
 		}
 
-		if (drawable instanceof CanvasDrawable) {
+		if (drawable instanceof DrawInputBox) {
 			((CanvasDrawable) drawable).labelSize.x = captionWidth;
 			((CanvasDrawable) drawable).labelSize.y = captionHeight;
 			((CanvasDrawable) drawable).calculateBoxBounds();
@@ -112,13 +112,19 @@ public class DrawDynamicCaption {
 	}
 
 	private void position() {
-		if (drawable instanceof CanvasDrawable) {
+		if (drawable instanceof DrawInputBox) {
 			drawCaption.xLabel = drawable.xLabel - captionWidth;
 			int middle = ((CanvasDrawable) drawable).boxTop
 					+ ((CanvasDrawable) drawable).boxHeight / 2;
 			drawCaption.yLabel = getDynamicCaption().isLaTeX()
 					? middle - captionHeight / 2
 					: drawable.yLabel + ((CanvasDrawable) drawable).getTextBottom();
+		} else if (drawable instanceof DrawDropDownList) {
+			drawCaption.xLabel = drawable.xLabel;
+			drawCaption.yLabel = ((DrawDropDownList) drawable).boxTop
+					+ (((DrawDropDownList) drawable).boxHeight
+					+ ((DrawDropDownList) drawable).getLabelFontSize()
+					- DrawDropDownList.COMBO_TEXT_MARGIN) / 2;
 		} else {
 			drawCaption.xLabel = drawable.xLabel;
 			drawCaption.yLabel = drawable.yLabel;
@@ -141,6 +147,10 @@ public class DrawDynamicCaption {
 
 	public int getHeight() {
 		return captionHeight;
+	}
+
+	public int getWidth() {
+		return captionWidth;
 	}
 
 	/**
