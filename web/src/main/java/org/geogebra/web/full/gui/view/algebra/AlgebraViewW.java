@@ -2047,7 +2047,6 @@ public class AlgebraViewW extends Tree implements LayerView, AlgebraView,
 	}
 
 	private void setWidths(int width) {
-
 		if (this.getInputTreeItem() != null) {
 			getInputTreeItem().setItemWidth(width);
 			getInputTreeItem().reposition();
