@@ -5,7 +5,11 @@ import org.geogebra.common.euclidian.EuclidianConstants;
 import org.geogebra.common.euclidian.event.PointerEventType;
 import org.geogebra.common.gui.AccessibilityGroup;
 import org.geogebra.common.gui.SetLabels;
+import org.geogebra.common.kernel.geos.GeoElement;
+import org.geogebra.common.kernel.kernelND.GeoElementND;
+import org.geogebra.common.main.App;
 import org.geogebra.web.full.css.MaterialDesignResources;
+import org.geogebra.web.full.gui.layout.DockPanelW;
 import org.geogebra.web.html5.Browser;
 import org.geogebra.web.html5.css.GuiResourcesSimple;
 import org.geogebra.web.html5.css.ZoomPanelResources;
@@ -116,6 +120,16 @@ public class ZoomPanelMow extends FlowPanel
 		FastClickHandler handlerSpotlight = source -> {
 			// TODO set mode here for spotlight tool and do the styling
 			//getAppW().setMode(EuclidianConstants.MODE_TRANSLATEVIEW);
+			DockPanelW dp =
+					(DockPanelW) appW.getGuiManager().getLayout().getDockManager().getPanel(App.VIEW_EUCLIDIAN);
+			dp.getComponent().getElement().getStyle().setZIndex(500);
+			appW.getActiveEuclidianView().setSpotlight(true);
+			appW.setMode(EuclidianConstants.MODE_SELECT_MOW);
+			GeoElementND spotlight = appW.getKernel().getAlgebraProcessor().processAlgebraCommand("xx+yy=10", false)[0];
+			spotlight.setFixed(false);
+			((GeoElement) spotlight).setInverseFill(true);
+			spotlight.setAlphaValue(.7);
+			spotlight.updateRepaint();
 			getAppW().hideMenu();
 		};
 		spotlightBtn.addFastClickHandler(handlerSpotlight);

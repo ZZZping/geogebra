@@ -515,6 +515,7 @@ public abstract class EuclidianView implements EuclidianViewInterfaceCommon,
 	private final CoordSystemInfo coordSystemInfo;
 
 	private Rectangle visibleRect;
+	protected boolean spotlight;
 
 	public static class Rectangle {
 
@@ -676,6 +677,10 @@ public abstract class EuclidianView implements EuclidianViewInterfaceCommon,
         setYscale(SCALE_STANDARD);
 
    }
+
+	public void setSpotlight(boolean b) {
+		this.spotlight = b;
+	}
 
 	protected void setMinMaxObjects() {
 		xminObject = new GeoNumeric(kernel.getConstruction());
