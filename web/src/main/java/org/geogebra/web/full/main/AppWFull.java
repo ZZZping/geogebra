@@ -2177,6 +2177,7 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 				boolean examLock = getAppletParameters().getParamLockExam();
 				guiManager.setUnbundledHeaderStyle(examLock ? "examLock" : "examOk");
 				guiManager.resetMenu();
+				guiManager.updateUnbundledToolbarContent();
 				GlobalHeader.INSTANCE.addExamTimer();
 				new ExamUtil(this).visibilityEventMain();
 				guiManager.initInfoBtnAction();
@@ -2199,8 +2200,8 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 			menuViewController.setDefaultMenu();
 		}
 		guiManager.resetMenu();
-		guiManager.updateUnbundledToolbarContent();
 		guiManager.resetBrowserGUI();
+		guiManager.updateUnbundledToolbarContent();
 		setActivePerspective(Layout.getDefaultPerspectives(0));
 	}
 
@@ -2368,5 +2369,12 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 		if (avPanel instanceof ToolbarDockPanelW) {
 			((ToolbarDockPanelW) avPanel).tryBuildZoomPanel();
 		}
+	}
+
+	/**
+	 * clears the cunstruction of all subapps in suite
+	 */
+	public void clearSubAppCons() {
+		constructionJson.clear();
 	}
 }
