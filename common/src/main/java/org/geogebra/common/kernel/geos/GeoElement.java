@@ -4473,6 +4473,7 @@ public abstract class GeoElement extends ConstructionElement
 		getElementOpenTagXML(sb);
 		getXMLtags(sb);
 		getCaptionXML(sb);
+		getXMLDynCaptionTag(sb);
 		getExtraTagsXML(sb);
 		if (getListenersToo) {
 			getListenerTagsXML(sb);
@@ -4619,9 +4620,7 @@ public abstract class GeoElement extends ConstructionElement
 			sb.append("\t<caption val=\"");
 			StringUtil.encodeXML(sb, caption);
 			sb.append("\"/>\n");
-
 		}
-
 	}
 
 	/**
@@ -4803,7 +4802,6 @@ public abstract class GeoElement extends ConstructionElement
 		getXMLvisualTags(sb);
 		getXMLanimationTags(sb);
 		getXMLfixedTag(sb);
-		getXMLDynCaptionTag(sb);
 		getXMLisShapeTag(sb);
 		getAuxiliaryXML(sb);
 		getBreakpointXML(sb);
