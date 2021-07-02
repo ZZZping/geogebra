@@ -280,7 +280,7 @@ public abstract class CanvasDrawable extends Drawable {
 		return hitDynCaption || hitLabelBounds(x, y) || hitWidgetBounds(x, y);
 	}
 
-	int getTextBottom() {
+	public int getTextBottom() {
 		return (getPreferredHeight() / 2) + (int) (getLabelFontSize() * 0.4);
 	}
 

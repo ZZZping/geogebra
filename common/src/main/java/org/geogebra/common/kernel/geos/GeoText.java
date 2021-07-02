@@ -1565,7 +1565,7 @@ public class GeoText extends GeoElement
 		updateListeners.clear();
 		text.updateListeners.clear();
 		for (GeoElement geo: listenersCopy) {
-			((HasDynamicCaption) geo).setDynamicCaption(this);
+			geo.setDynamicCaption(this);
 			registerUpdateListener(geo);
 		}
 	}

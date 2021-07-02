@@ -156,10 +156,6 @@ public class DrawDynamicCaption {
 		return captionHeight;
 	}
 
-	public int getWidth() {
-		return captionWidth;
-	}
-
 	/**
 	 * @param x
 	 *            mouse x-coord
