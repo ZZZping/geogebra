@@ -1940,6 +1940,14 @@ public class Ggb2giac {
 
 		p("RemoveUndefined.1", "when(type(%0)==DOM_LIST, remove(undef,%0),?)");
 		p("IsInteger.1", "when(type(%0)==DOM_INT,round(%0)==%0, false)");
+		p("IsFactored.1", "[[ggbFactored(ggbarg):=when(type(ggbarg)==DOM_INT, true, "
+				// (x+1)(x+2)(x+3) -> check all factors recursively
+				+"when(ggbarg[0]=='*', [[check := true], [for ii from 1 to length(ggbarg) do check:=check && ggbFactored(ggbarg[ii]) end], check][2],"
+				// (x+1)^2(x+2)^2((x+1)(2x+2))^2
+				+"when(ggbarg[0]=='^', ggbFactored(ggbarg[1]) && type(ggbarg[2])==DOM_INT, "
+				// check if what's left can be factored
+				// -2x-2 is a bit tricky
+				+"factor(ggbarg)[0]!='*' && factor(-ggbarg)[0]!='*')))], ggbFactored(%0)][1]");
 
 		return commandMap;
 	}
