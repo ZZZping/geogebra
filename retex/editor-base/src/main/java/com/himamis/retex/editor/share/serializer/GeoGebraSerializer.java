@@ -116,6 +116,7 @@ public class GeoGebraSerializer implements Serializer {
 			serializeArgs(mathFunction, stringBuilder, 0);
 			break;
 		case ATOMIC_POST:
+		case ATOMIC_PRE:
 			stringBuilder.append(mathFunction.getName().getFunction());
 			stringBuilder.append("(");
 			serialize(mathFunction.getArgument(0), stringBuilder);
