@@ -277,6 +277,16 @@ public class TeXSerializer extends SerializerAdapter {
 			serialize(function.getArgument(0), stringBuilder);
 			stringBuilder.append("}");
 			break;
+		case ATOMIC_POST:
+			stringBuilder.append("{");
+			serialize(function.getArgument(0), stringBuilder);
+			stringBuilder.append("}_{");
+			serialize(function.getArgument(1), stringBuilder);
+			stringBuilder.append("}^{");
+			serialize(function.getArgument(2), stringBuilder);
+			stringBuilder.append("}");
+			break;
+
 		default:
 			stringBuilder.append("{\\mathrm{");
 			stringBuilder.append(function.getTexName());

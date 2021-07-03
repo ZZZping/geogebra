@@ -107,7 +107,6 @@ public class GeoGebraSerializer implements Serializer {
 			serialize(mathFunction.getArgument(0), stringBuilder);
 			serializeArgs(mathFunction, stringBuilder, 1);
 			break;
-
 		case DEF_INT:
 		case SUM_EQ:
 		case PROD_EQ:
@@ -115,6 +114,16 @@ public class GeoGebraSerializer implements Serializer {
 		case VEC:
 			stringBuilder.append(mathFunction.getName().getFunction());
 			serializeArgs(mathFunction, stringBuilder, 0);
+			break;
+		case ATOMIC_POST:
+			stringBuilder.append(mathFunction.getName().getFunction());
+			stringBuilder.append("(");
+			serialize(mathFunction.getArgument(0), stringBuilder);
+			stringBuilder.append(",");
+			serialize(mathFunction.getArgument(1), stringBuilder);
+			stringBuilder.append(",");
+			serialize(mathFunction.getArgument(2), stringBuilder);
+			stringBuilder.append(')');
 			break;
 		case ABS: // no special handling for || so that invalid input saving works
 		default:

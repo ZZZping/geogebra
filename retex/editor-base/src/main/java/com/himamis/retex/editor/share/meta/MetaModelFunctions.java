@@ -87,6 +87,18 @@ class MetaModelFunctions {
 				MetaParameter.BASIC
 		}));
 
+		functions.add(
+				createFunctionInsert(Tag.ATOMIC_PRE, "\\atomicpre", 2,
+						new MetaParameter[] {
+								MetaParameter.BASIC, createParameterUp(1), createParameterDown(0)
+						}));
+
+		functions.add(
+				createFunctionInsert(Tag.ATOMIC_POST, "\\atomicpost", 3,
+						new MetaParameter[] {
+								MetaParameter.BASIC, createParameterUp(1), createParameterDown(0)
+						}));
+
 		functions.add(createFunction(Tag.ABS));
 		functions.add(createFunction(Tag.FLOOR));
 		functions.add(createFunction(Tag.CEIL));
