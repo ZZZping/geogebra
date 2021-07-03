@@ -379,6 +379,16 @@ public class TeXBuilder {
 			);
 		case VEC:
 			return new UnderOverArrowAtom(build(argument.getArgument(0)), false, true);
+		case ATOMIC_POST:
+		case ATOMIC_PRE:
+			CharAtom startParant = new CharAtom('(');
+			CharAtom endParant = new CharAtom(')');
+			CharAtom comma = new CharAtom(',');
+			Atom arg1 = build(argument.getArgument(0));
+			Atom arg2 = build(argument.getArgument(1));
+			Atom arg3 = build(argument.getArgument(2));
+			return wrap(buildString(argument.getName().getFunction()), startParant, arg1, comma,
+					arg2, comma, arg3, endParant);
 		default:
 			StringBuilder functionName = new StringBuilder();
 			teXSerializer.serialize(argument.getArgument(0), functionName);
@@ -391,7 +401,7 @@ public class TeXBuilder {
 			return wrap(
 				function,
 				buildFenced(argument.getOpeningBracket(), argument.getClosingBracket(),
-						argument, 1)
+							argument, 1)
 			);
 		}
 	}
