@@ -103,7 +103,7 @@ public class IntervalFunctionSampler {
 		return evaluateAtDomain(space.extendMax(max));
 	}
 
-	private IntervalTupleList evaluateAtDomain(LinearSpace domain) {
+	private IntervalTupleList evaluateAtDomain(DiscreteSpace domain) {
 		try {
 			return evaluateOnSpace(domain);
 		} catch (Exception e) {

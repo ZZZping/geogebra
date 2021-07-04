@@ -8,6 +8,17 @@ public class DiscreteSpaceImp implements DiscreteSpace {
 	private int count;
 	private double step;
 
+	public DiscreteSpaceImp(double low, double high, double step) {
+		interval = new Interval(low, high);
+		this.step = step;
+		double length = interval.getLength() + 0.0;
+		count = (int) Math.floor(length / step);
+	}
+
+	public DiscreteSpaceImp() {
+
+	}
+
 	@Override
 	public void update(Interval interval, int count) {
 		this.interval = interval;
@@ -17,13 +28,13 @@ public class DiscreteSpaceImp implements DiscreteSpace {
 	}
 
 	@Override
-	public LinearSpace extendMax(double max) {
-		return null;
+	public DiscreteSpace extendMax(double max) {
+		return new DiscreteSpaceImp(interval.getHigh() + step, max, step);
 	}
 
 	@Override
-	public LinearSpace extendMin(double min) {
-		return null;
+	public DiscreteSpace extendMin(double min) {
+		return new DiscreteSpaceImp(min, interval.getLow() - step, step);
 	}
 
 	@Override

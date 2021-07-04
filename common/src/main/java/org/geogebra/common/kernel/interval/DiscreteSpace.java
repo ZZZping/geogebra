@@ -5,9 +5,9 @@ import java.util.stream.Stream;
 public interface DiscreteSpace {
 	void update(Interval interval, int count);
 
-	LinearSpace extendMax(double max);
+	DiscreteSpace extendMax(double max);
 
-	LinearSpace extendMin(double min);
+	DiscreteSpace extendMin(double min);
 
 	int shrinkMax(double max);
 
