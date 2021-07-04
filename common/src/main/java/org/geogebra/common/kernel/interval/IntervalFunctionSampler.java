@@ -1,7 +1,5 @@
 package org.geogebra.common.kernel.interval;
 
-import java.util.List;
-
 import org.geogebra.common.euclidian.EuclidianView;
 import org.geogebra.common.kernel.geos.GeoFunction;
 
@@ -16,7 +14,9 @@ public class IntervalFunctionSampler {
 	private final IntervalFunction function;
 	private EuclidianView view;
 	private int numberOfSamples;
-	private final LinearSpace space;
+	private final DiscreteSpace space;
+	private int pointIndex;
+	private boolean addEmpty;
 
 	/**
 	 * @param geoFunction function to get sampled
@@ -44,7 +44,7 @@ public class IntervalFunctionSampler {
 
 	private IntervalFunctionSampler(GeoFunction geoFunction) {
 		this.function = new IntervalFunction(geoFunction);
-		space = new LinearSpace();
+		space = new DiscreteSpaceImp();
 	}
 
 	/**
@@ -61,23 +61,25 @@ public class IntervalFunctionSampler {
 		return new IntervalTupleList();
 	}
 
-	private IntervalTupleList evaluateOnSpace(LinearSpace space) throws Exception {
-		List<Double> xCoords = space.values();
+	private IntervalTupleList evaluateOnSpace(DiscreteSpace space) throws Exception {
 		IntervalTupleList samples = new IntervalTupleList();
-		boolean addEmpty = true;
-		int pointIndex = 0;
-		for (int i = 0; i < xCoords.size() - 1; i += 1) {
-			Interval x = new Interval(xCoords.get(i), xCoords.get(i + 1));
-			Interval y = function.evaluate(x);
-			if (!y.isEmpty() || addEmpty) {
-				IntervalTuple tuple = new IntervalTuple(x, y);
-				tuple.setIndex(pointIndex);
-				samples.add(tuple);
-				pointIndex++;
-			}
+		addEmpty = true;
+		pointIndex = 0;
+		space.values().forEach(x -> {
+					try {
+						Interval y = function.evaluate(x);
+						if (!y.isEmpty() || addEmpty) {
+							IntervalTuple tuple = new IntervalTuple(x, y);
+							samples.add(tuple);
+							pointIndex++;
+						}
 
-			addEmpty = !y.isEmpty();
-		}
+						addEmpty = !y.isEmpty();
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				});
 
 		IntervalAsymptotes asymtotes = new IntervalAsymptotes(samples);
 		asymtotes.process();

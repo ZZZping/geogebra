@@ -2,13 +2,14 @@ package org.geogebra.common.kernel.interval;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Class for linear space.
  *
  * @author laszlo
  */
-public class LinearSpace {
+public class LinearSpace implements DiscreteSpace {
 	public List<Double> values;
 	private double scale;
 	private double step;
@@ -34,6 +35,7 @@ public class LinearSpace {
 	 * @param interval the base interval.
 	 * @param count of the interval to divide.
 	 */
+	@Override
 	public void update(Interval interval, int count) {
 		values.clear();
 		step = interval.getLength() / count;
@@ -53,8 +55,8 @@ public class LinearSpace {
 	 *
 	 * @return the value list of the space.
 	 */
-	public List<Double> values() {
-		return values;
+	public Stream<Interval> values() {
+		return null;
 	}
 
 	/**
@@ -71,6 +73,7 @@ public class LinearSpace {
 	 * @param max to adjust to.
 	 * @return the new {@link LinearSpace} that contains the new values only.
 	 */
+	@Override
 	public LinearSpace extendMax(double max) {
 		LinearSpace result = new LinearSpace();
 		double t = getLastValue();
@@ -97,6 +100,7 @@ public class LinearSpace {
 	 * @param min to adjust to.
 	 * @return the new {@link LinearSpace} that contains the new values only.
 	 */
+	@Override
 	public LinearSpace extendMin(double min) {
 		LinearSpace result = new LinearSpace();
 		result.values.add(getFirstValue());
@@ -139,6 +143,7 @@ public class LinearSpace {
 	 *
 	 * @return number of values deleted.
 	 */
+	@Override
 	public int shrinkMax(double max) {
 		double t = getLastValue();
 		int count = 0;
@@ -157,6 +162,7 @@ public class LinearSpace {
 	 *
 	 * @return number of values deleted.
 	 */
+	@Override
 	public int shrinkMin(double min) {
 		int count = 0;
 		double t = getFirstValue();
@@ -167,4 +173,5 @@ public class LinearSpace {
 		}
 		return count;
 	}
+
 }
