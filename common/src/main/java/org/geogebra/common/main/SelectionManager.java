@@ -820,6 +820,8 @@ public class SelectionManager {
 					.getTreeMode() == SortMode.ORDER) {
 				return kernel.getConstruction().getGeoSetConstructionOrder();
 			}
+
+			return kernel.getConstruction().getGeoSetLabelOrder();
 		}
 
 		GeoElement userDefined = kernel.lookupLabel("tabOrder");
