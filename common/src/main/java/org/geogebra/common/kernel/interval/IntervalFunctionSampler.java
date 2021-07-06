@@ -123,4 +123,9 @@ public class IntervalFunctionSampler {
 	public int shrinkMin(double min) {
 		return space.shrinkMin(min);
 	}
+
+	public IntervalTupleList extendDomain(double min, double max) {
+		space.setInterval(min, max);
+		return evaluateAtDomain(space);
+	}
 }

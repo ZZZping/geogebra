@@ -15,4 +15,5 @@ public interface DiscreteSpace {
 
 	Stream<Interval> values();
 
+	void setInterval(double min, double max);
 }

@@ -28,6 +28,12 @@ public class DiscreteSpaceImp implements DiscreteSpace {
 	}
 
 	@Override
+	public void setInterval(double min, double max) {
+		interval.set(min, max);
+		step = interval.getLength() / count;
+	}
+
+	@Override
 	public DiscreteSpace extendMax(double max) {
 		double diff = max - interval.getHigh();
 		return new DiscreteSpaceImp(interval.getLow() + diff, max, step);
@@ -41,15 +47,13 @@ public class DiscreteSpaceImp implements DiscreteSpace {
 
 	@Override
 	public int shrinkMax(double max) {
-		double diff = max - interval.getHigh();
-		interval.set(interval.getLow() - diff, max);
+		interval.set(interval.getLow(), max);
 		return 0;
 	}
 
 	@Override
 	public int shrinkMin(double min) {
-		double diff = interval.getLow() - min;
-		interval.set(min, interval.getHigh() - diff);
+		interval.set(min, interval.getHigh());
 		return 0;
 	}
 
