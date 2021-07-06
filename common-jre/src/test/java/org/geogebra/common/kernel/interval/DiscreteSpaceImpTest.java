@@ -7,8 +7,10 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class DiscreteSpaceImpTest {
 
 	@Test
