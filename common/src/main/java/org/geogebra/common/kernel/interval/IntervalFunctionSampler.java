@@ -99,8 +99,9 @@ public class IntervalFunctionSampler {
 		return numberOfSamples > 0 ? numberOfSamples : view.getWidth();
 	}
 
-	public IntervalTupleList extendMax(double max) {
-		return evaluateAtDomain(space.extendMax(max));
+	public IntervalTupleList extendMax(double high, double max) {
+		DiscreteSpaceImp diffSpace = new DiscreteSpaceImp(high, max, space.getStep());
+		return evaluateAtDomain(diffSpace);
 	}
 
 	private IntervalTupleList evaluateAtDomain(DiscreteSpace domain) {
@@ -112,8 +113,9 @@ public class IntervalFunctionSampler {
 		return new IntervalTupleList();
 	}
 
-	public IntervalTupleList extendMin(double min) {
-		return evaluateAtDomain(space.extendMin(min));
+	public IntervalTupleList extendMin(double low, double min) {
+		DiscreteSpaceImp diffSpace = new DiscreteSpaceImp(min, low,space.getStep());
+		return evaluateAtDomain(diffSpace);
 	}
 
 	public int shrinkMax(double max) {

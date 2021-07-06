@@ -46,6 +46,16 @@ public class DiscreteSpaceImp implements DiscreteSpace {
 	}
 
 	@Override
+	public DiscreteSpace diffMax(double max) {
+		return new DiscreteSpaceImp(interval.getHigh(), max, step);
+	}
+
+	@Override
+	public DiscreteSpace diffMin(double min) {
+		return new DiscreteSpaceImp(min, interval.getLow(), step);
+	}
+
+	@Override
 	public int shrinkMax(double max) {
 		interval.set(interval.getLow(), max);
 		return 0;
@@ -62,5 +72,10 @@ public class DiscreteSpaceImp implements DiscreteSpace {
 		return DoubleStream.iterate(interval.getLow(), d -> d + step)
 				.limit(count)
 				.mapToObj(value -> new Interval(value, value + step));
+	}
+
+	@Override
+	public double getStep() {
+		return step;
 	}
 }

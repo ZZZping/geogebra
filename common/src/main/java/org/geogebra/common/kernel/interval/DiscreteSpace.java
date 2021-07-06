@@ -9,6 +9,10 @@ public interface DiscreteSpace {
 
 	DiscreteSpace extendMin(double min);
 
+	DiscreteSpace diffMax(double max);
+
+	DiscreteSpace diffMin(double min);
+
 	int shrinkMax(double max);
 
 	int shrinkMin(double min);
@@ -16,4 +20,6 @@ public interface DiscreteSpace {
 	Stream<Interval> values();
 
 	void setInterval(double min, double max);
+
+	double getStep();
 }

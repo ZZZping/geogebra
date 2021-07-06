@@ -134,19 +134,23 @@ public class IntervalTupleList implements Iterable<IntervalTuple> {
 		list.remove(index);
 	}
 
-	public void removeFromTail(int count) {
-		list = list.subList(0, list.size() - count - 1);
-	}
-
-	public void removeFromHead(int count) {
-		list = list.subList(count + 1, list.size());
-	}
-
 	public void clear() {
 		list.clear();
 	}
 
 	public Interval valueAt(int index) {
 		return get(index).y();
+	}
+
+	public void removeTailFromX(double high) {
+		while (get(count() - 1).x().getHigh() > high && !isEmpty()) {
+			remove(count() - 1);
+		}
+	}
+
+	public void removeHeadToX(double xmin) {
+		while (get(0).x().getLow() < xmin && !isEmpty()) {
+			remove(0);
+		}
 	}
 }
