@@ -514,6 +514,7 @@ public abstract class EuclidianView implements EuclidianViewInterfaceCommon,
 	protected SymbolicEditor symbolicEditor = null;
 	private final CoordSystemInfo coordSystemInfo;
 
+	private boolean spotlight;
 	private Rectangle visibleRect;
 
 	public static class Rectangle {
@@ -674,7 +675,6 @@ public abstract class EuclidianView implements EuclidianViewInterfaceCommon,
 				5);
         setXscale(SCALE_STANDARD);
         setYscale(SCALE_STANDARD);
-
    }
 
 	protected void setMinMaxObjects() {
@@ -682,6 +682,14 @@ public abstract class EuclidianView implements EuclidianViewInterfaceCommon,
 		xmaxObject = new GeoNumeric(kernel.getConstruction());
 		yminObject = new GeoNumeric(kernel.getConstruction());
 		ymaxObject = new GeoNumeric(kernel.getConstruction());
+	}
+
+	public void setSpotlight(boolean b) {
+		this.spotlight = b;
+	}
+
+	public boolean isSpotlight() {
+		return spotlight;
 	}
 
 	/**
@@ -3610,6 +3618,13 @@ public abstract class EuclidianView implements EuclidianViewInterfaceCommon,
 		}
 		adjustObjects();
 		drawMasks(g2);
+		if (isSpotlight()) {
+			GeoElementND spotlight = app.getKernel().getConstruction().getSpotlight();
+			Drawable d = (Drawable) getDrawableFor(spotlight);
+			if (d != null) {
+				d.draw(g2);
+			}
+		}
 	}
 
 	/**

@@ -1553,6 +1553,10 @@ public abstract class GeoElement extends ConstructionElement implements GeoEleme
 
 	@Override
 	final public void removeOrSetUndefinedIfHasFixedDescendent() {
+		if (isSpotlight()) {
+			return;
+		}
+
 		// can't delete a fixed object at all
 		if (isProtected(EventType.REMOVE)) {
 			return;
@@ -4463,6 +4467,9 @@ public abstract class GeoElement extends ConstructionElement implements GeoEleme
 
 	@Override
 	public void getXML(boolean getListenersToo, final StringBuilder sb) {
+		if (isSpotlight()) {
+			return;
+		}
 		getExpressionXML(sb);
 		getElementOpenTagXML(sb);
 		getXMLtags(sb);
@@ -6158,6 +6165,10 @@ public abstract class GeoElement extends ConstructionElement implements GeoEleme
 	@Override
 	public boolean isInverseFill() {
 		return inverseFill;
+	}
+
+	public boolean isSpotlight() {
+		return this == cons.getSpotlight();
 	}
 
 	@Override
