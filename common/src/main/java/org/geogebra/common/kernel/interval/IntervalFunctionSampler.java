@@ -15,7 +15,6 @@ public class IntervalFunctionSampler {
 	private EuclidianView view;
 	private int numberOfSamples;
 	private final DiscreteSpace space;
-	private int pointIndex;
 	private boolean addEmpty;
 
 	/**
@@ -61,17 +60,26 @@ public class IntervalFunctionSampler {
 		return new IntervalTupleList();
 	}
 
-	private IntervalTupleList evaluateOnSpace(DiscreteSpace space) throws Exception {
+	/**
+	 * Evaluate on interval [high, low] with the same step that used before
+	 * @param low  lower bound
+	 * @param high higher bound
+	 * @return tuples evaluated on [low, high].
+	 */
+	public IntervalTupleList evaluateOn(double low, double high) {
+		DiscreteSpaceImp diffSpace = new DiscreteSpaceImp(low, high, space.getStep());
+		return evaluateOnSpace(diffSpace);
+	}
+
+	private IntervalTupleList evaluateOnSpace(DiscreteSpace space) {
 		IntervalTupleList samples = new IntervalTupleList();
 		addEmpty = true;
-		pointIndex = 0;
 		space.values().forEach(x -> {
 					try {
 						Interval y = function.evaluate(x);
 						if (!y.isEmpty() || addEmpty) {
 							IntervalTuple tuple = new IntervalTuple(x, y);
 							samples.add(tuple);
-							pointIndex++;
 						}
 
 						addEmpty = !y.isEmpty();
@@ -81,8 +89,8 @@ public class IntervalFunctionSampler {
 					}
 				});
 
-		IntervalAsymptotes asymtotes = new IntervalAsymptotes(samples);
-		asymtotes.process();
+		IntervalAsymptotes asymptotes = new IntervalAsymptotes(samples);
+		asymptotes.process();
 		return samples;
 	}
 
@@ -99,25 +107,6 @@ public class IntervalFunctionSampler {
 		return numberOfSamples > 0 ? numberOfSamples : view.getWidth();
 	}
 
-	public IntervalTupleList extendMax(double high, double max) {
-		DiscreteSpaceImp diffSpace = new DiscreteSpaceImp(high, max, space.getStep());
-		return evaluateAtDomain(diffSpace);
-	}
-
-	private IntervalTupleList evaluateAtDomain(DiscreteSpace domain) {
-		try {
-			return evaluateOnSpace(domain);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new IntervalTupleList();
-	}
-
-	public IntervalTupleList extendMin(double low, double min) {
-		DiscreteSpaceImp diffSpace = new DiscreteSpaceImp(min, low,space.getStep());
-		return evaluateAtDomain(diffSpace);
-	}
-
 	public int shrinkMax(double max) {
 		return space.shrinkMax(max);
 	}
@@ -126,8 +115,14 @@ public class IntervalFunctionSampler {
 		return space.shrinkMin(min);
 	}
 
+	/**
+	 * Extend and evaluate on interval [min, max]
+	 * @param min lower bound
+	 * @param max higher bound
+	 * @return tuples evaluated on [min, max].
+	 */
 	public IntervalTupleList extendDomain(double min, double max) {
 		space.setInterval(min, max);
-		return evaluateAtDomain(space);
+		return evaluateOnSpace(space);
 	}
 }

@@ -117,15 +117,16 @@ public class IntervalPlotModel {
 	}
 
 	private void extendMin() {
-		IntervalTupleList newPoints = sampler.extendMin(points.get(0).x().getLow(), view.getXmin());
+		IntervalTupleList newPoints = sampler.evaluateOn(view.getXmin(), points.get(0).x().getLow());
 		points.prepend(newPoints);
 		points.cutFrom(view.getXmax());
 
 	}
 
 	private void extendMax() {
-		IntervalTupleList newPoints = sampler.extendMax(points.get(points.count() - 1).x().getHigh()
-				, view.getXmax());
+		IntervalTupleList newPoints = sampler.evaluateOn(
+				points.get(points.count() - 1).x().getHigh(),
+				view.getXmax());
 		points.append(newPoints);
 		points.cutTo(view.getXmin());
 	}

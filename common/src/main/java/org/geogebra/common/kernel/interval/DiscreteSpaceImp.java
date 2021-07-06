@@ -8,6 +8,13 @@ public class DiscreteSpaceImp implements DiscreteSpace {
 	private int count;
 	private double step;
 
+	/**
+	 * Constructor
+	 *
+	 * @param low bound
+	 * @param high bound
+	 * @param step to split the bounds.
+	 */
 	public DiscreteSpaceImp(double low, double high, double step) {
 		interval = new Interval(low, high);
 		this.step = step;
@@ -34,25 +41,13 @@ public class DiscreteSpaceImp implements DiscreteSpace {
 	}
 
 	@Override
-	public DiscreteSpace extendMax(double max) {
-		double diff = max - interval.getHigh();
-		return new DiscreteSpaceImp(interval.getLow() + diff, max, step);
-	}
-
-	@Override
-	public DiscreteSpace extendMin(double min) {
-		double diff = interval.getLow() - min;
-		return new DiscreteSpaceImp(min, interval.getHigh() - diff, step);
-	}
-
-	@Override
 	public DiscreteSpace diffMax(double max) {
-		return new DiscreteSpaceImp(interval.getHigh(), max, step);
+		return new DiscreteSpaceImp(interval.getHigh() + step, max, step);
 	}
 
 	@Override
 	public DiscreteSpace diffMin(double min) {
-		return new DiscreteSpaceImp(min, interval.getLow(), step);
+		return new DiscreteSpaceImp(min, interval.getLow() - step, step);
 	}
 
 	@Override

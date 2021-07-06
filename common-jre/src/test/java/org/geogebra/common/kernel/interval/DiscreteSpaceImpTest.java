@@ -7,10 +7,8 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore
 public class DiscreteSpaceImpTest {
 
 	@Test
@@ -34,10 +32,10 @@ public class DiscreteSpaceImpTest {
 	}
 
 	@Test
-	public void testExtendMax() {
+	public void testDiffMax() {
 		DiscreteSpaceImp space = new DiscreteSpaceImp();
 		space.update(new Interval(0, 5), 10);
-		DiscreteSpace subSpace = space.extendMax(7);
+		DiscreteSpace subSpace = space.diffMax(7);
 		Assert.assertEquals(
 				Arrays.asList(
 						interval(5.5, 6.0),
@@ -48,40 +46,15 @@ public class DiscreteSpaceImpTest {
 	}
 
 	@Test
-	public void testExtendMin() {
+	public void testDiffMin() {
 		DiscreteSpaceImp space = new DiscreteSpaceImp();
 		space.update(new Interval(0, 5), 10);
-		DiscreteSpace subSpace = space.extendMin(-2.0);
+		DiscreteSpace subSpace = space.diffMin(-2.0);
 		Assert.assertEquals(
 				Arrays.asList(
 						interval(-2.0, -1.5),
 						interval(-1.5, -1.0),
 						interval(-1.0, -0.5)
-				)
-				, subSpace.values().collect(Collectors.toList()));
-	}
-
-	@Test
-	public void testExtendMaxInteger() {
-		DiscreteSpaceImp space = new DiscreteSpaceImp();
-		space.update(new Interval(0, 1), 1);
-		DiscreteSpace subSpace = space.extendMax(3);
-		Assert.assertEquals(
-				Arrays.asList(
-						interval(2, 3)
-				)
-				, subSpace.values().collect(Collectors.toList()));
-	}
-
-	@Test
-	public void testExtendMinInteger() {
-		DiscreteSpaceImp space = new DiscreteSpaceImp();
-		space.update(new Interval(0, 1), 1);
-		DiscreteSpace subSpace = space.extendMin(-3);
-		Assert.assertEquals(
-				Arrays.asList(
-						interval(-3, -2),
-						interval(-2, -1)
 				)
 				, subSpace.values().collect(Collectors.toList()));
 	}
