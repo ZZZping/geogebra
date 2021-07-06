@@ -1,6 +1,5 @@
 package org.geogebra.common.kernel.interval;
 
-
 import static org.geogebra.common.kernel.interval.IntervalTest.interval;
 
 import java.util.Arrays;
@@ -27,8 +26,8 @@ public class DiscreteSpaceImpTest {
 						interval(3.5, 4.0),
 						interval(4.0, 4.5),
 						interval(4.5, 5.0)
-				)
-				, space.values().collect(Collectors.toList()));
+				),
+				space.values().collect(Collectors.toList()));
 	}
 
 	@Test
@@ -41,8 +40,8 @@ public class DiscreteSpaceImpTest {
 						interval(5.5, 6.0),
 						interval(6.0, 6.5),
 						interval(6.5, 7.0)
-				)
-				, subSpace.values().collect(Collectors.toList()));
+				),
+				subSpace.values().collect(Collectors.toList()));
 	}
 
 	@Test
@@ -55,7 +54,7 @@ public class DiscreteSpaceImpTest {
 						interval(-2.0, -1.5),
 						interval(-1.5, -1.0),
 						interval(-1.0, -0.5)
-				)
-				, subSpace.values().collect(Collectors.toList()));
+				),
+				subSpace.values().collect(Collectors.toList()));
 	}
 }
