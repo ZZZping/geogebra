@@ -94,6 +94,11 @@ public class LinearSpace implements DiscreteSpace {
 		return values.size();
 	}
 
+	@Override
+	public void setInterval(double min, double max) {
+
+	}
+
 	/**
 	 * Adjust space to the given minimum.
 	 *
