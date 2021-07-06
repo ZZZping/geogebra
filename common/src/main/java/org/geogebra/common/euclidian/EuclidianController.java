@@ -9231,7 +9231,10 @@ public abstract class EuclidianController implements SpecialPointsListener {
 
 		setViewHits(event.getType());
 		dispatchMouseDownEvent(event);
-
+		GeoElementND spotlight = view.getKernel().getConstruction().getSpotlight();
+		if (spotlight != null && !view.getHits().contains(spotlight)) {
+			spotlight.remove();
+		}
 		if (shallMoveView(event)) {
 			// Michael Borcherds 2007-12-08 BEGIN
 			// bugfix: couldn't select multiple objects with Ctrl

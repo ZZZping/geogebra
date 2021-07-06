@@ -2072,7 +2072,8 @@ public abstract class EuclidianView implements EuclidianViewInterfaceCommon,
 	private static boolean needsSynchUpdate(GeoElement geo, boolean tracing) {
 		// Keep update of input boxes synchronous #4416
 		return (geo.isGeoText() && ((GeoText) geo).isNeedsUpdatedBoundingBox())
-				|| geo.isGeoInputBox() || (geo.getTrace() && !tracing) || geo.isMask();
+				|| geo.isGeoInputBox() || (geo.getTrace() && !tracing) || geo.isMask()
+				|| geo.isSpotlight();
 	}
 
 	/**

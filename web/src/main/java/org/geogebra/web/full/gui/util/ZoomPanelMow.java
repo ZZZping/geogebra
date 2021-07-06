@@ -10,6 +10,9 @@ import org.geogebra.common.gui.SetLabels;
 import org.geogebra.common.kernel.geos.GeoElement;
 import org.geogebra.common.kernel.kernelND.GeoElementND;
 import org.geogebra.common.main.App;
+import org.geogebra.common.plugin.Event;
+import org.geogebra.common.plugin.EventListener;
+import org.geogebra.common.plugin.EventType;
 import org.geogebra.web.full.css.MaterialDesignResources;
 import org.geogebra.web.full.gui.layout.DockPanelW;
 import org.geogebra.web.html5.Browser;
@@ -168,15 +171,29 @@ public class ZoomPanelMow extends FlowPanel
 				ZoomPanelResources.INSTANCE.target(), null, 24);
 		setButtonTitleAndAltText(spotlightOffBtn, "Spotlight.Tool");
 		spotlightOffBtn.addStyleName("zoomPanelBtn");
+		appW.getEventDispatcher().addEventListener(new EventListener() {
+			@Override
+			public void sendEvent(Event evt) {
+				if (evt.getType() == EventType.REMOVE
+						&& evt.getTarget() != null && evt.getTarget().isSpotlight()) {
+					DockPanelW dp =	(DockPanelW) appW.getGuiManager().getLayout().getDockManager()
+							.getPanel(App.VIEW_EUCLIDIAN);
+					dp.getComponent().removeStyleName("graphicsWithSpotlight");
+					appW.getActiveEuclidianView().setSpotlight(false);
+					spotlightOff.removeFromParent();
+					appW.getEventDispatcher().removeEventListener(this);
+				}
+			}
+
+			@Override
+			public void reset() {
+				// not needed
+			}
+		});
 		ClickStartHandler.init(spotlightOffBtn, new ClickStartHandler() {
 			@Override
 			public void onClickStart(int x, int y, PointerEventType type) {
 				spotlight.remove();
-				DockPanelW dp =	(DockPanelW) appW.getGuiManager().getLayout().getDockManager()
-						.getPanel(App.VIEW_EUCLIDIAN);
-				dp.getComponent().removeStyleName("graphicsWithSpotlight");
-				appW.getActiveEuclidianView().setSpotlight(false);
-				spotlightOff.removeFromParent();
 			}
 		});
 
