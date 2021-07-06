@@ -1,11 +1,17 @@
 package org.geogebra.web.full.gui.util;
 
+import org.geogebra.common.awt.GColor;
 import org.geogebra.common.euclidian.CoordSystemListener;
 import org.geogebra.common.euclidian.EuclidianConstants;
+import org.geogebra.common.euclidian.EuclidianView;
 import org.geogebra.common.euclidian.event.PointerEventType;
 import org.geogebra.common.gui.AccessibilityGroup;
 import org.geogebra.common.gui.SetLabels;
+import org.geogebra.common.kernel.geos.GeoElement;
+import org.geogebra.common.kernel.kernelND.GeoElementND;
+import org.geogebra.common.main.App;
 import org.geogebra.web.full.css.MaterialDesignResources;
+import org.geogebra.web.full.gui.layout.DockPanelW;
 import org.geogebra.web.html5.Browser;
 import org.geogebra.web.html5.css.GuiResourcesSimple;
 import org.geogebra.web.html5.css.ZoomPanelResources;
@@ -18,6 +24,7 @@ import org.geogebra.web.html5.main.AppW;
 import org.geogebra.web.html5.util.TestHarness;
 
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  * @author csilla
@@ -25,8 +32,10 @@ import com.google.gwt.user.client.ui.FlowPanel;
  */
 public class ZoomPanelMow extends FlowPanel
 		implements SetLabels, CoordSystemListener {
+	private static int SPOTLIGHT_DIAMETER = 200;
 	private AppW appW;
-	private StandardButton spotlightBtn;
+	private StandardButton spotlightOnBtn;
+	private GeoElementND spotlight;
 	private StandardButton dragPadBtn;
 	private StandardButton zoomInBtn;
 	private StandardButton zoomOutBtn;
@@ -107,26 +116,72 @@ public class ZoomPanelMow extends FlowPanel
 	}
 
 	private void addSpotlightButton() {
-		spotlightBtn = new StandardButton(
+		spotlightOnBtn = new StandardButton(
 				ZoomPanelResources.INSTANCE.target(), null, 24);
-		spotlightBtn.setStyleName("zoomPanelBtn");
-		registerFocusable(spotlightBtn, AccessibilityGroup.ViewControlId.ZOOM_NOTES_SPOTLIGHT);
-		TestHarness.setAttr(spotlightBtn, "spotlightTool");
+		spotlightOnBtn.setStyleName("zoomPanelBtn");
+		registerFocusable(spotlightOnBtn, AccessibilityGroup.ViewControlId.ZOOM_NOTES_SPOTLIGHT);
+		TestHarness.setAttr(spotlightOnBtn, "spotlightTool");
 
-		FastClickHandler handlerSpotlight = source -> {
-			// TODO set mode here for spotlight tool and do the styling
-			//getAppW().setMode(EuclidianConstants.MODE_TRANSLATEVIEW);
-			getAppW().hideMenu();
-		};
-		spotlightBtn.addFastClickHandler(handlerSpotlight);
-		add(spotlightBtn);
-		ClickStartHandler.init(this, new ClickStartHandler(true, true) {
-
+		ClickStartHandler.init(spotlightOnBtn, new ClickStartHandler() {
 			@Override
 			public void onClickStart(int x, int y, PointerEventType type) {
-				// to stopPropagation and preventDefault.
+				DockPanelW dp =	(DockPanelW) appW.getGuiManager().getLayout().getDockManager()
+						.getPanel(App.VIEW_EUCLIDIAN);
+				dp.getComponent().addStyleName("graphicsWithSpotlight");
+				appW.getActiveEuclidianView().setSpotlight(true);
+				appW.setMode(EuclidianConstants.MODE_SELECT_MOW);
+
+				constructSpotlight();
+				spotlight.setFixed(false);
+				((GeoElement) spotlight).setInverseFill(true);
+				spotlight.setObjColor(GColor.BLACK);
+				spotlight.setAlphaValue(0.32);
+				spotlight.updateRepaint();
+
+				appW.getAppletFrame().add(ZoomPanelMow.this::initSpotlightOff);
+				appW.hideMenu();
 			}
 		});
+		add(spotlightOnBtn);
+	}
+
+	private void constructSpotlight() {
+		EuclidianView ev = appW.getActiveEuclidianView();
+		int screenHorizontalMiddle = ev.getWidth() / 2;
+		int screenVerticalMiddle = ev.getHeight() / 2;
+		double rSqr = Math.pow(SPOTLIGHT_DIAMETER / 2.0 / ev.getXscale(), 2);
+
+		String circleEq = "(x-" + appW.getActiveEuclidianView()
+				.toRealWorldCoordX(screenHorizontalMiddle) + ")^2 + (y-"
+				+ appW.getActiveEuclidianView().toRealWorldCoordY(screenVerticalMiddle)
+				+ ")^2 = " + rSqr;
+		spotlight = appW.getKernel().getAlgebraProcessor().processAlgebraCommand(circleEq,
+				false)[0];
+		appW.getKernel().getConstruction().setSpotlight(spotlight);
+	}
+
+	private SimplePanel initSpotlightOff() {
+		SimplePanel spotlightOff = new SimplePanel();
+		spotlightOff.addStyleName("spotlightOffBtn");
+
+		StandardButton spotlightOffBtn = new StandardButton(
+				ZoomPanelResources.INSTANCE.target(), null, 24);
+		setButtonTitleAndAltText(spotlightOffBtn, "Spotlight.Tool");
+		spotlightOffBtn.addStyleName("zoomPanelBtn");
+		ClickStartHandler.init(spotlightOffBtn, new ClickStartHandler() {
+			@Override
+			public void onClickStart(int x, int y, PointerEventType type) {
+				spotlight.remove();
+				DockPanelW dp =	(DockPanelW) appW.getGuiManager().getLayout().getDockManager()
+						.getPanel(App.VIEW_EUCLIDIAN);
+				dp.getComponent().removeStyleName("graphicsWithSpotlight");
+				appW.getActiveEuclidianView().setSpotlight(false);
+				spotlightOff.removeFromParent();
+			}
+		});
+
+		spotlightOff.add(spotlightOffBtn);
+		return spotlightOff;
 	}
 
 	private void registerFocusable(StandardButton dragPadBtn,
@@ -201,7 +256,7 @@ public class ZoomPanelMow extends FlowPanel
 		setButtonTitleAndAltText(homeBtn, "StandardView");
 		setButtonTitleAndAltText(zoomOutBtn, "ZoomOut.Tool");
 		setButtonTitleAndAltText(zoomInBtn, "ZoomIn.Tool");
-		setButtonTitleAndAltText(spotlightBtn, "Spotlight.Tool");
+		setButtonTitleAndAltText(spotlightOnBtn, "Spotlight.Tool");
 	}
 
 	private void setButtonTitleAndAltText(StandardButton btn, String string) {
