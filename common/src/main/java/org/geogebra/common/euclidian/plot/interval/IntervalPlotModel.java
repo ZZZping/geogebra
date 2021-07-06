@@ -6,7 +6,6 @@ import org.geogebra.common.kernel.interval.Interval;
 import org.geogebra.common.kernel.interval.IntervalFunctionSampler;
 import org.geogebra.common.kernel.interval.IntervalTuple;
 import org.geogebra.common.kernel.interval.IntervalTupleList;
-import org.geogebra.common.util.debug.Log;
 
 /**
  * Model for Interval plotter.
@@ -119,19 +118,17 @@ public class IntervalPlotModel {
 
 	private void extendMin() {
 		IntervalTupleList newPoints = sampler.extendMin(points.get(0).x().getLow(), view.getXmin());
-		Log.debug("extendMin - count: " + newPoints.count());
 		points.prepend(newPoints);
-		points.removeTailFromX(view.getXmax());
+		points.cutFrom(view.getXmax());
 
 	}
 
 	private void extendMax() {
 		IntervalTupleList newPoints = sampler.extendMax(points.get(points.count() - 1).x().getHigh()
 				, view.getXmax());
-		Log.debug("extendMax - count: " + newPoints.count());
 		points.append(newPoints);
-		points.removeHeadToX(view.getXmin());
-}
+		points.cutTo(view.getXmin());
+	}
 
 	private void moveDomain(double difference) {
 		if (difference < 0) {
@@ -142,7 +139,7 @@ public class IntervalPlotModel {
 	}
 
 	private void logPointsCount() {
-		Log.debug("points: " + points.count());
+//		Log.debug("points: " + points.count());
 	}
 
 	/**
