@@ -6,6 +6,7 @@ import org.geogebra.common.kernel.interval.Interval;
 import org.geogebra.common.kernel.interval.IntervalFunctionSampler;
 import org.geogebra.common.kernel.interval.IntervalTuple;
 import org.geogebra.common.kernel.interval.IntervalTupleList;
+import org.geogebra.common.util.debug.Log;
 
 /**
  * Model for Interval plotter.
@@ -80,6 +81,9 @@ public class IntervalPlotModel {
 	 * update function domain to plot due to the visible x range.
 	 */
 	public void updateDomain() {
+		if (view.domain().equals(oldDomain)) {
+			return;
+		}
 		double oldMin = oldDomain.getLow();
 		double oldMax = oldDomain.getHigh();
 		oldDomain = view.domain();
@@ -89,7 +93,7 @@ public class IntervalPlotModel {
 			extendDomain();
 		} else if (oldMax > max && oldMin < min) {
 			shrinkDomain();
-		} else {
+		} else if (oldMax != max) {
 			moveDomain(oldMax - max);
 		}
 	}
@@ -109,49 +113,19 @@ public class IntervalPlotModel {
 	}
 
 	private void extendMin() {
-		IntervalTupleList newPoints = sampler.extendMin(view.getXmin());
-		points.prepend(newPoints);
+		points = sampler.extendMin(view.getXmin());
 	}
 
 	private void shrinkMin() {
-		int offscreenCount = sampler.shrinkMin(view.getXmin());
-		int maxPointsToRemove = Math.min(points.count(), offscreenCount);
-		int keepPointCount = countVisibleFrom(maxPointsToRemove);
-
-		int toRemove = maxPointsToRemove - keepPointCount;
-		if (toRemove > 0 && toRemove < points.count()) {
-			points.removeFromHead(toRemove);
-		}
-	}
-
-	private int countVisibleFrom(int maxPointsToRemove) {
-		int count = 0;
-		for (int i = 0; i < maxPointsToRemove; i++) {
-			if (points.get(i).x().getLow() > view.getXmin()) {
-				count++;
-			}
-		}
-		return count;
+		sampler.shrinkMin(view.getXmin());
 	}
 
 	private void shrinkMax() {
-		int removeCount = sampler.shrinkMax(view.getXmax());
-		int count = 0;
-		for (int i = points.count() - 1; i > points.count() - 1 - removeCount; i--) {
-			if (i >= 0 && points.get(i).x().getHigh() < view.getXmax()) {
-				count++;
-			}
-		}
-
-		int toRemove = removeCount - count;
-		if (toRemove > 0 && toRemove < points.count()) {
-			points.removeFromTail(toRemove);
-		}
+		sampler.shrinkMax(view.getXmax());
 	}
 
 	private void extendMax() {
-		IntervalTupleList newPoints = sampler.extendMax(view.getXmax());
-		points.append(newPoints);
+		points = sampler.extendMax(view.getXmax());
 	}
 
 	private void moveDomain(double difference) {
@@ -160,6 +134,7 @@ public class IntervalPlotModel {
 		} else {
 			extendMin();
 		}
+		Log.debug("points: " + points.count());
 	}
 
 	/**
