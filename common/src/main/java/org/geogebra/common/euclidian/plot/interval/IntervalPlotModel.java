@@ -68,11 +68,7 @@ public class IntervalPlotModel {
 		return points.isEmpty();
 	}
 
-	public IntervalTupleList getPoints() {
-		return points;
-	}
-
-	public void updatePath() {
+	private void updatePath() {
 		path.update();
 	}
 
@@ -95,7 +91,6 @@ public class IntervalPlotModel {
 		} else if (oldMax != max) {
 			moveDomain(oldMax - max);
 		}
-		logPointsCount();
 	}
 
 	private void shrinkDomain() {
@@ -140,10 +135,6 @@ public class IntervalPlotModel {
 		}
 	}
 
-	private void logPointsCount() {
-//		Log.debug("points: " + points.count());
-	}
-
 	/**
 	 * Clears the entire model.
 	 */
@@ -172,5 +163,10 @@ public class IntervalPlotModel {
 
 		IntervalTuple next = pointAt(point.index() + 1);
 		return next != null && next.y().isGreaterThan(point.y());
+	}
+
+	public int pointCount() {
+		return points.count();
+
 	}
 }
