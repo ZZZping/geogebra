@@ -9232,9 +9232,10 @@ public abstract class EuclidianController implements SpecialPointsListener {
 		setViewHits(event.getType());
 		dispatchMouseDownEvent(event);
 		GeoElementND spotlight = view.getKernel().getConstruction().getSpotlight();
-		if (spotlight != null && !view.getHits().contains(spotlight)) {
+		if (shallRemoveSpotlight(spotlight)) {
 			spotlight.remove();
 		}
+
 		if (shallMoveView(event)) {
 			// Michael Borcherds 2007-12-08 BEGIN
 			// bugfix: couldn't select multiple objects with Ctrl
@@ -9258,6 +9259,11 @@ public abstract class EuclidianController implements SpecialPointsListener {
 
 		}
 		switchModeForMousePressed(event);
+	}
+
+	private boolean shallRemoveSpotlight(GeoElementND spotlight) {
+		return spotlight != null && !view.getHits().contains(spotlight)
+				&& view.getHitHandler() == EuclidianBoundingBoxHandler.UNDEFINED;
 	}
 
 	protected void updateFocusedPanel(AbstractEvent event) {

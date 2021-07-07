@@ -2,6 +2,7 @@ package org.geogebra.web.full.gui.util;
 
 import org.geogebra.common.awt.GColor;
 import org.geogebra.common.euclidian.CoordSystemListener;
+import org.geogebra.common.euclidian.EuclidianBoundingBoxHandler;
 import org.geogebra.common.euclidian.EuclidianConstants;
 import org.geogebra.common.euclidian.EuclidianView;
 import org.geogebra.common.euclidian.event.PointerEventType;
@@ -176,11 +177,14 @@ public class ZoomPanelMow extends FlowPanel
 			@Override
 			public void sendEvent(Event evt) {
 				if (evt.getType() == EventType.REMOVE
-						&& evt.getTarget() != null && evt.getTarget().isSpotlight()) {
+						&& evt.getTarget() != null && evt.getTarget().isSpotlight()
+				) {
+					EuclidianView view = appW.getActiveEuclidianView();
+					EuclidianBoundingBoxHandler hitHandler = view.getHitHandler();
 					DockPanelW dp =	(DockPanelW) appW.getGuiManager().getLayout().getDockManager()
 							.getPanel(App.VIEW_EUCLIDIAN);
 					dp.getComponent().removeStyleName("graphicsWithSpotlight");
-					appW.getActiveEuclidianView().setSpotlight(false);
+					view.setSpotlight(false);
 					spotlightOff.removeFromParent();
 					appW.getEventDispatcher().removeEventListener(this);
 				}
