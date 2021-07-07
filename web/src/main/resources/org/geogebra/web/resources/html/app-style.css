@@ -112,6 +112,7 @@
     position: relative;
 }
 .GeoGebraFrame .marblePanel.error, .GeoGebraFrame .marblePanel.help, .GeoGebraFrame .marblePanel {
+    position: absolute;
     height: 100%;
     padding-top: 0px;
     padding-bottom: 0px;

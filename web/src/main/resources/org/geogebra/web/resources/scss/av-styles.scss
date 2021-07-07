@@ -101,8 +101,8 @@
 	}
 
 	.marblePanel {
-		position: absolute;
 		border-right: 1px solid $tool-border;
+		position: absolute;
 		min-width: 58px;
 		box-sizing: border-box;
 		height: 100%;
@@ -319,25 +319,25 @@
 	}
 
 	.avNameLogo {
-		opacity: 0.36;
-		text-align: center;
-		margin-top: 24px;
-		margin-bottom: 48px;
-		&>div {
+			opacity: 0.36;
 			text-align: center;
+			margin-top: 24px;
+			margin-bottom: 48px;
+			&>div {
+				text-align: center;
+			}
 		}
-	}
 
-	.avNameLogoScientific {
-		margin-bottom: 0;
-	}
+		.avNameLogoScientific {
+			margin-bottom: 0;
+		}
 
-	.newRadioButtonTreeItemParent {
-		/* to override GWT nonsense */
-		display: block !important;
-		background-color: $white;
-		border-top: $tool-border solid 1px;
-		border-bottom: $tool-border solid 1px;
+		.newRadioButtonTreeItemParent {
+        		/* to override GWT nonsense */
+        		display: block !important;
+        		background-color: $white;
+        		border-top: $tool-border solid 1px;
+        		border-bottom: $tool-border solid 1px;
 
 		&.focused {
 			border-top: $purple-default solid 1px;
