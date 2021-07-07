@@ -139,6 +139,7 @@ public class ZoomPanelMow extends FlowPanel
 				((GeoElement) spotlight).setInverseFill(true);
 				spotlight.setObjColor(GColor.BLACK);
 				spotlight.setAlphaValue(0.32);
+				appW.getSelectionManager().addSelectedGeo(spotlight);
 				spotlight.updateRepaint();
 
 				appW.getAppletFrame().add(ZoomPanelMow.this::initSpotlightOff);
