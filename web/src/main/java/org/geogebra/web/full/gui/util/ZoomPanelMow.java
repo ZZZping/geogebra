@@ -1,6 +1,5 @@
 package org.geogebra.web.full.gui.util;
 
-import org.geogebra.common.awt.GColor;
 import org.geogebra.common.euclidian.CoordSystemListener;
 import org.geogebra.common.euclidian.EuclidianBoundingBoxHandler;
 import org.geogebra.common.euclidian.EuclidianConstants;
@@ -8,7 +7,7 @@ import org.geogebra.common.euclidian.EuclidianView;
 import org.geogebra.common.euclidian.event.PointerEventType;
 import org.geogebra.common.gui.AccessibilityGroup;
 import org.geogebra.common.gui.SetLabels;
-import org.geogebra.common.kernel.geos.GeoElement;
+import org.geogebra.common.kernel.geos.GeoSpotlight;
 import org.geogebra.common.kernel.kernelND.GeoElementND;
 import org.geogebra.common.main.App;
 import org.geogebra.common.plugin.Event;
@@ -135,11 +134,11 @@ public class ZoomPanelMow extends FlowPanel
 				appW.getActiveEuclidianView().setSpotlight(true);
 				appW.setMode(EuclidianConstants.MODE_SELECT_MOW);
 
-				constructSpotlight();
-				spotlight.setFixed(false);
-				((GeoElement) spotlight).setInverseFill(true);
-				spotlight.setObjColor(GColor.BLACK);
-				spotlight.setAlphaValue(0.32);
+				spotlight = new GeoSpotlight(appW.getKernel().getConstruction());
+//				spotlight.setFixed(false);
+//				((GeoElement) spotlight).setInverseFill(true);
+//				spotlight.setObjColor(GColor.BLACK);
+//				spotlight.setAlphaValue(0.32);
 				appW.getSelectionManager().addSelectedGeo(spotlight);
 				spotlight.updateRepaint();
 

@@ -9235,7 +9235,6 @@ public abstract class EuclidianController implements SpecialPointsListener {
 		if (shallRemoveSpotlight(spotlight)) {
 			spotlight.remove();
 		}
-
 		if (shallMoveView(event)) {
 			// Michael Borcherds 2007-12-08 BEGIN
 			// bugfix: couldn't select multiple objects with Ctrl
