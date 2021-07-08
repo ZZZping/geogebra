@@ -355,9 +355,13 @@
 			min-height: 72px;
 		}
 
+		&.checkboxElem > * {
+			display: inline-block;
+			vertical-align: middle;
+		}
+
 		> * {
 			display: block;
-			vertical-align: middle;
 		}
 
 		.optionsSlider, .minMaxPanel {
