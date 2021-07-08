@@ -128,8 +128,7 @@ public class TeXBuilder {
 	private Atom getPlaceholder(MathSequence sequence) {
 		MathContainer parent = sequence.getParent();
 		if (parent == null
-				|| (parent instanceof MathArray	&& parent.size() == 1)
-				|| !teXSerializer.isPlaceholderEnabled()) {
+				|| (parent instanceof MathArray	&& parent.size() == 1)) {
 			return getInvisiblePlaceholder();
 		}
 		if (parent instanceof MathFunction) {
@@ -149,7 +148,8 @@ public class TeXBuilder {
 	private Atom getPlaceholderBox() {
 		return new ColorAtom(
 				new ScaleAtom(new PhantomAtom(new CharAtom('g')), 1, 1.6),
-				FactoryProvider.getInstance().getGraphicsFactory().createColor(0xDCDCDC),
+				FactoryProvider.getInstance().getGraphicsFactory().createColor(
+						teXSerializer.isPlaceholderEnabled() ? 0xDCDCDC : 0xFFFFFF),
 				null
 		);
 	}
