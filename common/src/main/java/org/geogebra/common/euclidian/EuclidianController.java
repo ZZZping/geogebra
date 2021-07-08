@@ -9921,7 +9921,6 @@ public abstract class EuclidianController implements SpecialPointsListener {
 
 		if (view.isSpotlight()) {
 			spotlightController.disappearBox();
-			return;
 		}
 
 		if (this.mode == EuclidianConstants.MODE_CIRCLE_POINT_RADIUS) {
