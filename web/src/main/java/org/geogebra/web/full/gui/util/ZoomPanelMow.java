@@ -1,7 +1,6 @@
 package org.geogebra.web.full.gui.util;
 
 import org.geogebra.common.euclidian.CoordSystemListener;
-import org.geogebra.common.euclidian.EuclidianBoundingBoxHandler;
 import org.geogebra.common.euclidian.EuclidianConstants;
 import org.geogebra.common.euclidian.EuclidianView;
 import org.geogebra.common.euclidian.event.PointerEventType;
@@ -135,10 +134,6 @@ public class ZoomPanelMow extends FlowPanel
 				appW.setMode(EuclidianConstants.MODE_SELECT_MOW);
 
 				spotlight = new GeoSpotlight(appW.getKernel().getConstruction());
-//				spotlight.setFixed(false);
-//				((GeoElement) spotlight).setInverseFill(true);
-//				spotlight.setObjColor(GColor.BLACK);
-//				spotlight.setAlphaValue(0.32);
 				appW.getSelectionManager().addSelectedGeo(spotlight);
 				spotlight.updateRepaint();
 
@@ -179,7 +174,6 @@ public class ZoomPanelMow extends FlowPanel
 						&& evt.getTarget() != null && evt.getTarget().isSpotlight()
 				) {
 					EuclidianView view = appW.getActiveEuclidianView();
-					EuclidianBoundingBoxHandler hitHandler = view.getHitHandler();
 					DockPanelW dp =	(DockPanelW) appW.getGuiManager().getLayout().getDockManager()
 							.getPanel(App.VIEW_EUCLIDIAN);
 					dp.getComponent().removeStyleName("graphicsWithSpotlight");

@@ -114,6 +114,7 @@ import org.geogebra.common.kernel.geos.GeoPolyLine;
 import org.geogebra.common.kernel.geos.GeoPolygon;
 import org.geogebra.common.kernel.geos.GeoPriorityComparator;
 import org.geogebra.common.kernel.geos.GeoSegment;
+import org.geogebra.common.kernel.geos.GeoSpotlight;
 import org.geogebra.common.kernel.geos.GeoText;
 import org.geogebra.common.kernel.geos.GeoVector;
 import org.geogebra.common.kernel.geos.GeoVideo;
@@ -9231,8 +9232,8 @@ public abstract class EuclidianController implements SpecialPointsListener {
 
 		setViewHits(event.getType());
 		dispatchMouseDownEvent(event);
-		GeoElementND spotlight = view.getKernel().getConstruction().getSpotlight();
-		if (shallRemoveSpotlight(spotlight)) {
+		GeoSpotlight spotlight = (GeoSpotlight) view.getKernel().getConstruction().getSpotlight();
+		if (spotlight != null && spotlight.canBeRemoved()) {
 			spotlight.remove();
 		}
 		if (shallMoveView(event)) {
@@ -9258,11 +9259,6 @@ public abstract class EuclidianController implements SpecialPointsListener {
 
 		}
 		switchModeForMousePressed(event);
-	}
-
-	private boolean shallRemoveSpotlight(GeoElementND spotlight) {
-		return spotlight != null && !view.getHits().contains(spotlight)
-				&& view.getHitHandler() == EuclidianBoundingBoxHandler.UNDEFINED;
 	}
 
 	protected void updateFocusedPanel(AbstractEvent event) {

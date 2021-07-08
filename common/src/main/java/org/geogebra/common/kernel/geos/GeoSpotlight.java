@@ -1,6 +1,7 @@
 package org.geogebra.common.kernel.geos;
 
 import org.geogebra.common.awt.GColor;
+import org.geogebra.common.euclidian.EuclidianBoundingBoxHandler;
 import org.geogebra.common.euclidian.EuclidianView;
 import org.geogebra.common.kernel.Construction;
 import org.geogebra.common.kernel.matrix.Coords;
@@ -9,6 +10,7 @@ public class GeoSpotlight extends GeoConic {
 	private static final double SPOTLIGHT_RADIUS = 100;
 	public GeoSpotlight(Construction c) {
 		super(c);
+		setLabel("eq1");
 		setSphere();
 		setVisualStyle();
 		setToConstruction();
@@ -22,7 +24,6 @@ public class GeoSpotlight extends GeoConic {
 				ev.toRealWorldCoordY(screenVerticalMiddle), 1);
 		double rSqr = SPOTLIGHT_RADIUS / ev.getXscale();
 		setSphereND(coords, rSqr);
-		setLabel("eq1");
 	}
 
 	private void setToConstruction() {
@@ -35,4 +36,11 @@ public class GeoSpotlight extends GeoConic {
 		setObjColor(GColor.BLACK);
 		setAlphaValue(0.32);
 	}
+
+	public boolean canBeRemoved() {
+		EuclidianView ev = getApp().getActiveEuclidianView();
+		return !ev.getHits().contains(this)
+				&& ev.getHitHandler() == EuclidianBoundingBoxHandler.UNDEFINED;
+	}
+
 }
