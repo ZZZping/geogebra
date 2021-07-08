@@ -198,8 +198,6 @@ public class TeXBuilder {
 		return newCharAtom(character.getUnicode());
 	}
 
-
-
 	private Atom newCharAtom(char unicode) {
 		switch (unicode) {
 		case ' ':
