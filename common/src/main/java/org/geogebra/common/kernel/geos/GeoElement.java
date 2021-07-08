@@ -6168,7 +6168,7 @@ public abstract class GeoElement extends ConstructionElement implements GeoEleme
 	}
 
 	public boolean isSpotlight() {
-		return this == cons.getSpotlight();
+		return false;
 	}
 
 	@Override

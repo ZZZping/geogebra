@@ -160,7 +160,7 @@ public class ZoomPanelMow extends FlowPanel
 					DockPanelW dp =	(DockPanelW) appW.getGuiManager().getLayout().getDockManager()
 							.getPanel(App.VIEW_EUCLIDIAN);
 					dp.getComponent().removeStyleName("graphicsWithSpotlight");
-					view.setSpotlight(false);
+					view.clearSpotlight();
 					spotlightOff.removeFromParent();
 					appW.getEventDispatcher().removeEventListener(this);
 				}

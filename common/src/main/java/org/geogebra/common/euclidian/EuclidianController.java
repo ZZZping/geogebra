@@ -114,6 +114,7 @@ import org.geogebra.common.kernel.geos.GeoPolyLine;
 import org.geogebra.common.kernel.geos.GeoPolygon;
 import org.geogebra.common.kernel.geos.GeoPriorityComparator;
 import org.geogebra.common.kernel.geos.GeoSegment;
+import org.geogebra.common.kernel.geos.GeoSpotlight;
 import org.geogebra.common.kernel.geos.GeoText;
 import org.geogebra.common.kernel.geos.GeoVector;
 import org.geogebra.common.kernel.geos.GeoVideo;
@@ -439,6 +440,14 @@ public abstract class EuclidianController implements SpecialPointsListener {
 
 	public void spotlightOff() {
 		spotlightController.turnOff();
+	}
+
+	public GeoSpotlight getSpotlight() {
+		return spotlightController.spotlight();
+	}
+
+	public void clearSpotlight() {
+		spotlightController.clear();
 	}
 
 	/**
@@ -8435,7 +8444,7 @@ public abstract class EuclidianController implements SpecialPointsListener {
 				return;
 			}
 		}
-		if (view.isSpotlight()) {
+		if (view.hasSpotlight()) {
 			spotlightController.keepBox();
 		}
 
@@ -9919,7 +9928,7 @@ public abstract class EuclidianController implements SpecialPointsListener {
 			rotationCenter = null;
 		}
 
-		if (view.isSpotlight()) {
+		if (view.hasSpotlight()) {
 			spotlightController.disappearBox();
 		}
 

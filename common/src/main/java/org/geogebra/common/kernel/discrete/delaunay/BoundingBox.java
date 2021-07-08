@@ -1,4 +1,4 @@
- package org.geogebra.common.kernel.discrete.delaunay;
+package org.geogebra.common.kernel.discrete.delaunay;
 
 /**
  * Created by IntelliJ IDEA. User: Aviad Segev Date: 22/11/2009 Time: 20:29:56
