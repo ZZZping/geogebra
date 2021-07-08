@@ -3,6 +3,7 @@ package org.geogebra.common.euclidian;
 import org.geogebra.common.kernel.Construction;
 import org.geogebra.common.kernel.geos.GeoSpotlight;
 import org.geogebra.common.main.App;
+import org.geogebra.common.main.SelectionManager;
 import org.geogebra.common.util.GTimer;
 
 /**
@@ -16,6 +17,7 @@ public class SpotlightController {
 	private final Construction cons;
 	private final GTimer disappearBoxTimer;
 	private final App app;
+	private SelectionManager selectionManager;
 
 	/**
 	 * Constructor
@@ -25,6 +27,7 @@ public class SpotlightController {
 		cons = app.getKernel().getConstruction();
 		this.app = app;
 		disappearBoxTimer = app.newTimer(this::disappearBoundingBox, BOX_DISAPPEAR_DELAY);
+		selectionManager = app.getSelectionManager();
 	}
 
 	/**
@@ -33,7 +36,8 @@ public class SpotlightController {
 	public void turnOn() {
 		app.setMode(EuclidianConstants.MODE_SELECT_MOW);
 		GeoSpotlight spotlight = new GeoSpotlight(cons);
-		app.getSelectionManager().addSelectedGeo(spotlight);
+		selectionManager.clearSelectedGeos();
+		selectionManager.addSelectedGeo(spotlight);
 		disappearBox();
 		spotlight.updateRepaint();
 
@@ -78,7 +82,7 @@ public class SpotlightController {
 	}
 
 	private void disappearBoundingBox() {
-		app.getSelectionManager().clearSelectedGeos();
+		selectionManager.clearSelectedGeos();
 		app.getActiveEuclidianView().setBoundingBox(null);
 	}
 
