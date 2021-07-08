@@ -37,7 +37,6 @@ public class GeoSurfaceReplacer implements Traversing {
 				return new ExpressionNode(((ExpressionNode) ev).getKernel(),
 						vect);
 			}
-
 		}
 		return ev;
 	}
