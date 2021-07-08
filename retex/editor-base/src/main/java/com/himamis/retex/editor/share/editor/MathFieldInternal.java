@@ -67,7 +67,7 @@ import com.himamis.retex.renderer.share.platform.FactoryProvider;
  */
 public class MathFieldInternal
 		implements KeyListener, FocusListener, ClickListener {
-
+	public static final int PADDING_LEFT_SCROLL = 20;
 	@Weak
 	private MathField mathField;
 

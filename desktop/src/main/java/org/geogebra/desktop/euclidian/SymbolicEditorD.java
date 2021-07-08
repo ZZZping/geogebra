@@ -3,7 +3,6 @@ package org.geogebra.desktop.euclidian;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.SwingUtilities;
 
@@ -27,7 +26,7 @@ import com.himamis.retex.renderer.share.TeXFont;
 
 public class SymbolicEditorD extends SymbolicEditor {
 
-	private Box box;
+	private final Box box;
 	private MathFieldD mathField;
 	private double baseline;
 
@@ -135,15 +134,14 @@ public class SymbolicEditorD extends SymbolicEditor {
 		g.translate(box.getX(), baseline - (double) (box.getHeight()) / 2);
 		view.getTextField().drawBounds(g, bgColor, 0, 0, box.getWidth(), box.getHeight());
 
-		g.translate(DrawInputBox.TF_PADDING_HORIZONTAL, 0);
 		mathField.setForeground(GColorD.getAwtColor(getGeoInputBox().getObjectColor()));
-		if (getDrawInputBox() != null && getDrawInputBox().hasError()) {
-			box.setBorder(BorderFactory.createDashedBorder(GColorD.getAwtColor(GColor.ERROR_RED),
-					4, 1, 1, true));
-		} else {
-			box.setBorder(null);
-		}
+		box.setBorder(null);
+		g.setClip(0, 0, box.getWidth(), box.getHeight());
+		double scrollX = Math.max(0, mathField.getCursorX() - box.getWidth()
+				+ MathFieldInternal.PADDING_LEFT_SCROLL);
+		g.translate(DrawInputBox.TF_PADDING_HORIZONTAL - scrollX, 0);
 		box.paint(GGraphics2DD.getAwtGraphics(g));
+		g.resetClip();
 
 		g.restoreTransform();
 	}

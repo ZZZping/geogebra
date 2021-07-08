@@ -73,6 +73,7 @@ public class MathFieldD extends JLabel implements MathField {
 	private static final long serialVersionUID = 1L;
 	
 	private MathFieldInternal mathFieldInternal;
+	private int cursorX;
 
 	public MathFieldD(SyntaxAdapter syntaxAdapter) {
 		SelectionBox.touchSelection = false;
@@ -109,6 +110,7 @@ public class MathFieldD extends JLabel implements MathField {
 		setFocusTraversalKeysEnabled(true);
 		setFocusable(true);
 		setPreferredSize(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
+		this.cursorX = icon.getCursorX();
 	}
 
 	@Override
@@ -249,4 +251,7 @@ public class MathFieldD extends JLabel implements MathField {
 		return CursorController.getPath(mathFieldInternal.getEditorState());
 	}
 
+	public int getCursorX() {
+		return cursorX;
+	}
 }
