@@ -94,7 +94,7 @@ class MetaModelFunctions {
 						}));
 
 		functions.add(
-				createFunctionInsert(Tag.ATOMIC_POST, "\\atomicpost", 3,
+				createFunctionInsert(Tag.ATOMIC_POST, "\\atomicpost", 0,
 						new MetaParameter[] {
 								MetaParameter.BASIC, createParameterUp(1), createParameterDown(0)
 						}));
