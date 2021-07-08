@@ -183,7 +183,7 @@ public class EvaluatorEditor implements IsWidget, MathFieldListener, BlurHandler
 			Canvas2Svg ctx = new Canvas2Svg(width, height);
 			CursorBox.setBlink(false);
 			ColorW bgColor = transparent ? null : mathField.getBackgroundColor();
-			mathField.paint(Js.uncheckedCast(ctx), 0, bgColor);
+			mathField.paintFormulaNoPlaceholder(Js.uncheckedCast(ctx), 0, bgColor);
 			ret.setBaseline((height - depth) / (double) height);
 			ret.setSvg(SVG_PREFIX + Global.escape(ctx.getSerializedSvg(true)));
 

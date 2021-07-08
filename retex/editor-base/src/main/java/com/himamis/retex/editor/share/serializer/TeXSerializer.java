@@ -91,6 +91,13 @@ public class TeXSerializer extends SerializerAdapter {
 		showPlaceholder = placeholder;
 	}
 
+	/**
+	 * @return true if placeholder should be drawn
+	 */
+	public boolean isPlaceholderEnabled() {
+		return showPlaceholder;
+	}
+
 	@Override
 	public void serialize(MathSequence sequence, StringBuilder stringBuilder) {
 		if (sequence == null) {

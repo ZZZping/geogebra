@@ -128,7 +128,8 @@ public class TeXBuilder {
 	private Atom getPlaceholder(MathSequence sequence) {
 		MathContainer parent = sequence.getParent();
 		if (parent == null
-				|| (parent instanceof MathArray	&& parent.size() == 1)) {
+				|| (parent instanceof MathArray	&& parent.size() == 1)
+				|| !teXSerializer.isPlaceholderEnabled()) {
 			return getInvisiblePlaceholder();
 		}
 		if (parent instanceof MathFunction) {
@@ -196,6 +197,8 @@ public class TeXBuilder {
 
 		return newCharAtom(character.getUnicode());
 	}
+
+
 
 	private Atom newCharAtom(char unicode) {
 		switch (unicode) {
@@ -456,5 +459,9 @@ public class TeXBuilder {
 
 	public void setSyntaxAdapter(SyntaxAdapter syntaxAdapter) {
 		teXSerializer.setSyntaxAdapter(syntaxAdapter);
+	}
+
+	public void enablePlaceholder(boolean enable) {
+		teXSerializer.setPlaceholderEnabled(enable);
 	}
 }
