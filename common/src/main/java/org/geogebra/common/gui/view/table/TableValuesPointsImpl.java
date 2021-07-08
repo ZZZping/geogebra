@@ -87,7 +87,7 @@ public class TableValuesPointsImpl implements TableValuesPoints {
 
 	private void setPoints(List<GeoPoint> list, int column) {
 		initPoints(column);
-		points.set(column, list);
+		points.add(column, list);
 	}
 
 	private void initPoints(int column) {
