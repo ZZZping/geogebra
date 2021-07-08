@@ -2,6 +2,7 @@ package org.geogebra.web.full.gui.util;
 
 import org.geogebra.common.euclidian.CoordSystemListener;
 import org.geogebra.common.euclidian.EuclidianConstants;
+import org.geogebra.common.euclidian.EuclidianController;
 import org.geogebra.common.euclidian.EuclidianView;
 import org.geogebra.common.euclidian.event.PointerEventType;
 import org.geogebra.common.gui.AccessibilityGroup;
@@ -129,12 +130,16 @@ public class ZoomPanelMow extends FlowPanel
 				DockPanelW dp =	(DockPanelW) appW.getGuiManager().getLayout().getDockManager()
 						.getPanel(App.VIEW_EUCLIDIAN);
 				dp.getComponent().addStyleName("graphicsWithSpotlight");
-				appW.getActiveEuclidianView().getEuclidianController().spotlightOn();
+				getEuclidianController().spotlightOn();
 				appW.getAppletFrame().add(ZoomPanelMow.this::initSpotlightOff);
 				appW.hideMenu();
 			}
 		});
 		add(spotlightOnBtn);
+	}
+
+	private EuclidianController getEuclidianController() {
+		return appW.getActiveEuclidianView().getEuclidianController();
 	}
 
 	private SimplePanel initSpotlightOff() {
@@ -169,7 +174,7 @@ public class ZoomPanelMow extends FlowPanel
 		ClickStartHandler.init(spotlightOffBtn, new ClickStartHandler() {
 			@Override
 			public void onClickStart(int x, int y, PointerEventType type) {
-				spotlight.remove();
+				getEuclidianController().spotlightOff();
 			}
 		});
 
