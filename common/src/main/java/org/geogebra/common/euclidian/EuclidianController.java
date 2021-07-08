@@ -8435,6 +8435,10 @@ public abstract class EuclidianController implements SpecialPointsListener {
 				return;
 			}
 		}
+		if (view.isSpotlight()) {
+			spotlightController.keepBox();
+		}
+
 		clearJustCreatedGeos();
 
 		if (!draggingBeyondThreshold && isDraggingBeyondThreshold()) {
@@ -9913,6 +9917,11 @@ public abstract class EuclidianController implements SpecialPointsListener {
 		if (rotationCenter != null && !rotationCenter.isLabelSet()) {
 			rotationCenter.remove();
 			rotationCenter = null;
+		}
+
+		if (view.isSpotlight()) {
+			spotlightController.disappearBox();
+			return;
 		}
 
 		if (this.mode == EuclidianConstants.MODE_CIRCLE_POINT_RADIUS) {
