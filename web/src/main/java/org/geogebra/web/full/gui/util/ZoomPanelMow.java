@@ -6,7 +6,6 @@ import org.geogebra.common.euclidian.EuclidianView;
 import org.geogebra.common.euclidian.event.PointerEventType;
 import org.geogebra.common.gui.AccessibilityGroup;
 import org.geogebra.common.gui.SetLabels;
-import org.geogebra.common.kernel.geos.GeoSpotlight;
 import org.geogebra.common.kernel.kernelND.GeoElementND;
 import org.geogebra.common.main.App;
 import org.geogebra.common.plugin.Event;
@@ -130,33 +129,12 @@ public class ZoomPanelMow extends FlowPanel
 				DockPanelW dp =	(DockPanelW) appW.getGuiManager().getLayout().getDockManager()
 						.getPanel(App.VIEW_EUCLIDIAN);
 				dp.getComponent().addStyleName("graphicsWithSpotlight");
-				appW.getActiveEuclidianView().setSpotlight(true);
-				appW.setMode(EuclidianConstants.MODE_SELECT_MOW);
-
-				spotlight = new GeoSpotlight(appW.getKernel().getConstruction());
-				appW.getSelectionManager().addSelectedGeo(spotlight);
-				spotlight.updateRepaint();
-
+				appW.getActiveEuclidianView().getEuclidianController().spotlightOn();
 				appW.getAppletFrame().add(ZoomPanelMow.this::initSpotlightOff);
 				appW.hideMenu();
 			}
 		});
 		add(spotlightOnBtn);
-	}
-
-	private void constructSpotlight() {
-		EuclidianView ev = appW.getActiveEuclidianView();
-		int screenHorizontalMiddle = ev.getWidth() / 2;
-		int screenVerticalMiddle = ev.getHeight() / 2;
-		double rSqr = Math.pow(SPOTLIGHT_DIAMETER / 2.0 / ev.getXscale(), 2);
-
-		String circleEq = "(x-" + appW.getActiveEuclidianView()
-				.toRealWorldCoordX(screenHorizontalMiddle) + ")^2 + (y-"
-				+ appW.getActiveEuclidianView().toRealWorldCoordY(screenVerticalMiddle)
-				+ ")^2 = " + rSqr;
-		spotlight = appW.getKernel().getAlgebraProcessor().processAlgebraCommand(circleEq,
-				false)[0];
-		appW.getKernel().getConstruction().setSpotlight(spotlight);
 	}
 
 	private SimplePanel initSpotlightOff() {

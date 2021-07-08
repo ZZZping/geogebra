@@ -114,7 +114,6 @@ import org.geogebra.common.kernel.geos.GeoPolyLine;
 import org.geogebra.common.kernel.geos.GeoPolygon;
 import org.geogebra.common.kernel.geos.GeoPriorityComparator;
 import org.geogebra.common.kernel.geos.GeoSegment;
-import org.geogebra.common.kernel.geos.GeoSpotlight;
 import org.geogebra.common.kernel.geos.GeoText;
 import org.geogebra.common.kernel.geos.GeoVector;
 import org.geogebra.common.kernel.geos.GeoVideo;
@@ -238,6 +237,7 @@ public abstract class EuclidianController implements SpecialPointsListener {
 	@Weak
 	protected final SelectionManager selection;
 	protected final Localization localization;
+	private final SpotlightController spotlightController;
 	public double xRW;
 	public double yRW;
 	public GeoPointND movedGeoPoint;
@@ -433,6 +433,14 @@ public abstract class EuclidianController implements SpecialPointsListener {
 		zoomerAnimationListeners.clear();
 	}
 
+	public void spotlightOn() {
+		spotlightController.turnOn();
+	}
+
+	public void spotlightOff() {
+		spotlightController.turnOff();
+	}
+
 	/**
 	 * state for selection tool over press/release
 	 */
@@ -462,6 +470,7 @@ public abstract class EuclidianController implements SpecialPointsListener {
 		this.selection = app.getSelectionManager();
 		this.localization = app.getLocalization();
 		this.priorityComparator = app.getGeoPriorityComparator();
+		spotlightController = new SpotlightController(app);
 		createCompanions();
 	}
 
@@ -9232,10 +9241,9 @@ public abstract class EuclidianController implements SpecialPointsListener {
 
 		setViewHits(event.getType());
 		dispatchMouseDownEvent(event);
-		GeoSpotlight spotlight = (GeoSpotlight) view.getKernel().getConstruction().getSpotlight();
-		if (spotlight != null && spotlight.canBeRemoved()) {
-			spotlight.remove();
-		}
+
+		spotlightController.turnOff();
+
 		if (shallMoveView(event)) {
 			// Michael Borcherds 2007-12-08 BEGIN
 			// bugfix: couldn't select multiple objects with Ctrl
