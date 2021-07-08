@@ -5,8 +5,16 @@ import org.geogebra.common.euclidian.EuclidianView;
 import org.geogebra.common.kernel.Construction;
 import org.geogebra.common.kernel.matrix.Coords;
 
+/**
+ * Geo representing spotlight
+ */
 public class GeoSpotlight extends GeoConic {
 	private static final double SPOTLIGHT_RADIUS = 100;
+
+	/**
+	 * Constructor
+	 * @param c construction
+	 */
 	public GeoSpotlight(Construction c) {
 		super(c);
 		setLabel("eq1");

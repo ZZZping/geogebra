@@ -43,6 +43,9 @@ public class SpotlightController {
 
 	}
 
+	/**
+	 * Makes bounding box disappear in some time.
+	 */
 	public void disappearBox() {
 		if (app.getSelectionManager().containsSelectedGeo(spotlight())) {
 			disappearBoxTimer.start();
