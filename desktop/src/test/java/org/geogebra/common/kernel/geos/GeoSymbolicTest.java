@@ -1531,4 +1531,41 @@ public class GeoSymbolicTest extends BaseSymbolicTest {
 			assertEquals(casGiac.getCasGiacCacheSize(), cacheNewSize + 2);
 		}
 	}
+
+	@Test
+	public void testUndoRedoWithSolve() {
+		app.setUndoActive(true);
+
+		add("u(x)=-2*10^(-5) x^(3)+1.4*10^(-2) x^(2)-2.4 x+200");
+		app.storeUndoInfo();
+		add("a(x)=Integral(u,0,340)");
+		app.storeUndoInfo();
+		add("eq1: ((a)/(3))=Integral(u,0,s)");
+		app.storeUndoInfo();
+		add("solution = Solve(eq1,s)");
+		app.storeUndoInfo();
+
+		undoRedo();
+		GeoSymbolic eq = (GeoSymbolic) lookup("solution");
+		assertThat(eq, notNullValue());
+	}
+
+	@Test
+	public void orderShouldNotChange() {
+		app.setUndoActive(true);
+
+		t("f(a,x) = a*x^2", "a * x^(2)");
+		app.storeUndoInfo();
+		t("x", "x");
+		app.storeUndoInfo();
+		t("x", "x");
+		app.storeUndoInfo();
+		t("r:=f(a,a)", "a^(3)");
+		app.storeUndoInfo();
+
+		assertEquals(3, lookup("r").getConstructionIndex());
+
+		undoRedo();
+		assertEquals(3, lookup("r").getConstructionIndex());
+	}
 }
