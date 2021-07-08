@@ -7,7 +7,6 @@ import org.geogebra.common.euclidian.EuclidianView;
 import org.geogebra.common.euclidian.event.PointerEventType;
 import org.geogebra.common.gui.AccessibilityGroup;
 import org.geogebra.common.gui.SetLabels;
-import org.geogebra.common.kernel.kernelND.GeoElementND;
 import org.geogebra.common.main.App;
 import org.geogebra.common.plugin.Event;
 import org.geogebra.common.plugin.EventListener;
@@ -34,10 +33,8 @@ import com.google.gwt.user.client.ui.SimplePanel;
  */
 public class ZoomPanelMow extends FlowPanel
 		implements SetLabels, CoordSystemListener {
-	private static int SPOTLIGHT_DIAMETER = 200;
 	private AppW appW;
 	private StandardButton spotlightOnBtn;
-	private GeoElementND spotlight;
 	private StandardButton dragPadBtn;
 	private StandardButton zoomInBtn;
 	private StandardButton zoomOutBtn;

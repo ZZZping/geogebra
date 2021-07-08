@@ -683,15 +683,20 @@ public abstract class EuclidianView implements EuclidianViewInterfaceCommon,
 		ymaxObject = new GeoNumeric(kernel.getConstruction());
 	}
 
-
+	/**
+	 *
+	 * @return if spotlight is active or not
+	 */
 	public boolean hasSpotlight() {
 		return euclidianController.getSpotlight() != null;
 	}
 
+	/**
+	 * Clears spotlight
+	 */
 	public void clearSpotlight() {
 		euclidianController.clearSpotlight();
 	}
-
 
 	/**
 	 * 
