@@ -49,4 +49,6 @@ public interface TableValuesModel {
 	 * @return the header string
 	 */
 	String getHeaderAt(int column);
+
+	void setCell(int row, int column);
 }
