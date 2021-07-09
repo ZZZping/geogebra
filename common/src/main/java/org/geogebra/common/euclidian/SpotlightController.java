@@ -18,6 +18,7 @@ public class SpotlightController {
 	private final GTimer disappearBoxTimer;
 	private final App app;
 	private SelectionManager selectionManager;
+	private GeoSpotlight spotlight = null;
 
 	/**
 	 * Constructor
@@ -35,12 +36,11 @@ public class SpotlightController {
 	 */
 	public void turnOn() {
 		app.setMode(EuclidianConstants.MODE_SELECT_MOW);
-		GeoSpotlight spotlight = new GeoSpotlight(cons);
+		spotlight = new GeoSpotlight(cons);
 		selectionManager.clearSelectedGeos();
 		selectionManager.addSelectedGeo(spotlight);
 		disappearBox();
 		spotlight.updateRepaint();
-
 	}
 
 	/**
@@ -56,7 +56,6 @@ public class SpotlightController {
 	 * Turns spotlight off.
 	 */
 	public void turnOff() {
-		GeoSpotlight spotlight = spotlight();
 		if (spotlight != null && canBeRemoved()) {
 			disappearBoxTimer.stop();
 			spotlight.remove();
@@ -68,7 +67,7 @@ public class SpotlightController {
 	 * @return spotlight geo
 	 */
 	GeoSpotlight spotlight() {
-		return (GeoSpotlight) cons.getSpotlight();
+		return spotlight;
 	}
 
 	private boolean canBeRemoved() {
@@ -93,6 +92,6 @@ public class SpotlightController {
 	 * clears spotlight
 	 */
 	public void clear() {
-		cons.setSpotlight(null);
+		spotlight = null;
 	}
 }

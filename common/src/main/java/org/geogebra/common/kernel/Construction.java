@@ -201,8 +201,6 @@ public class Construction {
 
 	private LayerManager layerManager;
 
-	protected GeoElementND spotlight;
-
 	/**
 	 * Creates a new Construction.
 	 * 
@@ -3785,13 +3783,5 @@ public class Construction {
 			}
 		}
 		return false;
-	}
-
-	public void setSpotlight(GeoElementND spotlight) {
-		this.spotlight = spotlight;
-	}
-
-	public GeoElementND getSpotlight() {
-		return spotlight;
 	}
 }

@@ -20,7 +20,6 @@ public class GeoSpotlight extends GeoConic {
 		setLabel("eq1");
 		setSphere();
 		setVisualStyle();
-		setToConstruction();
 	}
 
 	private void setSphere() {
@@ -31,10 +30,6 @@ public class GeoSpotlight extends GeoConic {
 				ev.toRealWorldCoordY(screenVerticalMiddle), 1);
 		double rSqr = SPOTLIGHT_RADIUS / ev.getXscale();
 		setSphereND(coords, rSqr);
-	}
-
-	private void setToConstruction() {
-		kernel.getConstruction().setSpotlight(this);
 	}
 
 	private void setVisualStyle() {
