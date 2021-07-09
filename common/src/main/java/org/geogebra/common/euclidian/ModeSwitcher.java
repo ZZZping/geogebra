@@ -59,6 +59,7 @@ public class ModeSwitcher {
 		case EuclidianConstants.MODE_RULER:
 			cons.setRuler(cons.getRuler() == null ? new GeoImage(cons) : null);
 			break;
+
 		case EuclidianConstants.MODE_PROTRACTOR:
 			cons.setProtractor(cons.getProtractor() == null ? new GeoImage(cons) : null);
 			break;
@@ -88,12 +89,6 @@ public class ModeSwitcher {
 		embedManager.initAppEmbed(ge);
 		ge.setLabel(null);
 		app.storeUndoInfo();
-		app.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				view.getEuclidianController().selectAndShowSelectionUI(ge);
-			}
-		});
+		app.invokeLater(() -> view.getEuclidianController().selectAndShowSelectionUI(ge));
 	}
 }

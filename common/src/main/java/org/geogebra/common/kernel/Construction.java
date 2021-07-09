@@ -3094,6 +3094,9 @@ public class Construction {
 		spreadsheetTraces = false;
 		supressLabelCreation = false;
 
+		ruler = null;
+		protractor = null;
+
 		groups.clear();
 	}
 
