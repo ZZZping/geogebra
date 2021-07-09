@@ -90,13 +90,13 @@ class MetaModelFunctions {
 		functions.add(
 				createFunctionInsert(Tag.ATOMIC_PRE, "\\atomicpre", 2,
 						new MetaParameter[] {
-								MetaParameter.BASIC, createParameterUp(1), createParameterDown(0)
+								createParameterUp(1), createParameterDown(0), MetaParameter.BASIC
 						}));
 
 		functions.add(
 				createFunctionInsert(Tag.ATOMIC_POST, "\\atomicpost", 0,
 						new MetaParameter[] {
-								MetaParameter.BASIC, createParameterUp(1), createParameterDown(0)
+								MetaParameter.BASIC, createParameterUp(2), createParameterDown(1)
 						}));
 
 		functions.add(createFunction(Tag.ABS));
