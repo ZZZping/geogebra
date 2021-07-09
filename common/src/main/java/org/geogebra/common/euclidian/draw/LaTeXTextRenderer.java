@@ -60,8 +60,6 @@ public class LaTeXTextRenderer implements TextRenderer {
 		double labelHeight = drawInputBox.getHeightForLabel(labelDescription);
 		double inputBoxTop = drawInputBox.getLabelTop() + ((labelHeight - inputBoxHeight) / 2);
 
-		int inputBoxWidth = textDimension.getWidth();
-
 		return AwtFactory.getPrototype().newRectangle(
 				drawInputBox.boxLeft,
 				(int) Math.round(inputBoxTop),
