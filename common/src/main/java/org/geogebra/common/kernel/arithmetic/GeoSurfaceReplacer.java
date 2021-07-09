@@ -22,7 +22,7 @@ public class GeoSurfaceReplacer implements Traversing {
 						.getLeft();
 				FunctionNVar[] fun = surface.getFunctions();
 				MyVecNDNode vect;
-				if (surface.isGeoElement3D()) {
+				if (fun.length > 2) {
 					vect = new MyVec3DNode(
 							((ExpressionNode) ev).getKernel(),
 							fun[0].getExpression(),

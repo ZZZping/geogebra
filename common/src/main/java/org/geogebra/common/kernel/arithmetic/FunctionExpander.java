@@ -151,7 +151,7 @@ public class FunctionExpander implements Traversing {
 					fv = fun[0].getFunctionVariables();
 					Kernel kernel = fun[0].getKernel();
 					MyVecNDNode vect;
-					if (((GeoSurfaceCartesianND) geo).isGeoElement3D()) {
+					if (fun.length > 2) {
 						vect = new MyVec3DNode(
 								((ExpressionNode) ev).getKernel(),
 								fun[0].getExpression().deepCopy(kernel),
