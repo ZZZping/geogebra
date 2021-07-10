@@ -112,6 +112,10 @@ public class IntervalPlotModel {
 	}
 
 	private void extendMin() {
+		if (points.isEmpty()) {
+			return;
+		}
+
 		IntervalTupleList newPoints = sampler.evaluateOn(view.getXmin(),
 				points.get(0).x().getLow());
 		points.prepend(newPoints);
@@ -120,6 +124,10 @@ public class IntervalPlotModel {
 	}
 
 	private void extendMax() {
+		if (points.isEmpty()) {
+			return;
+		}
+
 		IntervalTupleList newPoints = sampler.evaluateOn(
 				points.get(points.count() - 1).x().getHigh(),
 				view.getXmax());
