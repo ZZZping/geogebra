@@ -380,18 +380,55 @@
         mainSession.registerListeners();
         mainSession.delay = delay;
 
-        this.dispatch = function(last) {
-            mainSession.dispatch(last);
-        },
+        let sentEvents = [];
+        let receivedEvents = [];
+
+        this.dispatch = function(event) {
+            mainSession.dispatch(event);
+            receivedEvents.push({
+                ...event,
+                timestamp: new Date().getTime()
+            });
+        }
+
         this.addUser = function(user) {
             mainSession.users[user.id] = user;
         }
+
         this.addEventListener = function(eventCategory, callback) {
-           var eventCategories = typeof eventCategory == "string" ? [eventCategory] : eventCategory;
-           eventCategories.forEach(function(category) {
-               mainSession.eventCallbacks[category] = mainSession.eventCallbacks[category] || [];
-               mainSession.eventCallbacks[category].push(callback);
-           });
-       }
+            let eventCategories = typeof eventCategory == "string" ? [eventCategory] : eventCategory;
+            eventCategories.forEach(function(category) {
+                mainSession.eventCallbacks[category] = mainSession.eventCallbacks[category] || [];
+                mainSession.eventCallbacks[category].push(callback);
+            });
+        }
+
+        this.addEventListener(["construction", "editor"], (event) => {
+            sentEvents.push({
+                ...event,
+                timestamp: new Date().getTime()
+            });
+        })
+
+        this.startLogging = () => {
+            sentEvents = [];
+            receivedEvents = [];
+        }
+
+        function download(object, fileName) {
+            const a = document.createElement("a");
+            a.href = "data:text/json;charset=utf-8,"
+                + encodeURIComponent(JSON.stringify(object, null, 4));
+            a.setAttribute("download", fileName);
+            a.click();
+        }
+
+        this.getSent = () => {
+            download(sentEvents, "events-sent.json");
+        }
+
+        this.getReceived = () => {
+            download(receivedEvents, "events-received.json");
+        }
     }
 })();
