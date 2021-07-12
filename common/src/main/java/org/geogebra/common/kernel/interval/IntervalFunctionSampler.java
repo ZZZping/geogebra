@@ -107,14 +107,6 @@ public class IntervalFunctionSampler {
 		return numberOfSamples > 0 ? numberOfSamples : view.getWidth();
 	}
 
-	public int shrinkMax(double max) {
-		return space.shrinkMax(max);
-	}
-
-	public int shrinkMin(double min) {
-		return space.shrinkMin(min);
-	}
-
 	/**
 	 * Extend and evaluate on interval [min, max]
 	 * @param min lower bound
@@ -122,7 +114,16 @@ public class IntervalFunctionSampler {
 	 * @return tuples evaluated on [min, max].
 	 */
 	public IntervalTupleList extendDomain(double min, double max) {
-		space.setInterval(min, max);
+		setInterval(min, max);
 		return evaluateOnSpace(space);
+	}
+
+	/**
+	 * Sets plot interval without evaluation
+	 * @param low bound.
+	 * @param high bound.
+	 */
+	public void setInterval(double low, double high) {
+		space.setInterval(low, high);
 	}
 }

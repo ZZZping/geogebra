@@ -86,29 +86,9 @@ public class IntervalPlotModel {
 		double max = view.domain().getHigh();
 		if (oldMax < max && oldMin > min) {
 			points = sampler.extendDomain(min, max);
-		} else if (oldMax > max && oldMin < min) {
-			shrinkDomain();
-		} else if (oldMax != max) {
+		} else if (!(oldMax > max && oldMin < min) && oldMax != max) {
 			moveDomain(oldMax - max);
 		}
-	}
-
-	private void shrinkDomain() {
-		if (isEmpty()) {
-			return;
-		}
-
-		shrinkMin();
-		shrinkMax();
-		points = sampler.result();
-	}
-
-	private void shrinkMin() {
-		sampler.shrinkMin(view.getXmin());
-	}
-
-	private void shrinkMax() {
-		sampler.shrinkMax(view.getXmax());
 	}
 
 	private void extendMin() {

@@ -9,10 +9,6 @@ public interface DiscreteSpace {
 
 	DiscreteSpace diffMin(double min);
 
-	int shrinkMax(double max);
-
-	int shrinkMin(double min);
-
 	Stream<Interval> values();
 
 	void setInterval(double min, double max);
