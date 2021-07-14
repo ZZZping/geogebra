@@ -93,8 +93,14 @@ class SimpleTableValuesModel implements TableValuesModel {
 			if (column == 0) {
 				updateAllEvaluatables();
 			}
+			col.updateRepaint();
 			notifyDatasetChanged();
 		}
+	}
+
+	@Override
+	public boolean isColumnEditable(int col) {
+		return columns.get(col).isModifiable();
 	}
 
 	/**

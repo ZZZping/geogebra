@@ -3,8 +3,8 @@ package org.geogebra.common.main.settings;
 import java.util.ArrayList;
 
 import org.geogebra.common.gui.view.data.DataAnalysisModel;
-import org.geogebra.common.gui.view.data.DataAnalysisModel.Regression;
 import org.geogebra.common.gui.view.data.DataDisplayModel.PlotType;
+import org.geogebra.common.kernel.statistics.Regression;
 import org.geogebra.common.util.debug.Log;
 
 /**
@@ -65,9 +65,6 @@ public class DataAnalysisSettings {
 		} else {
 			this.plotType2 = plotType;
 		}
-
-		Log.error("set i = " + i + "  " + plotType1 + " " + plotType2);
-
 	}
 
 	/**
@@ -97,4 +94,7 @@ public class DataAnalysisSettings {
 		return ret == null ? fallback : ret;
 	}
 
+	public void reset() {
+		items.clear();
+	}
 }

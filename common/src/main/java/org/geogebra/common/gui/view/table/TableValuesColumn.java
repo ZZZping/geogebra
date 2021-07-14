@@ -93,4 +93,13 @@ public class TableValuesColumn {
 	private String format(double x) {
 		return evaluatable.getKernel().format(x, StringTemplate.defaultTemplate);
 	}
+
+	/**
+	 * Update and repaint all dependent geos (e.g. regression plots)
+	 */
+	public void updateRepaint() {
+		if (isModifiable()) {
+			evaluatable.updateRepaint();
+		}
+	}
 }
