@@ -1,6 +1,7 @@
 package org.geogebra.web.full.gui.toolbar;
 
 import org.geogebra.common.euclidian.EuclidianConstants;
+import org.geogebra.common.kernel.Construction;
 import org.geogebra.web.full.css.ToolbarSvgResources;
 import org.geogebra.web.full.gui.app.GGWToolBar;
 import org.geogebra.web.full.gui.images.AppResources;
@@ -88,5 +89,21 @@ public class ToolButton extends StandardButton {
 	 */
 	public int getMode() {
 		return mode;
+	}
+
+	/**
+	 * @param appMode current mode of the app
+	 */
+	public void updateSelected(int appMode) {
+		boolean selected = (mode == appMode) ||	isAdditionalToolSelected();
+		getElement().setAttribute("selected",
+				String.valueOf(selected));
+		setSelected(selected);
+	}
+
+	private boolean isAdditionalToolSelected() {
+		Construction cons = appW.getKernel().getConstruction();
+		return (mode == EuclidianConstants.MODE_RULER && cons.getRuler() != null)
+				|| (mode == EuclidianConstants.MODE_PROTRACTOR && cons.getProtractor() != null);
 	}
 }
