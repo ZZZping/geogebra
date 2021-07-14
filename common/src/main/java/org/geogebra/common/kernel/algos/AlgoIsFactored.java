@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import org.geogebra.common.kernel.Construction;
 import org.geogebra.common.kernel.EquationSolverInterface;
 import org.geogebra.common.kernel.Kernel;
+import org.geogebra.common.kernel.advanced.AlgoComplexRootsPolynomial;
 import org.geogebra.common.kernel.arithmetic.ExpressionNode;
 import org.geogebra.common.kernel.arithmetic.Function;
 import org.geogebra.common.kernel.arithmetic.FunctionVariable;
@@ -187,15 +188,38 @@ public class AlgoIsFactored extends AlgoElement {
 				for (int i = 0; i < numRoots; i++) {
 					// take only rational roots
 					if (!isRationalNumber(solution.curRoots[i])) {
-						return true;
+						return !hasConjugateComplexRoots(fun);
 					}
 				}
 				return false;
 			}
-			return !(numRoots == 1
-					&& (int) solution.curRoots[0] == solution.curRoots[0]);
+			boolean hasValidRealRoots = !(numRoots == 1
+					&& isRationalNumber(solution.curRoots[0]));
+			// check complex roots
+			if (hasConjugateComplexRoots(fun)) {
+				return false;
+			}
+			return hasValidRealRoots;
 		}
 		return true;
+	}
+
+	private boolean hasConjugateComplexRoots(Function fun) {
+		// basic idea: if roots are conjugates: (x-z)(x-zconjugate) = x^2-2*Re(z)+|z|^2
+		double[] curComplexRoots =
+				AlgoComplexRootsPolynomial.calcComplexRoots(fun, solution, null, eqnSolver);
+		double[] realRoots = solution.curRoots;
+		// check if there are complex conjugates
+		for (int i = 0; i < solution.curRealRoots; i++) {
+			for (int j = i; j < solution.curRealRoots; j++) {
+				if (realRoots[i] == realRoots[j]) {
+					if (curComplexRoots[i] != 0 && curComplexRoots[i] == -curComplexRoots[j]) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	private boolean canBeSimplified(double[] coeffs, ExpressionNode node) {
@@ -255,7 +279,7 @@ public class AlgoIsFactored extends AlgoElement {
 		if (node.getOperation().isPlusorMinus()) {
 			if (node.getLeft().isExpressionNode()) {
 				if (node.getRight().isExpressionNode()) {
-					return hasValidStructure(node.getLeft().wrap()) || hasValidStructure(
+					return hasValidStructure(node.getLeft().wrap()) && hasValidStructure(
 							node.getRight().wrap());
 				}
 				return hasValidStructure(node.getLeft().wrap());
@@ -270,12 +294,26 @@ public class AlgoIsFactored extends AlgoElement {
 			}
 		}
 		if (node.isOperation(Operation.MULTIPLY)) {
-			if (node.getLeft().isExpressionNode() && node.getLeft().wrap()
-					.getOperation().isPlusorMinus()) {
-				return false;
+			if (node.getLeft().isExpressionNode()) {
+				if (node.getRight().isExpressionNode()) {
+					if (node.getLeft().wrap().getOperation().isPlusorMinus() || node.getRight()
+							.wrap().getOperation().isPlusorMinus()) {
+						return false;
+					}
+					return hasValidStructure(node.getLeft().wrap()) && hasValidStructure(
+							node.getRight().wrap());
+				}
+				if (node.getLeft().wrap().getOperation().isPlusorMinus()) {
+					return false;
+				}
+				return hasValidStructure(node.getLeft().wrap());
 			}
-			return !node.getRight().isExpressionNode() || !node.getRight().wrap()
-					.getOperation().isPlusorMinus();
+			if (node.getRight().isExpressionNode()) {
+				if (node.getRight().wrap().getOperation().isPlusorMinus()) {
+					return false;
+				}
+				return hasValidStructure(node.getRight().wrap());
+			}
 		}
 		return true;
 	}

@@ -2141,6 +2141,11 @@ public class CommandsTest {
 		t("IsFactored[ x^2-x ]", "false");
 		t("IsFactored[ (x-1)^2+2 ]", "false");
 		t("IsFactored[ x^2-2 ]", "true");
+		t("IsFactored[ 3(x+1)^2+1 ]", "false");
+		t("IsFactored[ (x+1)x+2 ]", "false");
+		t("IsFactored[ x^15+27 ]", "false");
+		t("IsFactored[ x^3-64 ]", "false");
+		t("IsFactored[ x^4+4 ]", "false");
 	}
 
 	@Test
