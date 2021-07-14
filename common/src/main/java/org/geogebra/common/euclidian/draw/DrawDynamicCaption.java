@@ -103,10 +103,14 @@ public class DrawDynamicCaption {
 			return false;
 		}
 
-		if (drawable instanceof DrawInputBox) {
+		if (drawable instanceof CanvasDrawable) {
 			((CanvasDrawable) drawable).labelSize.x = captionWidth;
 			((CanvasDrawable) drawable).labelSize.y = captionHeight;
-			((CanvasDrawable) drawable).calculateBoxBounds();
+			if (drawable instanceof DrawInputBox) {
+				((CanvasDrawable) drawable).calculateBoxBounds();
+			} else if (drawable instanceof DrawDropDownList) {
+				((CanvasDrawable) drawable).calculateBoxBounds(getDynamicCaption().isLaTeX());
+			}
 		}
 		return getDynamicCaption().isLaTeX();
 	}
