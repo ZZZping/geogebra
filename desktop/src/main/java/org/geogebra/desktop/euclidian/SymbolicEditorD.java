@@ -29,6 +29,7 @@ public class SymbolicEditorD extends SymbolicEditor {
 	private final Box box;
 	private MathFieldD mathField;
 	private double baseline;
+	private int scrollX = 0;
 
 	protected SymbolicEditorD(App app, EuclidianView view) {
 		super(app, view);
@@ -137,8 +138,8 @@ public class SymbolicEditorD extends SymbolicEditor {
 		mathField.setForeground(GColorD.getAwtColor(getGeoInputBox().getObjectColor()));
 		box.setBorder(null);
 		g.setClip(0, 0, box.getWidth(), box.getHeight());
-		double scrollX = Math.max(0, mathField.getCursorX() - box.getWidth()
-				+ MathFieldInternal.PADDING_LEFT_SCROLL);
+		this.scrollX = MathFieldInternal.getHorizontalScroll(scrollX, box.getWidth(),
+				mathField.getCursorX());
 		g.translate(DrawInputBox.TF_PADDING_HORIZONTAL - scrollX, 0);
 		box.paint(GGraphics2DD.getAwtGraphics(g));
 		g.resetClip();
@@ -155,6 +156,11 @@ public class SymbolicEditorD extends SymbolicEditor {
 		box.setBounds(box.getX(), box.getY(), box.getWidth(),
 				Math.max((int) currentHeight, DrawInputBox.SYMBOLIC_MIN_HEIGHT));
 		box.revalidate();
+		view.repaintView();
+	}
+
+	@Override
+	public void onCursorMove() {
 		view.repaintView();
 	}
 

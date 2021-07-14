@@ -25,7 +25,6 @@ import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
-import com.himamis.retex.editor.share.editor.MathFieldInternal;
 import com.himamis.retex.editor.share.event.ClickListener;
 import com.himamis.retex.editor.share.event.MathFieldListener;
 import com.himamis.retex.editor.share.meta.MetaModel;
@@ -145,7 +144,7 @@ public class MathFieldEditor implements IsWidget, HasKeyboardPopup,
 	 * Scroll content horizontally if needed.
 	 */
 	public void scrollHorizontally() {
-		mathField.scrollParentHorizontally(main, MathFieldInternal.PADDING_LEFT_SCROLL);
+		mathField.scrollParentHorizontally(main);
 	}
 
 	/**
