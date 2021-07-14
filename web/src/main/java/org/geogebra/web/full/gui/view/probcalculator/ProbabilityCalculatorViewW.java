@@ -77,10 +77,13 @@ public class ProbabilityCalculatorViewW extends ProbabilityCalculatorView
 	private FlowPanel probCalcPanel;
 	private final StatisticsCalculatorW statCalculator;
 	private MyTabLayoutPanel tabbedPane;
-	private ProbabilityCalculatorStyleBarW styleBar;
+//	private ProbabilityCalculatorStyleBarW styleBar;
 	private HandlerRegistration comboDistributionHandler;
 	private GPopupMenuW btnExport;
 	private MyToggleButtonW btnNormalOverlay;
+	private MyToggleButtonW btnLineGraph;
+	private MyToggleButtonW btnStepGraph;
+	private MyToggleButtonW btnBarGraph;
 	private ResultPanelW resultPanel;
 
 	/**
@@ -105,7 +108,7 @@ public class ProbabilityCalculatorViewW extends ProbabilityCalculatorView
 		tabbedPane.add(statCalculator.getWrappedPanel(),
 				loc.getMenu("Statistics"));
 
-		tabbedPane.addSelectionHandler(event -> updateStylebarLayout());
+		//tabbedPane.addSelectionHandler(event -> updateStylebarLayout());
 
 		tabbedPane.onResize();
 
@@ -116,15 +119,6 @@ public class ProbabilityCalculatorViewW extends ProbabilityCalculatorView
 
 		tabbedPane.selectTab(getApp().getSettings().getProbCalcSettings()
 				.getCollection().isActive() ? 1 : 0);
-	}
-
-	/**
-	 * Updates stylebar layout
-	 */
-	protected void updateStylebarLayout() {
-		if (styleBar != null) {
-			styleBar.updateLayout();
-		}
 	}
 
 	@Override
@@ -144,9 +138,6 @@ public class ProbabilityCalculatorViewW extends ProbabilityCalculatorView
 		if (getTable() != null) {
 			getTable().setLabels();
 		}
-		if (styleBar != null) {
-			styleBar.setLabels();
-		}
 
 		btnCumulative.setToolTipText(loc.getMenu("Cumulative"));
 
@@ -157,17 +148,6 @@ public class ProbabilityCalculatorViewW extends ProbabilityCalculatorView
 			lblParameterArray[i]
 					.setText(getParameterLabels()[selectedDist.ordinal()][i]);
 		}
-	}
-	
-	/**
-	 * @return The style bar for this view.
-	 */
-	public ProbabilityCalculatorStyleBarW getStyleBar() {
-		if (styleBar == null) {
-			styleBar = new ProbabilityCalculatorStyleBarW(app, this);
-		}
-
-		return styleBar;
 	}
 
 	/**
@@ -241,7 +221,12 @@ public class ProbabilityCalculatorViewW extends ProbabilityCalculatorView
 			plotPanelOptions.add(btnExport.getPopupMenu());
 		}
 		plotPanelOptions.add(btnNormalOverlay);
-		plotPanelOptions.add(new ClearPanel());
+
+		FlowPanel binomButtonPanel = new FlowPanel();
+		binomButtonPanel.add(btnBarGraph);
+		binomButtonPanel.add(btnStepGraph);
+		binomButtonPanel.add(btnLineGraph);
+		plotPanelOptions.add(binomButtonPanel);
 		
 		plotPanelPlus = new FlowPanel();
 		plotPanelPlus.addStyleName("PlotPanelPlus");
@@ -332,8 +317,23 @@ public class ProbabilityCalculatorViewW extends ProbabilityCalculatorView
 
 		btnNormalOverlay = new MyToggleButtonW(
 				GuiResources.INSTANCE.normal_overlay());
-		btnNormalOverlay.addStyleName("btnNormalOverlay");
+		btnNormalOverlay.addStyleName("probCalcStylbarBtn");
 		btnNormalOverlay.addClickHandler(event -> onOverlayClicked());
+
+		btnLineGraph = new MyToggleButtonW(GuiResources.INSTANCE.line_graph());
+		btnLineGraph.addStyleName("probCalcStylbarBtn");
+		btnLineGraph.addClickHandler(event -> {
+			setGraphType(GRAPH_LINE);
+			updateAll();
+		});
+
+		btnStepGraph = new MyToggleButtonW(GuiResources.INSTANCE.step_graph());
+		btnStepGraph.addStyleName("probCalcStylbarBtn");
+		btnStepGraph.addClickHandler(event -> setGraphType(GRAPH_STEP));
+
+		btnBarGraph = new MyToggleButtonW(GuiResources.INSTANCE.bar_chart());
+		btnBarGraph.addStyleName("probCalcStylbarBtn");
+		btnBarGraph.addClickHandler(event -> setGraphType(GRAPH_BAR));
 	}
 	
 	/**
@@ -356,9 +356,6 @@ public class ProbabilityCalculatorViewW extends ProbabilityCalculatorView
 		updateOutput();
 		updateProbabilityType(resultPanel);
 		updateGUI();
-		if (styleBar != null) {
-			styleBar.updateGUI();
-		}
 	}
 
 	private void updateOutput() {
@@ -767,7 +764,7 @@ public class ProbabilityCalculatorViewW extends ProbabilityCalculatorView
 				return getPopupMenu().getAbsoluteLeft();
 			}
 		};
-		btnExport.getPopupMenu().addStyleName("btnExport");
+		btnExport.getPopupMenu().addStyleName("probCalcStylbarBtn");
 
 		AriaMenuBar menu = new AriaMenuBar();
 
